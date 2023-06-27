@@ -15,6 +15,8 @@ from pathlib import Path
 import pygame
 import os
 from character_classes import *
+import pygame_gui
+from pygame_gui.core import ObjectID
 
 
 class FPS:
@@ -37,6 +39,62 @@ def line_numb():
     return inspect.currentframe().f_back.f_lineno
 
 
+# class StatsSprite(pygame.sprite.Sprite):
+#     def __init__(self, x, y, *groups: pygame.sprite.AbstractGroup):
+#         super().__init__(*groups)
+#
+#         self.image = pygame.image.load('assets/images/environment/Sprites/PNG/Additional Sprites/candle-2.png')
+#
+#         # self.position = pygame.Vector2(200.0, 300.0)
+#         self.rect = self.image.get_rect()
+#         self.rect.topleft = (x, y)
+#
+#         self.max_health = 100
+#         self.current_health = 75
+#
+#         self.max_mana = 100
+#         self.current_mana = 30
+#
+#         self.max_stamina = 100.0
+#         self.current_stamina = 100.0
+#
+#         self.speed = 100.0
+#         self.moving_left = False
+#         self.moving_right = False
+#         self.moving_up = False
+#         self.moving_down = False
+#
+#         self.stam_recharge_tick = 0.05
+#         self.stam_recharge_acc = 0.0
+#
+#
+#     def update(self, time_delta: float, screen_scroll) -> None:
+#         fn = ""
+#         if constants.DEBUG_LEVEL:  # get the function name for debugging
+#             fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
+#             ln = inspect.getframeinfo(inspect.currentframe())[1]
+#             if constants.DEBUG_LEVEL > 1:
+#                 print("MAIN.PY, F {}, LN:{}".format(fn, ln))
+#
+#         # reposition based on screen scroll
+#         self.rect.x += screen_scroll[0]
+#         self.rect.y += screen_scroll[1]
+#         # self.rect.x += screen_scroll[0] + time_delta
+#         # self.rect.y += screen_scroll[1] + time_delta
+#
+# #        self.rect.topleft = (int(self.position.x), int(self.position.y))
+#         self.rect.topleft = (int(self.rect.x), int(self.rect.y))
+#
+#     def get_health_percentage(self) -> float:
+#         return self.current_health / self.max_health
+#
+#     def get_mana_percentage(self) -> float:
+#         return self.current_mana / self.max_mana
+#
+#     def get_stamina_percentage(self) -> float:
+#         return self.current_stamina / self.max_stamina
+
+
 game_title = "End of Civ"
 
 if constants.DEBUG_LEVEL:
@@ -51,7 +109,7 @@ pygame.mixer.music.set_volume(0.2)
 if constants.MUSIC:
     pygame.mixer.music.play(-1, 0.0, 5000)
 
-if constants.SOUND_FX == False:
+if not constants.SOUND_FX:
     volume = 0.0
 else:
     volume = .5
@@ -71,6 +129,26 @@ if constants.SCREEN_HEIGHT <= 480:
 screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT))
 # screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT), pygame.HWSURFACE | pygame.DOUBLEBUF, vsync=1)
 pygame.display.set_caption(game_title)
+
+# stats bars manager for each enemy
+manager = pygame_gui.UIManager((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT),
+                               'assets/themes/status_bar_theme.json')
+
+# enemy_status_overlay_sprite_list = pygame.sprite.LayeredUpdates()
+# enemy_status_sprite = StatsSprite(250, 250, enemy_status_overlay_sprite_list)
+
+# health_bar = pygame_gui.elements.UIStatusBar(pygame.Rect((0, 30), (50, 6)),
+#                                              manager,
+#                                              sprite=enemy_status_sprite,
+#                                              percent_method=enemy_status_sprite.get_health_percentage,
+#                                              object_id=ObjectID(
+#                                                  '#health_bar', '@player_status_bars'))
+# mana_bar = pygame_gui.elements.UIStatusBar(pygame.Rect((0, 40), (50, 6)),
+#                                            manager,
+#                                            sprite=enemy_status_sprite,
+#                                            percent_method=enemy_status_sprite.get_mana_percentage,
+#                                            object_id=ObjectID(
+#                                                '#mana_bar', '@player_status_bars'))
 
 # create clock for maintaining frame rate
 clock = pygame.time.Clock()
@@ -119,7 +197,7 @@ def load_gold_images(coin_images, gold_images):
                       0)  # 3 images, row 1
     for x in range(0, tiles.cols, 2):  # skip
         img = tiles.get_tile(x, 0)
-        img = scale_img(img, constants.GOLD_COIN)
+        img = scale_img(img, constants.GOLD_COIN_SCALE)
         coin_images.append(img)
 
     if constants.DEBUG_LEVEL:
@@ -381,8 +459,8 @@ for i, character in enumerate(character_classes):
 
                         cropped_img = pygame.transform.flip(cropped_img, character['flip_image'], False)
 
-                        if character['scale'] != 1:
-                            cropped_img = scale_img(cropped_img, character['scale'])
+                        if scale != 1:
+                            cropped_img = scale_img(cropped_img, scale)
                         temp_list.append(cropped_img)
                 animation_list.append(temp_list)
         case "Cyclops1" | "Cyclops2" | "Cyclops3":
@@ -450,7 +528,8 @@ for i, character in enumerate(character_classes):
                         case _:
                             file_prefix = ""
 
-                    path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
+                    # path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
+                    path = "assets/images/characters/{}/Sprites/{}/{}_{}.png".format(character['name'], at, file_prefix, file_index)
                     img = pygame.image.load(path).convert_alpha()
 
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
@@ -464,7 +543,7 @@ for i, character in enumerate(character_classes):
                 animation_list.append(temp_list)
         case "Dragon1" | "Dragon2" | "Dragon3":
             for animation in animation_types:
-                num_images= character[animation] -1
+                num_images = character[animation] - 1
                 if animation == "run":
                     num_images = character['fly']
                 temp_list = []
@@ -725,9 +804,8 @@ for i, character in enumerate(character_classes):
                 animation_list.append(temp_list)
         case "Goblin1" | "Goblin2" | "Goblin3":
             for animation in animation_types:
-                num_images = character[animation] + 1
                 temp_list = []
-                num_images= character[animation]
+                num_images = character[animation]
 
                 for image_num in range(0, num_images):
 
@@ -749,8 +827,6 @@ for i, character in enumerate(character_classes):
                     path = f"assets/images/characters/Goblin/PNG/{character['name']}/Animation/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
 
-                    w = img.get_width()
-                    h = img.get_height()
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
                     height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
                     new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
@@ -758,8 +834,6 @@ for i, character in enumerate(character_classes):
 
                     if character['scale'] != 1:
                         cropped_img = scale_img(cropped_img, character['scale'])
-                    w = cropped_img.get_width()
-                    h = cropped_img.get_height()
 
                     temp_list.append(cropped_img)
                 animation_list.append(temp_list)
@@ -791,8 +865,6 @@ for i, character in enumerate(character_classes):
                     path = f"assets/images/characters/{character['name']}/{at}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
 
-                    w = img.get_width()
-                    h = img.get_height()
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
                     height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
                     new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
@@ -800,8 +872,6 @@ for i, character in enumerate(character_classes):
 
                     if character['scale'] != 1:
                         cropped_img = scale_img(cropped_img, character['scale'])
-                    w = cropped_img.get_width()
-                    h = cropped_img.get_height()
 
                     temp_list.append(cropped_img)
                 animation_list.append(temp_list)
@@ -830,13 +900,9 @@ for i, character in enumerate(character_classes):
 
                     path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
-                    w = img.get_width()
-                    h = img.get_height()
 
                     if character['scale'] != 1:
                         img = scale_img(img, character['scale'])
-                    w = img.get_width()
-                    h = img.get_height()
 
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
                     height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
@@ -907,8 +973,6 @@ for i, character in enumerate(character_classes):
                     path = f"assets/images/characters/{character['name']}/{file_prefix}{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
 
-                    w = img.get_width()
-                    h = img.get_height()
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
                     height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
                     new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
@@ -916,8 +980,6 @@ for i, character in enumerate(character_classes):
 
                     if character['scale'] != 1:
                         cropped_img = scale_img(cropped_img, character['scale'])
-                    w = cropped_img.get_width()
-                    h = cropped_img.get_height()
 
                     temp_list.append(cropped_img)
                 animation_list.append(temp_list)
@@ -983,8 +1045,6 @@ for i, character in enumerate(character_classes):
                 for x in range(images.cols):
                     img = images.get_tile(x, 0)
 
-                    w = img.get_width()
-                    h = img.get_height()
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
                     height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
 
@@ -1026,8 +1086,6 @@ for i, character in enumerate(character_classes):
 
                     img = pygame.image.load(path).convert_alpha()
 
-                    w = img.get_width()
-                    h = img.get_height()
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
                     height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
                     new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
@@ -1096,8 +1154,6 @@ for i, character in enumerate(character_classes):
                     path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
 
-                    w = img.get_width()
-                    h = img.get_height()
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
                     height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
                     new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
@@ -1105,8 +1161,6 @@ for i, character in enumerate(character_classes):
 
                     if character['scale'] != 1:
                         cropped_img = scale_img(cropped_img, character['scale'])
-                    w = cropped_img.get_width()
-                    h = cropped_img.get_height()
 
                     temp_list.append(cropped_img)
                 animation_list.append(temp_list)
@@ -1137,13 +1191,9 @@ for i, character in enumerate(character_classes):
 
                     path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
-                    w = img.get_width()
-                    h = img.get_height()
 
                     if scale != 1:
                         img = scale_img(img, scale)
-                    nw = img.get_width()
-                    nh = img.get_height()
 
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
                     height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
@@ -1332,7 +1382,7 @@ for i, character in enumerate(character_classes):
                 temp_list = []
                 match animation:
                     case "run":
-                        # we just want the 3rd row of images so we use start_index of 2
+                        # we just want the 3rd row of images, so we use start_index of 2
                         # 8 cols, 4 rows, select 3rd row
                         images = Tilesheet("assets/images/characters/Saurial/Saurial_running.png", 200, 200, 4, 8, 2)
                     case "idle":
@@ -1361,9 +1411,8 @@ for i, character in enumerate(character_classes):
                     drw = img.get_width() * right_crop_percent
                     drh = img.get_height() * (1 - (2 * y_crop_percent))
 
-                    region = (
-                        10, 10, img.get_width() - 15,
-                        img.get_height() - 15)  # crops off wasted space around demon images
+                    # crops off wasted space around demon images
+                    region = (10, 10, img.get_width() - 15, img.get_height() - 15)
                     cropped_img = img.subsurface(region)
                     temp_list.append(cropped_img)
                 animation_list.append(temp_list)
@@ -1408,8 +1457,8 @@ for i, character in enumerate(character_classes):
             for animation in animation_types:
                 temp_list = []
                 scale = character['scale']
-                for image_num in range(0, num_images):
-                    num_images = character[animation]
+                num_images = character[animation]
+                for image_num in range(0, num_images - 1):
 
                     file_index = "{:03}".format(image_num)
 
@@ -1427,8 +1476,6 @@ for i, character in enumerate(character_classes):
 
                     path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
-                    w = img.get_width()
-                    h = img.get_height()
 
                     if character['scale'] != 1:
                         img = scale_img(img, character['scale'])
@@ -1811,6 +1858,45 @@ for i, character in enumerate(character_classes):
                         cropped_img = scale_img(cropped_img, character['scale'])
                     temp_list.append(cropped_img)
                 animation_list.append(temp_list)
+        case "Troll1" | "Troll2" | "Troll3":
+            for animation in animation_types:
+                num_images = character[animation]
+                temp_list = []
+
+                for image_num in range(0, num_images -1):
+
+                    file_index = "{:03}".format(image_num)
+
+                    match animation:
+                        case "run":
+                            file_prefix = "Run"
+                        case "idle":
+                            file_prefix = "Idle"
+                            # file_prefix = "Attack1"
+                        case "attack":
+                            file_prefix = "Attack"
+                        case "death":
+                            file_prefix = "Dead"
+                        case _:
+                            file_prefix = ""
+
+                    path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
+                    img = pygame.image.load(path).convert_alpha()
+
+                    w = img.get_width()
+                    h = img.get_height()
+                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
+                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
+                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
+                    cropped_img = img.subsurface(new_region)
+
+                    if character['scale'] != 1:
+                        cropped_img = scale_img(cropped_img, character['scale'])
+                    w = cropped_img.get_width()
+                    h = cropped_img.get_height()
+
+                    temp_list.append(cropped_img)
+                animation_list.append(temp_list)
         case "Zombie1" | "Zombie2" | "Zombie3":
             for animation in animation_types:
                 num_images = character[animation]
@@ -1856,7 +1942,6 @@ for i, character in enumerate(character_classes):
                 pygame.quit()
                 sys.exit()
 
-
     if (constants.DEBUG_LEVEL > 1):
         print(" line: {},  animation={}".format(line_numb(), animation))
     mob_animations.append(animation_list)
@@ -1875,13 +1960,13 @@ def draw_character(image, x, y):
 
 
 # function for outputting text onto the screen
-def draw_text(text, font, text_col, x, y):
+def draw_statusbar_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
 
 
 # function for displaying game info
-def draw_info():
+def draw_statusbar_info():
     pygame.draw.rect(screen, constants.PANEL, (0, 0, constants.SCREEN_WIDTH, 50))
     pygame.draw.line(screen, constants.WHITE, (0, 50), (constants.SCREEN_WIDTH, 50))
     # draw lives
@@ -1890,22 +1975,22 @@ def draw_info():
     for i in range(5):
         if health_percentage >= ((i + 1) * 20):
             screen.blit(heart_full, (10 + i * 50, 0))
-        elif (health_percentage % 20 > 0) and half_heart_drawn == False:
+        elif (health_percentage % 20 > 0) and not half_heart_drawn:
             screen.blit(heart_half, (10 + i * 50, 0))
             half_heart_drawn = True
         else:
             screen.blit(heart_empty, (10 + i * 50, 0))
 
     # HP
-    draw_text("HP: " + str(player.health), font, constants.WHITE, 260, 15)
+    draw_statusbar_text("HP: " + str(player.health), font, constants.WHITE, 260, 15)
     # level
-    draw_text("LEVEL: " + str(level), font, constants.WHITE, constants.SCREEN_WIDTH / 2, 15)
+    draw_statusbar_text("LEVEL: " + str(level), font, constants.WHITE, constants.SCREEN_WIDTH / 2, 15)
 
     # exp
-    draw_text("EXP: " + str(player.exp), font, constants.WHITE, constants.SCREEN_WIDTH / 2 + 185, 15)
+    draw_statusbar_text("EXP: " + str(player.exp), font, constants.WHITE, constants.SCREEN_WIDTH / 2 + 185, 15)
 
     # show score
-    draw_text(f"X{player.score}", font, constants.WHITE, constants.SCREEN_WIDTH - 100, 15)
+    draw_statusbar_text(f"X{player.score}", font, constants.WHITE, constants.SCREEN_WIDTH - 100, 15)
 
 
 # function to reset level
@@ -1935,10 +2020,10 @@ class DamageText(pygame.sprite.Sprite):
         self.rect.center = (x, y)
         self.counter = 0
 
-    def update(self):
+    def update(self, time_delta):
         # reposition based on screen scroll
-        self.rect.x += screen_scroll[0]
-        self.rect.y += screen_scroll[1]
+        self.rect.x += screen_scroll[0] + time_delta
+        self.rect.y += screen_scroll[1] + time_delta
 
         # move damage text up
         self.rect.y -= 1
@@ -1980,7 +2065,6 @@ class ScreenFade():
 # load in the level data
 if constants.DEBUG_LEVEL:
     # path = "assets/levels/testing.tmx"
-    # path= "/Users/tomfrancis/IdeaProjects/Final_game/assets/levels/testing.tmx"
     path = "assets/levels/level1.tmx"
 
 else:
@@ -1998,14 +2082,13 @@ except:
     exit()
 
 # start FPS monitoring
-
-# Create World
 if constants.DEBUG_LEVEL:
     if constants.FPS_MONITOR:
         fps = FPS()
     print(" MAIN.PY, line={}\n   Creating World\n".format(line_numb()))
 
-world = World(character_classes)
+# Create World
+world = World(character_classes, manager)
 
 # sprite_group = pygame.sprite.Group()
 sprite_group = pygame.sprite.LayeredUpdates()
@@ -2024,7 +2107,6 @@ player = world.player
 
 # create player's weapon
 bow = Weapon(bow_image, arrow_image)
-# sword = Sword(sword_image)
 
 # extract enemies from world data
 enemy_list = world.character_list
@@ -2077,9 +2159,10 @@ loop_number = 0
 damage_text = ""
 
 while run:
+    # control frame rate and handle delta time
+    time_delta = clock.tick(constants.FPS) / 1000.0
+
     loop_number += 1
-    # control frame rate
-    clock.tick(constants.FPS)
 
     if constants.DEBUG_LEVEL > 1:
         print("  line: {}, loop_number={}, level_complete={}, run={}, start_game={}\n"
@@ -2087,7 +2170,7 @@ while run:
               format(line_numb(), loop_number, level_complete, run, start_game,
                      moving_up, moving_down, moving_left, moving_right))
 
-    if start_game == False and constants.DEBUG_LEVEL == 0:
+    if not start_game and constants.DEBUG_LEVEL == 0:
         screen.fill(constants.MENU_BG)
         if start_button.draw(screen):
             start_game = True
@@ -2109,29 +2192,28 @@ while run:
                 # calculate player movement
                 dx = 0
                 dy = 0
-                if moving_right == True:
+                if moving_right:
                     dx = constants.PLAYER_SPEED
-                if moving_left == True:
+                if moving_left:
                     dx = -constants.PLAYER_SPEED
-                if moving_up == True:
+                if moving_up:
                     dy = -constants.PLAYER_SPEED
-                if moving_down == True:
+                if moving_down:
                     dy = constants.PLAYER_SPEED
 
                 # move player
-                screen_scroll, level_complete = player.move(dx, dy, world.obstacle_tiles, world.exit_tile)
+                screen_scroll, level_complete = player.move(dx, dy, world.obstacle_tiles, time_delta, world.exit_tile)
 
                 # update all objects
                 world.update(screen_scroll)
                 for enemy in enemy_list:
                     # TODO : why is fireball = enemy.ai run for every enemy?  How about lightning?
                     fireball, lightning = enemy.ai(player, world.obstacle_tiles, screen_scroll, fireball_image,
-                                                   lightning_image, character_classes)
+                                                   lightning_image, character_classes, time_delta)
                     if fireball:
                         fireball_group.add(fireball)
                     if lightning:
                         lightning_group.add(lightning)
-
                     if enemy.alive:
                         enemy.update(player)
 
@@ -2141,14 +2223,12 @@ while run:
                     arrow_group.add(arrow)
                     shot_fx.play()
                 for arrow in arrow_group:
-
                     damage, damage_pos = arrow.update(screen_scroll, world.obstacle_tiles, enemy_list)
 
                     if damage:
                         new_damage, current_health = damage.split(" : ")
                         new_damage = -(int(new_damage))
                         current_health = int(current_health)
-                        # test
 
                         damage_text = DamageText(damage_pos.centerx, damage_pos.y, str(new_damage), constants.RED)
                         damage_text_group.add(damage_text)
@@ -2166,10 +2246,14 @@ while run:
                                 " MAIN.PY, line:{}, Damage_text={}, damage={}".format(line_numb(), damage_text, damage))
                         hit_fx.play()
 
-                damage_text_group.update()
+                damage_text_group.update(time_delta)
                 fireball_group.update(screen_scroll, player)
                 lightning_group.update(screen_scroll, player)
-                item_group.update(screen_scroll, player, coin_fx, heal_fx)
+
+                sprite_group.update(time_delta, screen_scroll)
+                manager.update(time_delta)
+
+                item_group.update(screen_scroll, player, coin_fx, heal_fx, time_delta)
 
                 if player.level_complete:
                     level_complete = True
@@ -2201,13 +2285,18 @@ while run:
             for lightning in lightning_group:
                 lightning.draw(screen)
             damage_text_group.draw(screen)
-            draw_info()
+            draw_statusbar_info()
+
+            # draw the per enemy stats info
+            # enemy_status_overlay_sprite_list.draw(screen)
+            # manager.draw_ui(screen)
+
             score_status.draw(screen)
             blue_potion_status.draw(screen)
             green_potion_status.draw(screen)
 
         # check level complete
-        if level_complete == True:
+        if level_complete:
             # print("MAIN.PY, line:{}\n Next level functionality has not been refactored".format(line_numb()))
 
             start_intro = True
@@ -2225,7 +2314,7 @@ while run:
                 pygame.quit()
                 exit()
 
-            world = World()
+            world = World(character_classes)
             success = world.process_data(tmx_map, item_images, mob_animations, sprite_group)
             if not success:
                 print("  world.process_data failed")
@@ -2244,13 +2333,13 @@ while run:
                 item_group.add(item)
 
         # show intro
-        if start_intro == True:
+        if start_intro:
             if intro_fade.fade():
                 start_intro = False
                 intro_fade.fade_counter = 0
 
         # show death screen
-        if player.alive == False:
+        if not player.alive:
             if death_fade.fade():
                 if restart_button.draw(screen):
                     death_fade.fade_counter = 0
@@ -2269,7 +2358,7 @@ while run:
                         pygame.quit()
                         exit()
 
-                    world = World()
+                    world = World(character_classes)
                     success = world.process_data(tmx_map, item_images, mob_animations, sprite_group)
                     if not success:
                         print("  world.process_data failed in MAIN.PY, line:{}".format(line_numb()))
@@ -2321,7 +2410,7 @@ while run:
                 case pygame.K_w:
                     moving_up = False
                 case pygame.K_s:
-                    item_group.update(screen_scroll, player, coin_fx, heal_fx)
+                    item_group.update(screen_scroll, player, coin_fx, heal_fx, time_delta)
 
             moving_down = False
 
@@ -2340,5 +2429,6 @@ while run:
     #     screen.blit(sprite.image, sprite.rect)
 
     pygame.display.update()
+#     pygame.display.flip()
 
 pygame.quit()

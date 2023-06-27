@@ -7,6 +7,9 @@ import constants
 import inspect
 # from pathlib import Path
 import sys
+import pygame_gui
+from pygame_gui.core import ObjectID
+
 
 
 def line_numb():
@@ -22,10 +25,12 @@ class Tile(pygame.sprite.Sprite):
 
 
 class World():
-    def __init__(self, character_classes):
+    def __init__(self, character_classes, manager):
         fn = ""
-        if (constants.DEBUG_LEVEL > 0):  # get the function name for debugging
+        if constants.DEBUG_LEVEL > 0:  # get the function name for debugging
             fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
+            if constants.DEBUG_LEVEL > 1:
+                print("WORLD.PY, F:{}, line: {}, creating WORLD".format(fn, line_numb()))
 
         self.map_tiles = []
         self.obstacle_tiles = []
@@ -36,6 +41,7 @@ class World():
         self.character_classes = character_classes
         self.player_count = 0
         self.map_level = 1
+        self.UIManager = manager
 
     def process_data(self, tmx_data, item_images, mob_animations, sprite_group):
         fn = ""
@@ -57,10 +63,11 @@ class World():
             image_y = int(obj.y)
 
             if constants.DEBUG_LEVEL:
+                print("WORLD.PY, F:{}, LN:{}".format(fn, line_numb()))
                 print("\nPROCESSING {}, i={}".format(obj.properties['item_name'], i))
 
-            tile_data = []
-            if (obj.image):
+            # tile_data = []
+            if obj.image:
                 image = obj.image
                 image_rect = image.get_rect()
                 image_rect.center = (image_x, image_y)
@@ -72,19 +79,18 @@ class World():
                 pygame.quit()
                 sys.exit()
 
-            if constants.DEBUG_LEVEL>1:
-                print(" WORLD.PY, F:{}, item_name={}, line: {}, image_x={}, image_y={}".
-                      format(fn, obj.properties['item_name'], line_numb(), image_x, image_y))
+            # TODO: add a function to create_gold_coin to clean up below
 
-            # TODO: add a function to create_gold_coin
+            enemy = None
 
             match obj.properties['item_name']:
                 case "player":
                     # (x, y, health, mob_animations, char name, character classes)
                     self.player_count += 1
                     # if the last field (size) is greater than 1, the enemy may bounce to a new spot if area is too small for him initially
-                    player = Character(image_x, image_y, constants.PLAYER_START_HEALTH, mob_animations,
-                                       obj.properties['item_name'], self.character_classes)
+                    player = Character(image_x, image_y, mob_animations,
+                                       obj.properties['item_name'], self.character_classes,
+                                       self.UIManager)
                     self.player = player
                 case "gold":
                     coin = Item(image_x, image_y, 0, item_images[0])
@@ -139,8 +145,24 @@ class World():
                     self.item_list.append(portal)
                     self.exit_tile = tile_data
                 case _:
-                    enemy = Character(image_x, image_y, constants.ENEMY_HP, mob_animations, obj.properties['item_name'],
-                                      self.character_classes)
+                    if constants.DEBUG_LEVEL:
+                        print("   in F:{}, ln:{}, name={}".format(fn, line_numb(), obj.properties['item_name']))
+
+                    enemy = Character(image_x, image_y, mob_animations, obj.properties['item_name'],
+                                      self.character_classes, self.UIManager)
+                    # enemy.health_bar = pygame_gui.elements.UIStatusBar(pygame.Rect((0, 30), (50, 6)),
+                    #                                                    self.UIManager,
+                    #                                                    sprite=sprite_group,
+                    #                                                    percent_method=enemy.get_health_percentage,
+                    #                                                    object_id=ObjectID(
+                    #                                                        '#health_bar', '@player_status_bars'))
+                    # health_bar = pygame_gui.elements.UIStatusBar(pygame.Rect((0, 30), (50, 6)),
+                    #                                              manager,
+                    #                                              sprite=enemy_status_sprite,
+                    #                                              percent_method=enemy_status_sprite.get_health_percentage,
+                    #                                              object_id=ObjectID(
+                    #                                                  '#health_bar', '@player_status_bars'))
+
                     self.character_list.append(enemy)
 
         # process ground tiles
@@ -244,7 +266,7 @@ class World():
             tile[1].center = (tile[2], tile[3])
 
     def draw(self, surface):
-        if (constants.DEBUG_LEVEL > 1):  # get the function name for debugging
+        if constants.DEBUG_LEVEL > 1:  # get the function name for debugging
             fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
             print(" WORLD.PY, F {}, LN:{}".format(fn, line_numb()))
 

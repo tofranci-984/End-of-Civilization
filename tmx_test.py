@@ -1,15 +1,15 @@
 from pytmx.util_pygame import *
 import pygame
 
+
 def line_numb():
     ''' Returns the current line number in our program
     '''
     return inspect.currentframe().f_back.f_lineno
 
 
-
 # load in the level data
-#path = "assets/levels/level1.tmx"
+    # path = "assets/levels/level1.tmx"
 path = "assets/levels/test-error.tmx"
 
 if constants.DEBUG_LEVEL:
@@ -24,5 +24,3 @@ except:
     exit()
 
 print("loaded fine")
-
-

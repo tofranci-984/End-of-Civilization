@@ -11,6 +11,7 @@ import pygame_gui
 from pygame_gui.core import ObjectID
 
 
+
 def line_numb():
     '''Returns the current line number in our program'''
     return inspect.currentframe().f_back.f_lineno
@@ -22,36 +23,9 @@ def search_character_classes(name, character_classes):
             return i
     return -1  # Return -1 if character not found
 
-class StatsSprite(pygame.sprite.Sprite):
-    def __init__(self, *groups: pygame.sprite.AbstractGroup):
-        super().__init__(*groups)
-
-        # self.image = pygame.image.load('data/images/test_emoji.png')
-
-        self.position = pygame.Vector2(200.0, 300.0)
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (200, 300)
-
-        self.max_health = 100
-        self.current_health = 75
-
-        self.max_mana = 100
-        self.current_mana = 30
-
-        self.max_stamina = 100.0
-        self.current_stamina = 100.0
-
-        self.speed = 100.0
-        self.moving_left = False
-        self.moving_right = False
-        self.moving_up = False
-        self.moving_down = False
-
-        self.stam_recharge_tick = 0.05
-        self.stam_recharge_acc = 0.0
 
 class Character():
-    def __init__(self, x, y, health, mob_animations, char_name, character_classes):
+    def __init__(self, x, y, mob_animations, char_name, character_classes, manager):
         fn = ""
         if constants.DEBUG_LEVEL:  # get the function name for debugging
             fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
@@ -59,10 +33,14 @@ class Character():
         if constants.DEBUG_LEVEL:
             print(" CHARACTER.PY, F:{}, line:{}, Creating new Character: {}".format(fn, line_numb(), char_name))
 
+# TODO: Need to on using centerx, centery to place objects NOT x,y due to stutter when switching from idle to attack.
         self.x = x
         self.y = y
+        self.name = char_name
 
-        self.special_attack = character_classes[search_character_classes(char_name, character_classes)][
+        # set the special attack if avail, else None
+        # TODO: why is a misssing attribute causing a crash?  Troll2 doesn't have the special attack, troll1 does
+        self.special_attack = character_classes[search_character_classes(self.name, character_classes)][
             'Special_Attack']
         self.score = 0
         self.flip = False
@@ -71,11 +49,10 @@ class Character():
 
         # assign initial hitbox info
         self.hitbox = (0, 0, 0, 0)
-        self.name = char_name
         self.character_classes = character_classes
 
         if self.name == "player":
-            self.char_index = 0  # player uses "Warrior" so need to manually set to 0
+            self.char_index = 0  # player uses "Warrior" so need to manually set index to 0 (Warrior)
             if constants.DEBUG_GHOST_MODE_ON:
                 self.ghost = True
         else:
@@ -94,7 +71,7 @@ class Character():
 
         self.animation_list = mob_animations[self.char_index]
 
-        self.frame_index = random.randrange(0, len(self.animation_list) - 1)
+        self.frame_index = random.randrange(0, len(self.animation_list) - 1)  # randomly choose a frame from idle list
         self.action = 0  # 0:idle, 1:run, 2:attack, 3:die
         self.update_time = pygame.time.get_ticks()
         self.running = False
@@ -122,13 +99,26 @@ class Character():
         self.rect = pygame.Rect(0, 0, image_width, image_height)
         self.rect.center = (x, y)
 
-        if constants.DEBUG_LEVEL > 1:
-            print(" F: {}, line:{}\n  rect: {}\n  char_type= {}\n  self.name={}".
+# TODO: getting error when healthbar is uncommented
+
+        # self.healthbar = pygame_gui.elements.UIStatusBar(pygame.Rect((0, image_height - 10), (50, 6)), manager,
+        #                                                  sprite=self.image,
+        #                                                  percent_method=self.get_health_percentage,
+        #                                                  object_id=ObjectID('#health_bar', '@player_status_bars'))
+
+        if constants.DEBUG_LEVEL > 0:
+            print(" F: {}, line:{}\n  rect: {}\n  char_index= {}\n  self.name={}".
                   format(fn, line_numb(), self.rect, self.char_index, self.name))
             print("   self.image={}".format(self.image))
             print("")
 
-    def move(self, dx, dy, obstacle_tiles, exit_tile=None):
+    def get_health_percentage(self) -> float:
+        return self.health / constants.PLAYER_START_HEALTH
+
+    def get_mana_percentage(self) -> float:
+        return self.current_mana / self.max_mana
+
+    def move(self, dx, dy, obstacle_tiles, time_delta, exit_tile=None):
         fn = ""
         if constants.DEBUG_LEVEL:
             fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
@@ -185,8 +175,9 @@ class Character():
                 exit_dist = math.sqrt(((self.rect.centerx - exit_tile[1].centerx) ** 2) +
                                       ((self.rect.centery - exit_tile[1].centery) ** 2))
                 self.level_complete = level_complete = True
-                #                exit_dist = self.rect.centerx - exit_tile[1].centerx
-                #                exit_dist = math.sqrt(((self.rect.centerx - exit_tile[1].centerx) ** 2) + (self.rect.centery - exit_tile[1].centery) **2)
+                # exit_dist = self.rect.centerx - exit_tile[1].centerx
+                # exit_dist = math.sqrt(((self.rect.centerx - exit_tile[1].centerx) ** 2) +
+                # (self.rect.centery - exit_tile[1].centery) **2)
 
                 if constants.DEBUG_LEVEL:
                     print("   exit_dist={}".format(exit_dist))
@@ -230,12 +221,14 @@ class Character():
             if constants.DEBUG_LEVEL and screen_scroll[0] and screen_scroll[1]:
                 print("CHARACTER.PY, F:{}, line:{}, self.name={}, self.alive={}, self.dying={}, screen_scroll={}".
                       format(fn, line_numb(), self.name, self.alive, self.dying, screen_scroll))
-            self.rect.x += screen_scroll[0]
-            self.rect.y += screen_scroll[1]
+            self.rect.x += screen_scroll[0] + time_delta
+            self.rect.y += screen_scroll[1] + time_delta
+            # self.rect.x += screen_scroll[0]
+            # self.rect.y += screen_scroll[1]
 
         return screen_scroll, level_complete
 
-    def ai(self, player, obstacle_tiles, screen_scroll, fireball_image, lightning_image, character_classes):
+    def ai(self, player, obstacle_tiles, screen_scroll, fireball_image, lightning_image, character_classes, time_delta):
         fn = ""
         if (constants.DEBUG_LEVEL > 0):  # get the function name for debugging
             fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
@@ -250,10 +243,12 @@ class Character():
         # reposition the mobs based on screen scroll
         self.rect.x += screen_scroll[0]
         self.rect.y += screen_scroll[1]
+        # self.rect.x += screen_scroll[0] + time_delta
+        # self.rect.y += screen_scroll[1] + time_delta
         hbx = hby = hbw = hbh = -1
         index = search_character_classes(self.name, character_classes)
         character = character_classes[index]
-        if constants.DEBUG_LEVEL:
+        if constants.ENEMY_SPEED_1:
             speed = 2
         else:
             speed = character['speed']
@@ -266,48 +261,28 @@ class Character():
             subtract_height = character['trim_hitbox'][2] + character['trim_hitbox'][3]
 
         # update hitbox with new coords
-        match self.name:
-            case "warrior":  # Player
-                if constants.DEBUG_LEVEL:
-                    print(" CHARACTER.PY, F: {}, line:{}\n   player should never run ai funct".format(fn, line_numb()))
-                print("ERROR: warrior selected in Character.py [ai], line={}".format(line_numb()))
+
+        # TODO: many characters have animations that are different sizes.  Orcs / Dragons / Golems / Zombies
+        #  all have attacks that are different sized than Idle.   Need to accommodate that here
+
+        if self.name == "Crab Monster":
+            if self.action == 1:  # attack action uses 320 pixels instead of 512 so different hitbox and rect
+                trim_hitbox = character['trim_hitbox_320']
+            else:
+                trim_hitbox = character['trim_hitbox']
+
+            self.hitbox = (self.rect.x + trim_hitbox[0], self.rect.y + trim_hitbox[2],
+                           self.rect.width - subtract_width, self.rect.height - subtract_height)
+
+        elif search_character_classes(self.name, self.character_classes):
+            self.hitbox = (self.rect.x + character['trim_hitbox'][0], self.rect.y + character['trim_hitbox'][2],
+                           self.rect.width - subtract_width, self.rect.height - subtract_height)
+        else:
+            if constants.DEBUG_LEVEL:
+                print(" CHARACTER.PY, F:{}, line={}, self.name={}\n\n WARNING: Character unknown".
+                      format(fn, line_numb(), self.name))
                 pygame.quit()
                 sys.exit()
-            case "Snake" | "Meerkat" | "Raven" | "Bear" | "Deer" | "Eagle" | "Fox" | "Goat" | "Panther" | "Wolf" | \
-                 "Magic Fox" | "Crocodile Warrior" | "Little Demon" | "Gaerron" | "Insect" | "Knight Man" | \
-                 "TheOldKing" | "PrinceTaerron" | "PrinceTaerron" | "Reptile Warrior" | "Witch" | "TheTriplets" | \
-                 "SunkenGod" | "Skeleton" | "Saurial" | "Lord Esther" | "Red Demon" | "Thief" | \
-                 "Dragon1" | "Dragon2" | "Dragon3" | \
-                 "Orc1" | "Orc2" | "Orc3" | \
-                 "Skeleton4" | "Skeleton2" | "Skeleton3" | \
-                 "Cyclops1" | "Cyclops2" | "Cyclops3" | \
-                 "GHOST1" | "GHOST2" | "GHOST3" | \
-                 "Minotaur1" | "Minotaur2" | "Minotaur3" | \
-                 "Undead1" | "Undead2" | "Undead3" | \
-                 "Elemental1" | "Elemental2" | "Elemental3" | \
-                 "Jinn" | \
-                 "Goblin1" | "Goblin2" | "Goblin3" | "Golem1" | "Golem2" | "Golem3" | "Zombie1" | "Zombie2" | "Zombie3":
-                # TODO: many characters have animations that are different sizes.  Orcs / Dragons / Golems / Zombies
-                #  all have attacks that are diffeent sized than Idle.   Need to accomodate that here
-
-                self.hitbox = (self.rect.x + character['trim_hitbox'][0], self.rect.y + character['trim_hitbox'][2],
-                               self.rect.width - subtract_width, self.rect.height - subtract_height)
-            case "Crab Monster":
-
-                if self.action == 1:  # attack action uses 320 pixels instead of 512 so different hitbox and rect
-                    trim_hitbox = character['trim_hitbox_320']
-                else:
-                    trim_hitbox = character['trim_hitbox']
-
-                self.hitbox = (self.rect.x + trim_hitbox[0], self.rect.y + trim_hitbox[2],
-                               self.rect.width - subtract_width, self.rect.height - subtract_height)
-
-            case _:
-                if constants.DEBUG_LEVEL:
-                    print(" CHARACTER.PY, F:{}, line={}, self.name={}\n\n WARNING: Character unknown".
-                          format(fn, line_numb(), self.name))
-                    pygame.quit()
-                    sys.exit()
 
         # create a line of sight from the enemy to the player
         line_of_sight = ((self.rect.centerx, self.rect.centery), (player.rect.centerx, player.rect.centery))
@@ -340,7 +315,7 @@ class Character():
             print(" CHAR.PY, F:{}, line:{}, dying={}, name={}".format(fn, line_numb(), self.dying, self.name))
 
         # hitbox of some characters is not symmetrical and has to be flipped when direction changes
-        # make adjustments for asymettrical hitbox
+        # make adjustments for asymmetrical hitbox
         if not character['is_Hitbox_Symmetrical']:
             match self.name:
                 case "Panther" | "Meerkat" | "Crocodile Warrior" | "Insect":
@@ -362,11 +337,9 @@ class Character():
                         if self.action == 1:  # if using 320 pixel images use trim_hitbox_320
                             self.hitbox = (nhbx, self.rect.y + character['trim_hitbox_320'][2],
                                            self.rect.width - (
-                                                   character['trim_hitbox_320'][0] + character['trim_hitbox_320'][
-                                               1]),
+                                                   character['trim_hitbox_320'][0] + character['trim_hitbox_320'][1]),
                                            self.rect.height - (
-                                                   character['trim_hitbox_320'][2] + character['trim_hitbox_320'][
-                                               3]))
+                                                   character['trim_hitbox_320'][2] + character['trim_hitbox_320'][3]))
                         else:
                             self.hitbox = (nhbx, self.rect.y + character['trim_hitbox'][2],
                                            self.rect.width - subtract_width, self.rect.height - subtract_height)
@@ -375,11 +348,9 @@ class Character():
                             self.hitbox = (self.rect.x + character['trim_hitbox_320'][0],
                                            self.rect.y + character['trim_hitbox_320'][2],
                                            self.rect.width - (
-                                                   character['trim_hitbox_320'][0] + character['trim_hitbox_320'][
-                                               1]),
+                                                   character['trim_hitbox_320'][0] + character['trim_hitbox_320'][1]),
                                            self.rect.height - (
-                                                   character['trim_hitbox_320'][2] + character['trim_hitbox_320'][
-                                               3]))
+                                                   character['trim_hitbox_320'][2] + character['trim_hitbox_320'][3]))
                         else:
                             self.hitbox = (
                                 self.rect.x + character['trim_hitbox'][0], self.rect.y + character['trim_hitbox'][2],
@@ -399,12 +370,12 @@ class Character():
             if not self.stunned:
                 # move towards player
                 if ai_dx != 0 or ai_dy != 0:
-                    self.move(ai_dx, ai_dy, obstacle_tiles)
+                    self.move(ai_dx, ai_dy, obstacle_tiles, time_delta)
 
                 hitbox = Rect(self.hitbox)
 
                 # check for collision between hitboxes of player and this enemy
-                if hitbox.colliderect(player.hitbox) and player.hit == False:
+                if hitbox.colliderect(player.hitbox) and not player.hit:
                     if constants.DEBUG_LEVEL > 1:
                         print("  F: {}, line: {}, player.rect={}, self.rect={}".format(fn, line_numb(), player.rect,
                                                                                        self.rect))
@@ -495,7 +466,7 @@ class Character():
         # timer to reset character taking a hit
         hit_cooldown = constants.PLAYER_HIT_COOLDOWN
         if self.name == "player":
-            if self.hit == True and (pygame.time.get_ticks() - self.last_hit) > hit_cooldown:
+            if self.hit and (pygame.time.get_ticks() - self.last_hit) > hit_cooldown:
                 self.hit = False
 
         # animation_cooldown = 150
@@ -531,8 +502,8 @@ class Character():
             self.frame_index += 1
             self.update_time = pygame.time.get_ticks()
 
-        if constants.DEBUG_LEVEL:
-            l = len(self.animation_list[self.action])
+        # if constants.DEBUG_LEVEL:
+        #     l = len(self.animation_list[self.action])
 
         # check if the animation has finished
         if self.name == "exit portal":

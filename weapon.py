@@ -1,9 +1,9 @@
-
 import pygame
 import math
 import random
 import constants
 import inspect
+
 
 def line_numb():
     ''' Returns the current line number in our program
@@ -33,13 +33,13 @@ class Weapon():
         self.angle = math.degrees(math.atan2(y_dist, x_dist))
 
         # get mouseclick
-        if pygame.mouse.get_pressed()[0] and self.fired == False and (
-                pygame.time.get_ticks() - self.last_shot) >= shot_cooldown:
+        if pygame.mouse.get_pressed()[0] and not self.fired and \
+                (pygame.time.get_ticks() - self.last_shot) >= shot_cooldown:
             arrow = Arrow(self.arrow_image, self.rect.centerx, self.rect.centery, self.angle)
             self.fired = True
             self.last_shot = pygame.time.get_ticks()
         # reset mouseclick
-        if pygame.mouse.get_pressed()[0] == False:
+        if not pygame.mouse.get_pressed()[0]:
             self.fired = False
 
         return arrow
@@ -47,8 +47,8 @@ class Weapon():
     def draw(self, surface):
         self.image = pygame.transform.rotate(self.original_image, self.angle)
         surface.blit(self.image, (
-        (self.rect.centerx - int(self.image.get_width() / 2)), self.rect.centery - int(self.image.get_height() / 2)))
-
+            (self.rect.centerx - int(self.image.get_width() / 2)),
+            self.rect.centery - int(self.image.get_height() / 2)))
 
 
 class Arrow(pygame.sprite.Sprite):
@@ -62,7 +62,7 @@ class Arrow(pygame.sprite.Sprite):
         # calculate the horizontal and vertical speeds based on the angle
         self.dx = math.cos(math.radians(self.angle)) * constants.ARROW_SPEED
         self.dy = -(math.sin(math.radians(
-            self.angle)) * constants.ARROW_SPEED)  # -ve because pygame y coordiate increases down the screen
+            self.angle)) * constants.ARROW_SPEED)  # -ve because pygame y coordinate increases down the screen
 
     def update(self, screen_scroll, obstacle_tiles, enemy_list):
         # fn = ""
@@ -94,7 +94,7 @@ class Arrow(pygame.sprite.Sprite):
         # check collision between arrow and enemies HITBOX
         for enemy in enemy_list:
             if self.rect.colliderect(enemy.hitbox) and enemy.alive and not enemy.dying:
-                damage = random.randrange(constants.ARROW_MIN_DAMAGE, constants.ARROW_MAX_DAMAGE )
+                damage = random.randrange(constants.ARROW_MIN_DAMAGE, constants.ARROW_MAX_DAMAGE)
                 damage_pos = enemy.rect
                 enemy.health -= damage
                 damage = str(damage) + " : " + str(enemy.health)
@@ -106,8 +106,8 @@ class Arrow(pygame.sprite.Sprite):
 
     def draw(self, surface):
         surface.blit(self.image, (
-        (self.rect.centerx - int(self.image.get_width() / 2)), self.rect.centery - int(self.image.get_height() / 2)))
-
+            (self.rect.centerx - int(self.image.get_width() / 2)),
+            self.rect.centery - int(self.image.get_height() / 2)))
 
 
 class Fireball(pygame.sprite.Sprite):
@@ -121,7 +121,7 @@ class Fireball(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
 
-        match boss.name:
+        match boss.name:  # reposition the fireball to shoot from dragon mouth
             case "TheOldKing":
                 if dx <= 0:
                     self.rect.center = (x - 160, y - 10)
@@ -133,7 +133,7 @@ class Fireball(pygame.sprite.Sprite):
         # calculate the horizontal and vertical speeds based on the angle
         self.dx = math.cos(math.radians(self.angle)) * constants.FIREBALL_SPEED
         self.dy = -(math.sin(math.radians(
-            self.angle)) * constants.FIREBALL_SPEED)  # -ve because pygame y coordiate increases down the screen
+            self.angle)) * constants.FIREBALL_SPEED)  # -ve because pygame y coordinate increases down the screen
 
     def update(self, screen_scroll, player):
         # reposition based on speed
@@ -145,7 +145,7 @@ class Fireball(pygame.sprite.Sprite):
             self.kill()
 
         # check collision between self and player
-        if player.rect.colliderect(self.rect) and player.hit == False:
+        if player.rect.colliderect(self.rect) and not player.hit:
             player.hit = True
             player.last_hit = pygame.time.get_ticks()
             player.health -= random.randrange(constants.FIREBALL_MIN_DAMAGE, constants.FIREBALL_MAX_DAMAGE)
@@ -153,7 +153,9 @@ class Fireball(pygame.sprite.Sprite):
 
     def draw(self, surface):
         surface.blit(self.image, (
-            (self.rect.centerx - int(self.image.get_width() / 2)), self.rect.centery - int(self.image.get_height() / 2)))
+            (self.rect.centerx - int(self.image.get_width() / 2)),
+            self.rect.centery - int(self.image.get_height() / 2)))
+
 
 class Lightning(pygame.sprite.Sprite):
     def __init__(self, image, x, y, target_x, target_y, boss, dx, dy):
@@ -178,7 +180,7 @@ class Lightning(pygame.sprite.Sprite):
         # calculate the horizontal and vertical speeds based on the angle
         self.dx = math.cos(math.radians(self.angle)) * constants.LIGHTNING_SPEED
         self.dy = -(math.sin(math.radians(
-            self.angle)) * constants.LIGHTNING_SPEED)  # -ve because pygame y coordiate increases down the screen
+            self.angle)) * constants.LIGHTNING_SPEED)  # -ve because pygame y coordinate increases down the screen
 
     def update(self, screen_scroll, player):
         # reposition based on speed
@@ -190,7 +192,7 @@ class Lightning(pygame.sprite.Sprite):
             self.kill()
 
         # check collision between self and player
-        if player.rect.colliderect(self.rect) and player.hit == False:
+        if player.rect.colliderect(self.rect) and not player.hit:
             player.hit = True
             player.last_hit = pygame.time.get_ticks()
             player.health -= random.randrange(constants.LIGHTNING_MIN_DAMAGE, constants.LIGHTNING_MAX_DAMAGE)
@@ -198,4 +200,5 @@ class Lightning(pygame.sprite.Sprite):
 
     def draw(self, surface):
         surface.blit(self.image, (
-            (self.rect.centerx - int(self.image.get_width() / 2)), self.rect.centery - int(self.image.get_height() / 2)))
+            (self.rect.centerx - int(self.image.get_width() / 2)),
+            self.rect.centery - int(self.image.get_height() / 2)))

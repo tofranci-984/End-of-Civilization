@@ -6,21 +6,22 @@ SCREEN_WIDTH = 1500
 SCREEN_HEIGHT = 1000
 
 DEBUG_LEVEL = 1
-DEBUG_ENEMY_MOTION_OFF = False
+DEBUG_ENEMY_MOTION_OFF = True
 DEBUG_SPRITE_RECT_ON = True
 DEBUG_GHOST_MODE_ON = False
 
-#CHEATS
+# CHEATS / CODES
 GOD_MODE = True
 PLAYER_START_HEALTH = 100
-SOUND_FX=False
-MUSIC=False
-PLAYER_SCALE = .75 # .75 places player in mid of rect and hitbox.
-PLAYER_HITBOX = .05   # .05 is normal
-ENEMY_HITBOX = .05    # .05 is normal
+ENEMY_SPEED_1 = True
+
+SOUND_FX = False
+MUSIC = False
+PLAYER_SCALE = .75  # .75 places player in mid of rect and hitbox.
+PLAYER_HITBOX = .05  # .05 is normal
+ENEMY_HITBOX = .05  # .05 is normal
 
 SCALE = 1
-
 
 BUTTON_SCALE = 1
 WEAPON_SCALE = 1.5
@@ -28,11 +29,11 @@ ITEM_SCALE = 3
 POTION_SCALE = .35
 FIREBALL_SCALE = 1
 LIGHTNING_SCALE = .25
-GOLD_COIN = .5
+GOLD_COIN_SCALE = .5
 
 HERO_TYPE = 8
-#PLAYER_SPEED = 6 # player speeds
-PLAYER_SPEED = 10 # player speed
+# PLAYER_SPEED = 6 # player speeds
+PLAYER_SPEED = 10  # player speed
 PLAYER_HIT_COOLDOWN = 150
 DEATH_COOLDOWN = 5
 
@@ -57,17 +58,17 @@ LIGHTNING_MIN_DAMAGE = 5
 LIGHTNING_MAX_DAMAGE = 10
 
 ENEMY_SPEED = 4
-ENEMY_HP =100
-#OFFSET = 12 # adjusts character image to align with image.rect
-X_OFFSET = -20 # adjusts character image to align with image.rect
-Y_OFFSET = 0 # adjusts character image to align with image.rect
+ENEMY_HP = 100
+# OFFSET = 12 # adjusts character image to align with image.rect
+X_OFFSET = -20  # adjusts character image to align with image.rect
+Y_OFFSET = 0  # adjusts character image to align with image.rect
 
 # TILE_SIZE = 16 * SCALE
 TILE_SIZE = 256
-TILE_TYPES = 19 # change this if you add more enemies!
-ROWS = 50 # size of map files
-COLS = 50 # size of map files
-SCROLL_THRESH = 200 # smaller area that player can walk in before camera moves
+TILE_TYPES = 19  # change this if you add more enemies!
+ROWS = 50  # size of map files
+COLS = 50  # size of map files
+SCROLL_THRESH = 200  # smaller area that player can walk in before camera moves
 RANGE = 50
 ATTACK_RANGE = 60
 BOSS_VIEW_DISTANCE = 750
