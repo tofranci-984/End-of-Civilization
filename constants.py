@@ -4,24 +4,27 @@ FPS_MONITOR = True
 
 SCREEN_WIDTH = 1500
 SCREEN_HEIGHT = 1000
+GLOBAL_SCALE = 2
 
 DEBUG_LEVEL = 1
-DEBUG_ENEMY_MOTION_OFF = True
+DEBUG_ENEMY_MOTION_OFF = False
 DEBUG_SPRITE_RECT_ON = True
 DEBUG_GHOST_MODE_ON = False
+DEBUG_SHOW_HIT_DAMAGE = True    # prints out damage info
 
 # CHEATS / CODES
 GOD_MODE = True
-PLAYER_START_HEALTH = 100
-ENEMY_SPEED_1 = True
+# PLAYER_START_HEALTH = 100
+PLAYER_MAX_HEALTH = 200
 
+ENEMY_SPEED_1 = True
 SOUND_FX = False
 MUSIC = False
-PLAYER_SCALE = .75  # .75 places player in mid of rect and hitbox.
+# PLAYER_SCALE = .75  # .75 places player in mid of rect and hitbox.
 PLAYER_HITBOX = .05  # .05 is normal
 ENEMY_HITBOX = .05  # .05 is normal
 
-SCALE = 1
+# SCALE = 1
 
 BUTTON_SCALE = 1
 WEAPON_SCALE = 1.5

@@ -1,0 +1,1808 @@
+{
+  "Bear": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 28,
+    "death": 21,
+    "exp": 20,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 35,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Bear",
+    "run": 6,
+    "run_cooldown": 75,
+    "scale": 1.5,
+    "speed": 2,
+    "trim_hitbox": [
+      30,
+      60,
+      80,
+      30
+    ],
+    "trim_rect": [
+      120,
+      90,
+      90,
+      150
+    ]
+  },
+  "Crab Monster": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": -1,
+    "death": -1,
+    "exp": 100,
+    "flip_image": false,
+    "hp": 250,
+    "idle": -1,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Crab Monster",
+    "run": -1,
+    "scale": 1,
+    "scale_320": 1,
+    "speed": 3,
+    "trim_hitbox": [
+      10,
+      10,
+      10,
+      10
+    ],
+    "trim_hitbox_320": [
+      50,
+      70,
+      10,
+      10
+    ],
+    "trim_rect": [
+      150,
+      70,
+      100,
+      0
+    ],
+    "trim_rect_320": [
+      70,
+      35,
+      50,
+      0
+    ]
+  },
+  "Crocodile Warrior": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": -1,
+    "death": -1,
+    "exp": 100,
+    "flip_image": true,
+    "hp": 250,
+    "idle": -1,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Crocodile Warrior",
+    "run": -1,
+    "scale": 0.75,
+    "speed": 5,
+    "trim_hitbox": [
+      130,
+      40,
+      10,
+      10
+    ],
+    "trim_rect": [
+      150,
+      10,
+      75,
+      5
+    ]
+  },
+  "Cyclops1": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 10,
+    "death": 10,
+    "exp": 25,
+    "flip_image": true,
+    "fly": 13,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Cyclops1",
+    "run": 10,
+    "scale": 0.5,
+    "speed": 4,
+    "trim_hitbox": [
+      100,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Cyclops2": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 10,
+    "death": 10,
+    "exp": 25,
+    "flip_image": true,
+    "fly": 13,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Cyclops2",
+    "run": 10,
+    "scale": 0.5,
+    "speed": 4,
+    "trim_hitbox": [
+      100,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Cyclops3": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 10,
+    "death": 10,
+    "exp": 25,
+    "flip_image": true,
+    "fly": 13,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Cyclops3",
+    "run": 10,
+    "scale": 0.5,
+    "speed": 4,
+    "trim_hitbox": [
+      100,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Deer": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 17,
+    "death": 17,
+    "exp": 10,
+    "flip_image": true,
+    "hp": 100,
+    "idle": 22,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Deer",
+    "run": 7,
+    "scale": 1,
+    "speed": 7,
+    "trim_hitbox": [
+      30,
+      50,
+      30,
+      10
+    ],
+    "trim_rect": [
+      80,
+      80,
+      100,
+      155
+    ]
+  },
+  "Dragon1": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 33,
+    "death": 13,
+    "exp": 25,
+    "flip_image": true,
+    "fly": 13,
+    "hp": 200,
+    "idle": 26,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Dragon1",
+    "run": 16,
+    "scale": 0.5,
+    "speed": 4,
+    "trim_hitbox": [
+      60,
+      130,
+      100,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Dragon2": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 33,
+    "death": 13,
+    "exp": 25,
+    "flip_image": true,
+    "fly": 13,
+    "hp": 200,
+    "idle": 26,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Dragon2",
+    "run": 16,
+    "scale": 0.25,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Dragon3": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 33,
+    "death": 13,
+    "exp": 25,
+    "flip_image": true,
+    "fly": 13,
+    "hp": 200,
+    "idle": 26,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Dragon3",
+    "run": 16,
+    "scale": 0.25,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Eagle": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 14,
+    "death": 17,
+    "exp": 10,
+    "flip_image": true,
+    "hp": 100,
+    "idle": 11,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Eagle",
+    "run": 9,
+    "scale": 1,
+    "speed": 7,
+    "trim_hitbox": [
+      50,
+      100,
+      20,
+      70
+    ],
+    "trim_rect": [
+      50,
+      120,
+      50,
+      150
+    ]
+  },
+  "Elemental1": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 5,
+    "death": 5,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 5,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Elemental1",
+    "run": 5,
+    "scale": 0.15,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Elemental2": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 5,
+    "death": 5,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 5,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Elemental2",
+    "run": 5,
+    "scale": 0.15,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Elemental3": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 5,
+    "death": 5,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 5,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Elemental3",
+    "run": 5,
+    "scale": 0.15,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Fox": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 17,
+    "death": 15,
+    "exp": 10,
+    "flip_image": true,
+    "hp": 100,
+    "idle": 39,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Fox",
+    "run": 5,
+    "scale": 1,
+    "speed": 5,
+    "trim_hitbox": [
+      20,
+      20,
+      30,
+      10
+    ],
+    "trim_rect": [
+      125,
+      120,
+      150,
+      160
+    ]
+  },
+  "GHOST1": {
+    "Special_Attack": "None",
+    "animation_cooldown": 50,
+    "attack": 7,
+    "death": 6,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 7,
+    "is_Hitbox_Symmetrical": false,
+    "name": "GHOST1",
+    "run": 7,
+    "scale": 0.1,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "GHOST2": {
+    "Special_Attack": "None",
+    "animation_cooldown": 50,
+    "attack": 7,
+    "death": 6,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 7,
+    "is_Hitbox_Symmetrical": false,
+    "name": "GHOST2",
+    "run": 7,
+    "scale": 0.1,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "GHOST3": {
+    "Special_Attack": "None",
+    "animation_cooldown": 50,
+    "attack": 7,
+    "death": 6,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 7,
+    "is_Hitbox_Symmetrical": false,
+    "name": "GHOST3",
+    "run": 7,
+    "scale": 0.1,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Gaerron": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 14,
+    "death": 20,
+    "exp": 50,
+    "flip_image": false,
+    "hp": 200,
+    "idle": 23,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Gaerron",
+    "run": -1,
+    "scale": 2,
+    "speed": 4,
+    "trim_hitbox": [
+      30,
+      30,
+      20,
+      30
+    ],
+    "trim_rect": [
+      20,
+      20,
+      20,
+      0
+    ]
+  },
+  "Goat": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 14,
+    "death": 16,
+    "exp": 10,
+    "flip_image": true,
+    "hp": 100,
+    "idle": 6,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Goat",
+    "run": 6,
+    "scale": 1,
+    "speed": 4,
+    "trim_hitbox": [
+      30,
+      30,
+      10,
+      10
+    ],
+    "trim_rect": [
+      0,
+      0,
+      10,
+      20
+    ]
+  },
+  "Goblin1": {
+    "Special_Attack": "None",
+    "animation_cooldown": 50,
+    "attack": 9,
+    "death": 19,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 9,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Goblin1",
+    "run": 19,
+    "scale": 0.15,
+    "speed": 4,
+    "trim_hitbox": [
+      5,
+      60,
+      30,
+      5
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Goblin2": {
+    "Special_Attack": "None",
+    "animation_cooldown": 50,
+    "attack": 9,
+    "death": 19,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 9,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Goblin2",
+    "run": 19,
+    "scale": 0.15,
+    "speed": 4,
+    "trim_hitbox": [
+      5,
+      60,
+      30,
+      5
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Goblin3": {
+    "Special_Attack": "None",
+    "animation_cooldown": 50,
+    "attack": 9,
+    "death": 19,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 9,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Goblin3",
+    "run": 19,
+    "scale": 0.15,
+    "speed": 4,
+    "trim_hitbox": [
+      5,
+      60,
+      30,
+      5
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Golem1": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 10,
+    "death": 10,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Golem1",
+    "run": 10,
+    "scale": 0.25,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Golem2": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 10,
+    "death": 10,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Golem2",
+    "run": 10,
+    "scale": 0.25,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Golem3": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 10,
+    "death": 10,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Golem3",
+    "run": 10,
+    "scale": 0.25,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Insect": {
+    "Special_Attack": "None",
+    "animation_cooldown": 75,
+    "attack": 24,
+    "death": 35,
+    "exp": 20,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 20,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Insect",
+    "run": 20,
+    "scale": 0.5,
+    "speed": 6,
+    "trim_hitbox": [
+      50,
+      50,
+      50,
+      50
+    ],
+    "trim_rect": [
+      50,
+      90,
+      75,
+      75
+    ]
+  },
+  "Jinn": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 4,
+    "death": 6,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 3,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Jinn",
+    "run": 4,
+    "scale": 1.5,
+    "speed": 4,
+    "trim_hitbox": [
+      50,
+      30,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Knight Man": {
+    "Special_Attack": "None",
+    "animation_cooldown": 25,
+    "attack": 45,
+    "death": 69,
+    "exp": 20,
+    "flip_image": true,
+    "hp": 100,
+    "idle": 76,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Knight Man",
+    "run": 20,
+    "run_cooldown": 75,
+    "scale": 1,
+    "speed": 5,
+    "trim_hitbox": [
+      120,
+      120,
+      10,
+      10
+    ],
+    "trim_rect": [
+      75,
+      75,
+      150,
+      170
+    ]
+  },
+  "Little Demon": {
+    "Special_Attack": "Fireball",
+    "animation_cooldown": 150,
+    "attack": 4,
+    "death": 6,
+    "exp": 50,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 3,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Little Demon",
+    "run": 6,
+    "scale": 1,
+    "speed": 3,
+    "trim_hitbox": [
+      30,
+      40,
+      40,
+      20
+    ],
+    "trim_rect": [
+      30,
+      80,
+      60,
+      50
+    ]
+  },
+  "Lord Esther": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 14,
+    "death": 20,
+    "exp": 50,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 23,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Lord Esther",
+    "run": -1,
+    "scale": 2,
+    "speed": 4,
+    "trim_hitbox": [
+      50,
+      50,
+      20,
+      10
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Magic Fox": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 16,
+    "death": 20,
+    "exp": 50,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 20,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Magic Fox",
+    "run": 16,
+    "scale": 0.75,
+    "speed": 7,
+    "trim_hitbox": [
+      30,
+      100,
+      110,
+      60
+    ],
+    "trim_rect": [
+      90,
+      85,
+      70,
+      80
+    ]
+  },
+  "Meerkat": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 11,
+    "death": 17,
+    "exp": 10,
+    "flip_image": true,
+    "hp": 100,
+    "idle": 29,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Meerkat",
+    "run": 5,
+    "scale": 1,
+    "speed": 4,
+    "trim_hitbox": [
+      55,
+      15,
+      20,
+      5
+    ],
+    "trim_rect": [
+      125,
+      160,
+      170,
+      155
+    ]
+  },
+  "Minotaur1": {
+    "Special_Attack": "None",
+    "animation_cooldown": 75,
+    "attack": 10,
+    "death": 13,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Minotaur1",
+    "run": 10,
+    "scale": 0.25,
+    "speed": 4,
+    "trim_hitbox": [
+      50,
+      30,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Minotaur2": {
+    "Special_Attack": "None",
+    "animation_cooldown": 75,
+    "attack": 10,
+    "death": 13,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Minotaur2",
+    "run": 10,
+    "scale": 0.25,
+    "speed": 4,
+    "trim_hitbox": [
+      50,
+      30,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Minotaur3": {
+    "Special_Attack": "None",
+    "animation_cooldown": 75,
+    "attack": 10,
+    "death": 13,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Minotaur3",
+    "run": 10,
+    "scale": 0.25,
+    "speed": 4,
+    "trim_hitbox": [
+      50,
+      30,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Orc1": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 15,
+    "death": 10,
+    "exp": 25,
+    "flip_image": true,
+    "fly": 13,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Orc1",
+    "run": 10,
+    "scale": 0.5,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Orc2": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 15,
+    "death": 10,
+    "exp": 25,
+    "flip_image": true,
+    "fly": 13,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Orc2",
+    "run": 10,
+    "scale": 0.5,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Orc3": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 15,
+    "death": 10,
+    "exp": 25,
+    "flip_image": true,
+    "fly": 13,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Orc3",
+    "run": 10,
+    "scale": 0.5,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Panther": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 14,
+    "death": 20,
+    "exp": 15,
+    "flip_image": true,
+    "hp": 150,
+    "idle": 23,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Panther",
+    "run": 6,
+    "scale": 2,
+    "speed": 6,
+    "trim_hitbox": [
+      90,
+      40,
+      60,
+      30
+    ],
+    "trim_rect": [
+      120,
+      130,
+      155,
+      150
+    ]
+  },
+  "PrinceTaerron": {
+    "Special_Attack": "None",
+    "animation_cooldown": 250,
+    "attack": -1,
+    "death": -1,
+    "exp": 50,
+    "flip_image": false,
+    "hp": 200,
+    "idle": -1,
+    "is_Hitbox_Symmetrical": true,
+    "name": "PrinceTaerron",
+    "run": -1,
+    "scale": 0.5,
+    "speed": 4,
+    "trim_hitbox": [
+      50,
+      50,
+      10,
+      10
+    ],
+    "trim_rect": [
+      5,
+      5,
+      25,
+      25
+    ]
+  },
+  "Raven": {
+    "Special_Attack": "None",
+    "animation_cooldown": 50,
+    "attack": 12,
+    "death": 24,
+    "exp": 10,
+    "flip_image": true,
+    "hp": 100,
+    "idle": 9,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Raven",
+    "run": 7,
+    "scale": 1,
+    "speed": 8,
+    "trim_hitbox": [
+      20,
+      20,
+      30,
+      110
+    ],
+    "trim_rect": [
+      120,
+      120,
+      80,
+      120
+    ]
+  },
+  "Red Demon": {
+    "Special_Attack": "Fireball",
+    "animation_cooldown": 150,
+    "attack": 14,
+    "death": 20,
+    "exp": 100,
+    "flip_image": true,
+    "hp": 250,
+    "idle": 23,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Red Demon",
+    "run": -1,
+    "scale": 1.4,
+    "speed": 3,
+    "trim_hitbox": [
+      10,
+      10,
+      10,
+      10
+    ],
+    "trim_rect": [
+      25,
+      50,
+      50,
+      50
+    ]
+  },
+  "Reptile Warrior": {
+    "Special_Attack": "None",
+    "animation_cooldown": 50,
+    "attack": 24,
+    "death": 16,
+    "exp": 100,
+    "flip_image": true,
+    "hp": 250,
+    "idle": 20,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Reptile Warrior",
+    "run": 16,
+    "scale": 1.25,
+    "speed": 4,
+    "trim_hitbox": [
+      50,
+      130,
+      50,
+      80
+    ],
+    "trim_rect": [
+      100,
+      110,
+      140,
+      100
+    ]
+  },
+  "Saurial": {
+    "Special_Attack": "Lightning",
+    "animation_cooldown": 150,
+    "attack": 14,
+    "death": 20,
+    "exp": 60,
+    "flip_image": true,
+    "hp": 300,
+    "idle": 23,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Saurial",
+    "run": -1,
+    "scale": 1.2,
+    "speed": 6,
+    "trim_hitbox": [
+      10,
+      10,
+      10,
+      10
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Skeleton": {
+    "Special_Attack": "None",
+    "animation_cooldown": 50,
+    "attack": -1,
+    "death": -1,
+    "exp": 50,
+    "flip_image": false,
+    "hp": 200,
+    "idle": -1,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Skeleton",
+    "run": -1,
+    "scale": 1.25,
+    "speed": 5,
+    "trim_hitbox": [
+      70,
+      70,
+      50,
+      50
+    ],
+    "trim_rect": [
+      70,
+      30,
+      50,
+      0
+    ]
+  },
+  "Skeleton2": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 10,
+    "death": 10,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Skeleton2",
+    "run": 10,
+    "scale": 0.15,
+    "speed": 4,
+    "trim_hitbox": [
+      50,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Skeleton3": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 10,
+    "death": 10,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Skeleton3",
+    "run": 10,
+    "scale": 0.15,
+    "speed": 4,
+    "trim_hitbox": [
+      50,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Skeleton4": {
+    "Special_Attack": "None",
+    "animation_cooldown": 100,
+    "attack": 10,
+    "death": 10,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Skeleton4",
+    "run": 10,
+    "scale": 0.15,
+    "speed": 4,
+    "trim_hitbox": [
+      50,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Snake": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 13,
+    "death": 14,
+    "exp": 10,
+    "flip_image": true,
+    "hp": 100,
+    "idle": 18,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Snake",
+    "run": 7,
+    "scale": 1,
+    "speed": 7,
+    "trim_hitbox": [
+      50,
+      50,
+      20,
+      10
+    ],
+    "trim_rect": [
+      110,
+      100,
+      160,
+      150
+    ]
+  },
+  "SunkenGod": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": -1,
+    "death": -1,
+    "exp": 50,
+    "flip_image": false,
+    "hp": 250,
+    "idle": -1,
+    "is_Hitbox_Symmetrical": true,
+    "name": "SunkenGod",
+    "run": -1,
+    "scale": 0.5,
+    "speed": 5,
+    "trim_hitbox": [
+      30,
+      30,
+      30,
+      40
+    ],
+    "trim_rect": [
+      60,
+      60,
+      15,
+      70
+    ]
+  },
+  "TheOldKing": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": -1,
+    "death": -1,
+    "exp": 100,
+    "flip_image": true,
+    "hp": 300,
+    "idle": -1,
+    "is_Hitbox_Symmetrical": true,
+    "name": "TheOldKing",
+    "run": -1,
+    "scale": 1,
+    "speed": 5,
+    "trim_hitbox": [
+      10,
+      10,
+      80,
+      100
+    ],
+    "trim_rect": [
+      40,
+      40,
+      40,
+      40
+    ]
+  },
+  "TheTriplets": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": -1,
+    "death": -1,
+    "exp": 75,
+    "flip_image": false,
+    "hp": 250,
+    "idle": -1,
+    "is_Hitbox_Symmetrical": false,
+    "name": "TheTriplets",
+    "run": -1,
+    "scale": 0.5,
+    "speed": 5,
+    "trim_hitbox": [
+      20,
+      50,
+      10,
+      50
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      30
+    ]
+  },
+  "Thief": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 24,
+    "death": 24,
+    "exp": 10,
+    "flip_image": true,
+    "hp": 100,
+    "idle": 24,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Thief",
+    "run": 16,
+    "scale": 0.65,
+    "speed": 6,
+    "trim_hitbox": [
+      10,
+      10,
+      10,
+      10
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Troll1": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 10,
+    "death": 10,
+    "exp": 25,
+    "flip_image": false,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Troll1",
+    "run": 10,
+    "scale": 0.25,
+    "speed": 4,
+    "trim_hitbox": [
+      50,
+      5,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Troll2": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 10,
+    "death": 10,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Troll2",
+    "run": 10,
+    "scale": 0.25,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Troll3": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 10,
+    "death": 10,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 10,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Troll3",
+    "run": 10,
+    "scale": 0.25,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Undead1": {
+    "Special_Attack": "None",
+    "animation_cooldown": 75,
+    "attack": 20,
+    "death": 13,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 20,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Undead1",
+    "run": 20,
+    "scale": 0.25,
+    "speed": 4,
+    "trim_hitbox": [
+      50,
+      30,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Undead2": {
+    "Special_Attack": "None",
+    "animation_cooldown": 75,
+    "attack": 20,
+    "death": 13,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 20,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Undead2",
+    "run": 20,
+    "scale": 0.25,
+    "speed": 4,
+    "trim_hitbox": [
+      50,
+      30,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Undead3": {
+    "Special_Attack": "None",
+    "animation_cooldown": 75,
+    "attack": 20,
+    "death": 13,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 20,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Undead3",
+    "run": 20,
+    "scale": 0.25,
+    "speed": 4,
+    "trim_hitbox": [
+      50,
+      30,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Witch": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": -1,
+    "death": -1,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": -1,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Witch",
+    "run": -1,
+    "scale": 0.5,
+    "speed": 4,
+    "trim_hitbox": [
+      10,
+      10,
+      10,
+      10
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Wolf": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 14,
+    "death": 18,
+    "exp": 15,
+    "flip_image": true,
+    "hp": 150,
+    "idle": 39,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Wolf",
+    "run": 6,
+    "scale": 1.5,
+    "speed": 6,
+    "trim_hitbox": [
+      40,
+      60,
+      30,
+      20
+    ],
+    "trim_rect": [
+      120,
+      120,
+      155,
+      155
+    ]
+  },
+  "Zombie1": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 6,
+    "death": 8,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 4,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Zombie1",
+    "run": 10,
+    "scale": 0.5,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Zombie2": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 6,
+    "death": 8,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 4,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Zombie2",
+    "run": 10,
+    "scale": 0.5,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Zombie3": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 6,
+    "death": 8,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 4,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Zombie3",
+    "run": 10,
+    "scale": 0.5,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "player": {
+    "Special_Attack": "None",
+    "animation_cooldown": 150,
+    "attack": 12,
+    "death": 12,
+    "exp": 10,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 60,
+    "is_Hitbox_Symmetrical": true,
+    "name": "Warrior",
+    "run": 6,
+    "scale": 0.2,
+    "speed": 3,
+    "trim_hitbox": [
+      10,
+      10,
+      10,
+      10
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

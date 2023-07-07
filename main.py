@@ -13,10 +13,9 @@ from colordict import *
 import inspect
 from pathlib import Path
 import pygame
-import os
-from character_classes import *
+from support import *
+
 import pygame_gui
-from pygame_gui.core import ObjectID
 
 
 class FPS:
@@ -34,71 +33,18 @@ class FPS:
 
 
 def line_numb():
-    ''' Returns the current line number in our program
-    '''
+    """ Returns the current line number in our program
+    """
     return inspect.currentframe().f_back.f_lineno
-
-
-# class StatsSprite(pygame.sprite.Sprite):
-#     def __init__(self, x, y, *groups: pygame.sprite.AbstractGroup):
-#         super().__init__(*groups)
-#
-#         self.image = pygame.image.load('assets/images/environment/Sprites/PNG/Additional Sprites/candle-2.png')
-#
-#         # self.position = pygame.Vector2(200.0, 300.0)
-#         self.rect = self.image.get_rect()
-#         self.rect.topleft = (x, y)
-#
-#         self.max_health = 100
-#         self.current_health = 75
-#
-#         self.max_mana = 100
-#         self.current_mana = 30
-#
-#         self.max_stamina = 100.0
-#         self.current_stamina = 100.0
-#
-#         self.speed = 100.0
-#         self.moving_left = False
-#         self.moving_right = False
-#         self.moving_up = False
-#         self.moving_down = False
-#
-#         self.stam_recharge_tick = 0.05
-#         self.stam_recharge_acc = 0.0
-#
-#
-#     def update(self, time_delta: float, screen_scroll) -> None:
-#         fn = ""
-#         if constants.DEBUG_LEVEL:  # get the function name for debugging
-#             fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
-#             ln = inspect.getframeinfo(inspect.currentframe())[1]
-#             if constants.DEBUG_LEVEL > 1:
-#                 print("MAIN.PY, F {}, LN:{}".format(fn, ln))
-#
-#         # reposition based on screen scroll
-#         self.rect.x += screen_scroll[0]
-#         self.rect.y += screen_scroll[1]
-#         # self.rect.x += screen_scroll[0] + time_delta
-#         # self.rect.y += screen_scroll[1] + time_delta
-#
-# #        self.rect.topleft = (int(self.position.x), int(self.position.y))
-#         self.rect.topleft = (int(self.rect.x), int(self.rect.y))
-#
-#     def get_health_percentage(self) -> float:
-#         return self.current_health / self.max_health
-#
-#     def get_mana_percentage(self) -> float:
-#         return self.current_mana / self.max_mana
-#
-#     def get_stamina_percentage(self) -> float:
-#         return self.current_stamina / self.max_stamina
 
 
 game_title = "End of Civ"
 
 if constants.DEBUG_LEVEL:
     print("\n\n{} starting\nPath {}\n".format(game_title, Path(__file__)))
+
+# read in enemy info from JSON file
+character_classes_dict = read_code_from_json('character classes.json')
 
 # load music (has to be done before pygame.init for perf reasons)
 mixer.init()
@@ -134,28 +80,12 @@ pygame.display.set_caption(game_title)
 manager = pygame_gui.UIManager((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT),
                                'assets/themes/status_bar_theme.json')
 
-# enemy_status_overlay_sprite_list = pygame.sprite.LayeredUpdates()
-# enemy_status_sprite = StatsSprite(250, 250, enemy_status_overlay_sprite_list)
-
-# health_bar = pygame_gui.elements.UIStatusBar(pygame.Rect((0, 30), (50, 6)),
-#                                              manager,
-#                                              sprite=enemy_status_sprite,
-#                                              percent_method=enemy_status_sprite.get_health_percentage,
-#                                              object_id=ObjectID(
-#                                                  '#health_bar', '@player_status_bars'))
-# mana_bar = pygame_gui.elements.UIStatusBar(pygame.Rect((0, 40), (50, 6)),
-#                                            manager,
-#                                            sprite=enemy_status_sprite,
-#                                            percent_method=enemy_status_sprite.get_mana_percentage,
-#                                            object_id=ObjectID(
-#                                                '#mana_bar', '@player_status_bars'))
-
 # create clock for maintaining frame rate
 clock = pygame.time.Clock()
 
 # define game variables
 level = 1
-god_mode = constants.GOD_MODE
+# god_mode = constants.GOD_MODE
 start_game = False
 pause_game = False
 start_intro = False
@@ -176,74 +106,6 @@ green = colors['green']
 indigo = colors['indigo']
 cyan = colors['cyan']
 
-
-# helper function to scale image
-def scale_img(image, scale, smooth=False):
-    w = image.get_width()
-    h = image.get_height()
-    if smooth:
-        if scale == 2:
-            return pygame.transform.scale2x(image)
-        else:
-            return pygame.transform.smoothscale(image, (w * scale, h * scale))
-    else:
-        return pygame.transform.scale(image, (w * scale, h * scale))
-
-
-def load_gold_images(coin_images, gold_images):
-    # Load gold COIN images
-    # (filename, width, height, rows, cols, start_row_index= 0)  3270 / 496    15x 2
-    tiles = Tilesheet("assets/images/items/GoldCoin_v1.1/64/spritesheet/GoldCoin.png", 64, 64, 1, 30,
-                      0)  # 3 images, row 1
-    for x in range(0, tiles.cols, 2):  # skip
-        img = tiles.get_tile(x, 0)
-        img = scale_img(img, constants.GOLD_COIN_SCALE)
-        coin_images.append(img)
-
-    if constants.DEBUG_LEVEL:
-        print("MAIN.PY, line: {}. Coin images loaded, {} total".format(line_numb(), tiles.cols))
-
-    # load piles of gold
-    gold = {"gold1": "gold-big_no_glow.png",
-            "gold2": "gold-big-2_no_glow.png",
-            "gold3": "gold-big-2.png",
-            "gold4": "gold-big.png",
-            "gold5": "gold-mid_no_glow.png",
-            "gold6": "gold-mid-2_no_glow.png",
-            "gold7": "gold-mid-2.png",
-            "gold8": "gold-mid.png",
-            "gold9": "gold-small_no_glow.png",
-            "gold10": "gold-small-2_no_glow.png",
-            "gold11": "gold-small-2.png",
-            "gold12": "gold-small.png",
-            }
-
-    for x, item in enumerate(gold):
-        if constants.DEBUG_LEVEL > 1:
-            print(" x={}, item={}, file={}".format(x, item, gold[item]))
-        img = pygame.image.load(
-            "assets/images/environment/Sprites/PNG/gold piles/{}".format(gold[item])).convert_alpha()
-        gold_images.append(img)
-
-
-def load_potions():
-    # load potion images
-    red_potion = scale_img(pygame.image.load(
-        "assets/images/environment/Sprites/PNG/Additional Sprites/bottle-red-new.png").convert_alpha(),
-                           constants.POTION_SCALE)
-    blue_potion = scale_img(pygame.image.load(
-        "assets/images/environment/Sprites/PNG/Additional Sprites/bottle-blue-new.png").convert_alpha(),
-                            constants.POTION_SCALE)
-    green_potion = scale_img(pygame.image.load(
-        "assets/images/environment/Sprites/PNG/Additional Sprites/bottle-green-new.png").convert_alpha(),
-                             constants.POTION_SCALE)
-
-    if constants.DEBUG_LEVEL:
-        print(" line: {}. Potion images loaded".format(line_numb()))
-
-    return red_potion, blue_potion, green_potion
-
-
 shot_fx = pygame.mixer.Sound("assets/audio/arrow_shot.mp3")
 shot_fx.set_volume(volume)
 hit_fx = pygame.mixer.Sound("assets/audio/arrow_hit.wav")
@@ -258,26 +120,33 @@ if constants.DEBUG_LEVEL:
 
 # load button images
 start_img = scale_img(pygame.image.load("assets/images/buttons/button_start.png").convert_alpha(),
-                      constants.BUTTON_SCALE)
-exit_img = scale_img(pygame.image.load("assets/images/buttons/button_exit.png").convert_alpha(), constants.BUTTON_SCALE)
+                      constants.BUTTON_SCALE, use_global_scale=False)
+exit_img = scale_img(pygame.image.load("assets/images/buttons/button_exit.png").convert_alpha(), constants.BUTTON_SCALE,
+                     use_global_scale=False)
 restart_img = scale_img(pygame.image.load("assets/images/buttons/button_restart.png").convert_alpha(),
-                        constants.BUTTON_SCALE)
+                        constants.BUTTON_SCALE, use_global_scale=False)
 resume_img = scale_img(pygame.image.load("assets/images/buttons/button_resume.png").convert_alpha(),
-                       constants.BUTTON_SCALE)
+                       constants.BUTTON_SCALE, use_global_scale=False)
 
 # load heart images
-heart_empty = scale_img(pygame.image.load("assets/images/items/heart_empty.png").convert_alpha(), constants.ITEM_SCALE)
-heart_half = scale_img(pygame.image.load("assets/images/items/heart_half.png").convert_alpha(), constants.ITEM_SCALE)
-heart_full = scale_img(pygame.image.load("assets/images/items/heart_full.png").convert_alpha(), constants.ITEM_SCALE)
+heart_empty = scale_img(pygame.image.load("assets/images/items/heart_empty.png").convert_alpha(), constants.ITEM_SCALE,
+                        use_global_scale=False)
+heart_half = scale_img(pygame.image.load("assets/images/items/heart_half.png").convert_alpha(), constants.ITEM_SCALE,
+                       use_global_scale=False)
+heart_full = scale_img(pygame.image.load("assets/images/items/heart_full.png").convert_alpha(), constants.ITEM_SCALE,
+                       use_global_scale=False)
 
 # load weapon images
-bow_image = scale_img(pygame.image.load("assets/images/weapons/bow-new.png").convert_alpha(), constants.WEAPON_SCALE)
-sword_image = scale_img(pygame.image.load("assets/images/weapons/sword.png").convert_alpha(), constants.WEAPON_SCALE)
-arrow_image = scale_img(pygame.image.load("assets/images/weapons/arrow.png").convert_alpha(), constants.WEAPON_SCALE)
+bow_image = scale_img(pygame.image.load("assets/images/weapons/bow-new.png").convert_alpha(), constants.WEAPON_SCALE,
+                      use_global_scale=False)
+sword_image = scale_img(pygame.image.load("assets/images/weapons/sword.png").convert_alpha(), constants.WEAPON_SCALE,
+                        use_global_scale=False)
+arrow_image = scale_img(pygame.image.load("assets/images/weapons/arrow.png").convert_alpha(), constants.WEAPON_SCALE,
+                        use_global_scale=False)
 fireball_image = scale_img(pygame.image.load("assets/images/weapons/fireball.png").convert_alpha(),
-                           constants.FIREBALL_SCALE)
+                           constants.FIREBALL_SCALE, use_global_scale=False)
 lightning_image = scale_img(pygame.image.load("assets/images/weapons/red-lightning.png").convert_alpha(),
-                            constants.LIGHTNING_SCALE)
+                            constants.LIGHTNING_SCALE, use_global_scale=False)
 
 # load coin images
 coin_images = []
@@ -296,1663 +165,16 @@ item_images = [coin_images, red_potion, blue_potion, green_potion, exit_portal, 
 if constants.DEBUG_LEVEL:
     print(" line: {}. weapon images loaded".format(line_numb()))
 
-# load character images (char_type)
-mob_animations = []
-
-# TODO combine mob_animations and image_dict, using just the image dict...
+# dictionary for character images
+mob_dict = dict()
 
 animation_types = ["idle", "run", "attack", "death"]
 animation_list = []
 
-
-def search_character_classes(name):
-    for i, char in enumerate(character_classes):
-        if char["name"] == name:
-            return i
-    return -1  # Return -1 if character not found
-
-
-if constants.DEBUG_LEVEL > 1:
-    print(" MAIN.PY, line: {}\n  Processing {} Characters".format(line_numb(), len(character_classes)))
-    for character in character_classes:
-        print("   character: {}".format(character['name']))
-
-
-def load_files(directory, prefix, file_array):
-    count = 0
-    for filename in os.listdir(directory):
-        if filename.startswith(prefix) and filename.endswith(".png"):
-            try:
-                number = int(filename[4:8])
-                file_path = os.path.join(directory, filename)
-                file_array.append(file_path)
-                count += 1
-            except ValueError:
-                if constants.DEBUG_LEVEL:
-                    print(" MAIN.PY, F:load_files, line:{} Skipping {}".format(line_numb(), filename))
-                pass  # ignore files with invalid number format
-    return count
-
-
-start_time = pygame.time.get_ticks()
-# Load all character images (player and enemies)
-if constants.DEBUG_LEVEL:
-    print(" MAIN.PY, line: {}\n  Loading Character images".format(line_numb()))
-
-for i, character in enumerate(character_classes):
-    if constants.DEBUG_LEVEL:
-        new_time = pygame.time.get_ticks()
-        if i:
-            print(new_time - start_time)
-        if constants.DEBUG_LEVEL > 1:
-            print("line={}, i={}, character={}".format(line_numb(), i, character))
-        else:
-            print("   Character={}, Load Time= ".format(character['name']), end="")
-        # print("\t\tStart time= {}".format(start_time), end="")
-        start_time = pygame.time.get_ticks()
-
-    # reset temporary list of images
-    temp_list = []
-    animation_list = []
-
-    match character['name']:
-        case "Bear":
-            for animation in animation_types:
-                at = animation
-                temp_list = []
-
-                num_images = character[animation] + 1
-
-                for image_num in range(0, num_images):
-                    file_index = "{:04}".format(image_num)
-                    match animation:
-                        case "run":
-                            at = animation.capitalize()
-                            file_prefix = "bear_run"
-                        case "idle":
-                            file_prefix = "bear_idle"
-                        case "attack":
-                            file_prefix = "bear_attack"
-                        case "death":
-                            file_prefix = "bear_die"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/Sprites/{animation}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-
-                    # crops off wasted space around images, new_x, new_y, new width, new height
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Crocodile Warrior":  # tilesheet, done
-            path = "assets/images/characters/Crocodile Warrior/x320_Spritesheets"
-            for animation in animation_types:
-                temp_list = []
-
-                match animation:
-                    case "idle":
-                        # (filename, width, height, rows, cols, start_row_index= 0)
-                        images = Tilesheet(f"{path}/Idle1_L.png", 600, 320, 5, 4)
-                    case "attack":
-                        images = Tilesheet(f"{path}/Attack1_L.png", 600, 320, 5, 4)
-                    case "death":
-                        images = Tilesheet(f"{path}/Death1_L.png", 600, 320, 6, 4)
-                    case "run":
-                        images = Tilesheet(f"{path}/Walk_Forward_L.png", 600, 320, 5, 4)
-                    case _:
-                        images = ""
-
-                trim_rect = character['trim_rect']
-
-                for y in range(images.rows):
-                    for x in range(images.cols):
-                        img = images.get_tile(x, y)
-
-                        width = img.get_width() - (trim_rect[0] + trim_rect[1])
-                        height = img.get_height() - (trim_rect[2] + trim_rect[3])
-                        new_region = (trim_rect[0], trim_rect[2], width, height)
-                        cropped_img = img.subsurface(new_region)
-
-                        cropped_img = pygame.transform.flip(cropped_img, character['flip_image'], False)
-
-                        if character['scale'] != 1:
-                            cropped_img = scale_img(cropped_img, character['scale'])
-                        temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Crab Monster":  # Tilesheet, done
-            path = "assets/images/characters/Crab Monster/x320p_Spritesheets"
-            for animation in animation_types:
-                temp_list = []
-                scale = character['scale']
-
-                match animation:
-                    case "idle":
-                        # (filename, width, height, rows, cols, start_row_index= 0)
-                        images = Tilesheet(f"{path}/Idle2.png", 512, 320, 8, 5)
-                        trim_rect = character['trim_rect']
-                    case "attack":
-                        images = Tilesheet(f"{path}/Attack1.png", 320, 200, 5, 4)
-                        trim_rect = character['trim_rect_320']
-                        scale = 1.5  # needed to size up the 320 pixel images
-                    case "death":
-                        images = Tilesheet(f"{path}/Death1.png", 512, 320, 6, 5)
-                        trim_rect = character['trim_rect']
-                    case "run":
-                        images = Tilesheet(f"{path}/Walk_Forward.png", 512, 320, 4, 5)
-                        trim_rect = character['trim_rect']
-
-                for y in range(images.rows):
-                    for x in range(images.cols):
-                        img = images.get_tile(x, y)
-
-                        width = img.get_width() - (trim_rect[0] + trim_rect[1])
-                        height = img.get_height() - (trim_rect[2] + trim_rect[3])
-                        new_region = (trim_rect[0], trim_rect[2], width, height)
-                        cropped_img = img.subsurface(new_region)
-
-                        cropped_img = pygame.transform.flip(cropped_img, character['flip_image'], False)
-
-                        if scale != 1:
-                            cropped_img = scale_img(cropped_img, scale)
-                        temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Cyclops1" | "Cyclops2" | "Cyclops3":
-            for animation in animation_types:
-                temp_list = []
-                scale = character['scale']
-                num_images = character[animation] - 1
-
-                for image_num in range(1, num_images):
-
-                    file_index = "{:03}".format(image_num)
-
-                    match animation:
-                        case "run":
-                            file_prefix = "Run"
-                            scale = .3
-                        case "idle":
-                            file_prefix = "Idle"
-                            scale = .3
-                        case "attack":
-                            file_prefix = "Attack"
-                            scale = .3
-                        case "death":
-                            file_prefix = "Dead"
-                            scale = .3
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-                    w = img.get_width()
-                    h = img.get_height()
-
-                    if scale != 1:
-                        img = scale_img(img, scale)
-                    nw = img.get_width()
-                    nh = img.get_height()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Deer":  # Done
-            for animation in animation_types:
-                num_images = character[animation] + 1
-                temp_list = []
-
-                for image_num in range(0, num_images):
-                    file_index = "{:04}".format(image_num)
-                    at = animation.capitalize()
-
-                    match animation:
-                        case "run":
-                            file_prefix = "deer_run"
-                        case "idle":
-                            file_prefix = "deer_idle"
-                        case "attack":
-                            file_prefix = "deer_attack"
-                        case "death":
-                            at = "Die"
-                            file_prefix = "deer_die"
-                        case _:
-                            file_prefix = ""
-
-                    # path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
-                    path = "assets/images/characters/{}/Sprites/{}/{}_{}.png".format(character['name'], at, file_prefix, file_index)
-                    img = pygame.image.load(path).convert_alpha()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Dragon1" | "Dragon2" | "Dragon3":
-            for animation in animation_types:
-                num_images = character[animation] - 1
-                if animation == "run":
-                    num_images = character['fly']
-                temp_list = []
-                scale = character['scale']
-                for image_num in range(0, num_images):
-
-                    file_index = "{:03}".format(image_num)
-
-                    match animation:
-                        case "run":
-                            file_prefix = "Flight"
-                            scale = .3
-                        case "idle":
-                            file_prefix = "Idle"
-                            scale = .3
-                        case "attack":
-                            file_prefix = "Attack"
-                            scale = .3
-                        case "death":
-                            file_prefix = "Dead"
-                            scale = .3
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-                    w = img.get_width()
-                    h = img.get_height()
-
-                    if scale != 1:
-                        img = scale_img(img, scale)
-                    nw = img.get_width()
-                    nh = img.get_height()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Little Demon":  # Done
-            for animation in animation_types:
-                num_images = character[animation] + 1
-                temp_list = []
-
-                for image_num in range(1, num_images):
-                    file_index = "{}".format(image_num)
-                    at = animation.capitalize()
-
-                    match animation:
-                        case "run":
-                            file_prefix = "Walk"
-                        case "idle":
-                            file_prefix = "Idle"
-                        case "attack":
-                            file_prefix = "Attack"
-                        case "death":
-                            at = "Die"
-                            file_prefix = "Death"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/Little Demon/{file_prefix}{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Eagle":  # done
-            for animation in animation_types:
-                num_images = character[animation] + 1
-                temp_list = []
-
-                for image_num in range(0, num_images):
-                    file_index = "{:04}".format(image_num)
-                    at = animation
-                    match animation:
-                        case "run":
-                            at = "Fly"
-                            file_prefix = "eagle_fly"
-                        case "idle":
-                            file_prefix = "eagle_idle"
-                        case "attack":
-                            file_prefix = "eagle_attack"
-                        case "death":
-                            at = "die"
-                            file_prefix = "eagle_die"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Elemental1" | "Elemental2" | "Elemental3":
-            for animation in animation_types:
-                num_images = character[animation]
-                temp_list = []
-
-                for image_num in range(0, num_images):
-
-                    file_index = "{:03}".format(image_num)
-
-                    match animation:
-                        case "run":
-                            file_prefix = "3_FLY"
-                        case "idle":
-                            file_prefix = "1_IDLE"
-                        case "attack":
-                            file_prefix = "5_ATTACK"
-                        case "death":
-                            file_prefix = "7_DIE"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    w = img.get_width()
-                    h = img.get_height()
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    w = cropped_img.get_width()
-                    h = cropped_img.get_height()
-
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Fox":  # done
-            for animation in animation_types:
-                num_images = character[animation] + 1
-                temp_list = []
-
-                for image_num in range(0, num_images):
-
-                    file_index = "{:04}".format(image_num)
-                    at = animation
-
-                    match animation:
-                        case "run":
-                            at = "Run"
-                            file_prefix = "fox_run"
-                        case "idle":
-                            file_prefix = "fox_idle"
-                        case "attack":
-                            file_prefix = "fox_attack"
-                        case "death":
-                            at = "die"
-                            file_prefix = "fox_die"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Gaerron":  # Tilesheet, done
-            for animation in animation_types:
-                temp_list = []
-
-                match animation:
-                    case "idle":
-                        # (filename, width, height, rows, cols, start_row_index= 0)
-                        images = Tilesheet("assets/images/characters/MasterGaerron/MasterGaerron_idle1.png", 128, 128,
-                                           4, 3, 0)  # 3 images, row 4
-                        flip = character['flip_image']
-                    case "attack":
-                        images = Tilesheet("assets/images/characters/MasterGaerron/MasterGaerron_MVsv_alt_attack2.png",
-                                           128, 128, 1, 3, 0)  # 3 images, row 4
-                        flip = True
-                    case "death":
-                        images = Tilesheet("assets/images/characters/MasterGaerron/MasterGaerron_dead.png", 128, 128, 4,
-                                           3, 3)  # 3 images, row 4
-                    case "run":
-                        images = Tilesheet("assets/images/characters/MasterGaerron/MasterGaerron_walking.png", 128, 128,
-                                           4, 8, 2)  # 8 images, row 3
-                    case _:
-                        images = ""
-
-                trim_rect = character['trim_rect']
-
-                for x in range(images.cols):
-                    img = images.get_tile(x, 0)
-
-                    width = img.get_width() - (trim_rect[0] + trim_rect[1])
-                    height = img.get_height() - (trim_rect[2] + trim_rect[3])
-                    new_region = (trim_rect[0], trim_rect[2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    cropped_img = pygame.transform.flip(cropped_img, flip, False)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Goat":  # done
-            for animation in animation_types:
-                num_images = character[animation] + 1
-                temp_list = []
-
-                for image_num in range(0, num_images):
-
-                    file_index = "{:04}".format(image_num)
-                    at = animation
-
-                    match animation:
-                        case "run":
-                            at = "Run"
-                            file_prefix = "goat_run"
-                        case "idle":
-                            file_prefix = "goat_idle"
-                        case "attack":
-                            file_prefix = "goat_attack"
-                        case "death":
-                            at = "die"
-                            file_prefix = "goat_die"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Goblin1" | "Goblin2" | "Goblin3":
-            for animation in animation_types:
-                temp_list = []
-                num_images = character[animation]
-
-                for image_num in range(0, num_images):
-
-                    file_index = "{:03}".format(image_num)
-
-                    match animation:
-                        case "run":
-                            file_prefix = "Run"
-                        case "idle":
-                            file_prefix = "Idle"
-                            # file_prefix = "Attack1"
-                        case "attack":
-                            file_prefix = "Attack1"
-                        case "death":
-                            file_prefix = "Dead"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/Goblin/PNG/{character['name']}/Animation/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "GHOST1" | "GHOST2" | "GHOST3":
-            for animation in animation_types:
-                num_images = character[animation]
-                temp_list = []
-
-                for image_num in range(0, num_images):
-
-                    file_index = "{:03}".format(image_num)
-
-                    match animation:
-                        case "run":
-                            file_prefix = "Run"
-                            at = "RUN"
-                        case "idle":
-                            file_prefix = "IDLE"
-                            at = "IDLE"
-                        case "attack":
-                            file_prefix = "ATTACK1"
-                            at = "ATTACK1"
-                        case "death":
-                            file_prefix = "DIE"
-                            at = "DIE"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/{at}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Golem1" | "Golem2" | "Golem3":
-            for animation in animation_types:
-                num_images = character[animation]
-                temp_list = []
-
-                for image_num in range(0, num_images):
-                    num_images = character[animation]
-
-                    file_index = "{:03}".format(image_num)
-
-                    match animation:
-                        case "run":
-                            file_prefix = "Run"
-                        case "idle":
-                            file_prefix = "Idle"
-                            # file_prefix = "Attack1"
-                        case "attack":
-                            file_prefix = "Attack"
-                        case "death":
-                            file_prefix = "Dead"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    if character['scale'] != 1:
-                        img = scale_img(img, character['scale'])
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Insect":  # done
-            for animation in animation_types:
-                num_images = character[animation] + 1
-                temp_list = []
-
-                for image_num in range(0, num_images - 1):
-                    file_index = "{:04}".format(image_num)
-                    at = animation
-
-                    match animation:
-                        case "run":
-                            at = "Fly"
-                            file_prefix = "Fly"
-                        case "idle":
-                            at = "Fly"
-                            file_prefix = "Fly"
-                        case "attack":
-                            at = "Attack1"
-                            file_prefix = "Attack1"
-                        case "death":
-                            at = "Death"
-                            file_prefix = "Death"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/512x512/{at}/{file_prefix}_{file_index}.png"
-
-                    img = pygame.image.load(path).convert_alpha()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Jinn":
-            for animation in animation_types:
-                num_images = character[animation]
-                temp_list = []
-
-                for image_num in range(1, num_images):
-
-                    file_index = "{:01}".format(image_num)
-
-                    match animation:
-                        case "run":
-                            file_prefix = "Flight"
-                        case "idle":
-                            file_prefix = "Idle"
-                        case "attack":
-                            file_prefix = "Attack"
-                        case "death":
-                            file_prefix = "Death"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/{file_prefix}{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Knight Man":
-            for animation in animation_types:
-                num_images = character[animation] + 1
-                temp_list = []
-
-                for image_num in range(0, num_images - 1):
-                    file_index = "{:04}".format(image_num + 1)
-                    at = animation
-
-                    match animation:
-                        case "run":
-                            at = "R_Run"
-                            file_prefix = "R_Run"
-                        case "idle":
-                            at = "R_Idle"
-                            angle = "180"
-                            file_prefix = "R_Idle"
-                        case "attack":
-                            at = "R_Slash_1"
-                            file_prefix = "R_Slash_1"
-                        case "death":
-                            at = "R_Death_Backward"
-                            file_prefix = "R_Death_Backward"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/Animations_Frames_512x512/{at}/{file_prefix}_{file_index}.png"
-
-                    img = pygame.image.load(path).convert_alpha()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Lord Esther":  # Tilesheet, done
-            for animation in animation_types:
-                temp_list = []
-                flip = character['flip_image']
-                match animation:
-                    case "idle":
-                        # (filename, width, height, rows, cols, start_row_index= 0)
-                        images = Tilesheet("assets/images/characters/lordesther/LordEsther_idle1.png", 128, 128, 4,
-                                           3)  # 3 images, row 1
-                        flip = False
-                    case "attack":
-                        images = Tilesheet("assets/images/characters/lordesther/LordEsther_MVsv_alt_attack1.png",
-                                           128, 128, 1, 3)
-                    case "death":
-                        images = Tilesheet("assets/images/characters/lordesther/LordEsther_MVsv_alt_dead1.png",
-                                           128, 128, 1, 3)
-                    case "run":
-                        images = Tilesheet("assets/images/characters/lordesther/LordEsther_walking.png",
-                                           128, 128, 4, 8, 2)  # 8 images, row 3
-                        flip = False
-                for x in range(images.cols):
-                    img = images.get_tile(x, 0)
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-
-                    # crops off wasted space around images, new_x, new_y, new width, new height
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-                    cropped_img = pygame.transform.flip(cropped_img, flip, False)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Magic Fox":
-            for animation in animation_types:
-                num_images = character[animation]
-                temp_list = []
-
-                for image_num in range(1, num_images):
-                    file_index = "{:04}".format(image_num)
-                    at = animation
-
-                    match animation:
-                        case "run":
-                            at = "Run"
-                            file_prefix = "Run"
-                        case "idle":
-                            at = "Idle"
-                            file_prefix = "Idle"
-                        case "attack":
-                            at = "Attack"
-                            file_prefix = "Attack"
-                        case "death":
-                            at = "Death"
-                            file_prefix = "Death"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/512x512/{at}/{file_prefix}_{file_index}.png"
-
-                    img = pygame.image.load(path).convert_alpha()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-
-                    cropped_img = img.subsurface(new_region)
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Meerkat":
-            for animation in animation_types:
-                num_images = character[animation] + 1
-                temp_list = []
-
-                for image_num in range(0, num_images):
-                    file_index = "{:04}".format(image_num)
-                    at = animation
-
-                    match animation:
-                        case "run":
-                            at = "Run"
-                            file_prefix = "meerkat_run"
-                        case "idle":
-                            file_prefix = "meerkat_idle"
-                        case "attack":
-                            file_prefix = "meerkat_attack"
-                        case "death":
-                            at = "die"
-                            file_prefix = "meerkat_die"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Minotaur1" | "Minotaur2" | "Minotaur3":
-            for animation in animation_types:
-                num_images = character[animation]
-                temp_list = []
-
-                for image_num in range(0, num_images):
-
-                    file_index = "{:03}".format(image_num)
-
-                    match animation:
-                        case "run":
-                            file_prefix = "Run"
-                        case "idle":
-                            file_prefix = "Idle"
-                            # file_prefix = "Attack1"
-                        case "attack":
-                            file_prefix = "Attack"
-                        case "death":
-                            file_prefix = "Dead"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Orc1" | "Orc2" | "Orc3":
-            for animation in animation_types:
-                temp_list = []
-                scale = character['scale']
-                num_images = character[animation]
-                for image_num in range(0, num_images):
-
-                    file_index = "{:03}".format(image_num)
-
-                    match animation:
-                        case "run":
-                            file_prefix = "Run"
-                            scale = .3
-                        case "idle":
-                            file_prefix = "Idle"
-                            scale = .3
-                        case "attack":
-                            file_prefix = "Attack"
-                            scale = .3
-                        case "death":
-                            file_prefix = "Dead"
-                            scale = .3
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    if scale != 1:
-                        img = scale_img(img, scale)
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Panther":
-            for animation in animation_types:
-                num_images = character[animation] + 1
-                temp_list = []
-
-                for image_num in range(0, num_images):
-                    file_index = "{:04}".format(image_num)
-                    at = animation
-
-                    match animation:
-                        case "run":
-                            at = "Run"
-                            file_prefix = "panther_run"
-                        case "idle":
-                            file_prefix = "panther_idle"
-                        case "attack":
-                            file_prefix = "panther_attack"
-                        case "death":
-                            at = "die"
-                            file_prefix = "panther_die"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "PrinceTaerron":  # Tilesheet
-            for animation in animation_types:
-                temp_list = []
-
-                flip = character['flip_image']
-                trim_rect = character['trim_rect']
-
-                match animation:
-                    case "idle":
-                        # (filename, width, height, rows, cols, start_row_index= 0)
-                        images = Tilesheet(
-                            "assets/images/characters/PrinceTaerron/Medieval_Bosses_PrinceTaerron_idle1.png", 512, 512,
-                            4, 3, 0)  # 3 images, row 1
-                    case "attack":
-                        images = Tilesheet(
-                            "assets/images/characters/PrinceTaerron/Medieval_Bosses_PrinceTaerron_MVsv_alt_attack2.png",
-                            512, 512, 1, 3, 0)  # 3 images, row 1
-                        flip = True
-                    case "death":
-                        images = Tilesheet(
-                            "assets/images/characters/PrinceTaerron/Medieval_Bosses_PrinceTaerron_ko.png", 512, 512, 4,
-                            3, 1)  # 3 images, row 1
-                    case "run":
-                        images = Tilesheet(
-                            "assets/images/characters/PrinceTaerron/Medieval_Bosses_PrinceTaerron_running.png", 512,
-                            512, 4, 8, 2)  # 3 images, row 1
-                for x in range(images.cols):
-                    img = images.get_tile(x, 0)
-                    width = img.get_width() - (trim_rect[0] + trim_rect[1])
-                    height = img.get_height() - (trim_rect[2] + trim_rect[3])
-                    new_region = (trim_rect[0], trim_rect[2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    cropped_img = pygame.transform.flip(cropped_img, flip, False)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Raven":
-            for animation in animation_types:
-                num_images = character[animation] + 1
-                temp_list = []
-
-                for image_num in range(0, num_images):
-                    file_index = "{:04}".format(image_num)
-                    at = animation.capitalize()
-
-                    match animation:
-                        case "run":
-                            at = "Fly"
-                            file_prefix = "raven_fly"
-                        case "idle":
-                            file_prefix = "raven_idle"
-                        case "attack":
-                            file_prefix = "raven_attack"
-                        case "death":
-                            at = "Die"
-                            file_prefix = "raven_die"
-                        case _:
-                            file_prefix = ""
-                    path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Red Demon":  # tilesheet, done
-            for animation in animation_types:
-                temp_list = []
-                trim_rect = character['trim_rect']
-                match animation:
-                    case "run":
-                        images = Tilesheet("assets/images/characters/red demon/Walk Body 090.png", 256, 256, 5, 4)
-                    case "idle":
-                        images = Tilesheet("assets/images/characters/red demon/Idle Body 180.png", 256, 256, 4, 6)
-                    case "attack":
-                        images = Tilesheet("assets/images/characters/red demon/Attack1 Body 090.png", 256, 256, 5, 4)
-                    case "death":
-                        images = Tilesheet("assets/images/characters/red demon/Death Body 090.png", 256, 256, 5, 6)
-
-                for y in range(images.rows):
-                    for x in range(images.cols):
-                        img = images.get_tile(x, y)
-                        width = img.get_width() - (trim_rect[0] + trim_rect[1])
-                        height = img.get_height() - (trim_rect[2] + trim_rect[3])
-                        new_region = (trim_rect[0], trim_rect[2], width, height)
-                        cropped_img = img.subsurface(new_region)
-
-                        cropped_img = pygame.transform.flip(cropped_img, flip, False)
-
-                        if character['scale'] != 1:
-                            cropped_img = scale_img(cropped_img, character['scale'])
-                        temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Reptile Warrior":  # done
-            for animation in animation_types:
-                num_images = character[animation] + 1
-                temp_list = []
-
-                for image_num in range(0, num_images - 1):
-                    file_index = "{:04}".format(image_num + 1)
-                    at = animation
-                    angle = "090"
-
-                    match animation:
-                        case "run":
-                            at = "Run"
-                            file_prefix = "Run_Body"
-                        case "idle":
-                            at = "Idle"
-                            angle = "180"
-                            file_prefix = "Idle_Body"
-                        case "attack":
-                            at = "Attack1"
-                            file_prefix = "Attack1_Body"
-                        case "death":
-                            at = "Death"
-                            file_prefix = "Death_Body"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/{at}/Body/{angle}/{file_prefix}_{angle}_{file_index}.png"
-
-                    img = pygame.image.load(path).convert_alpha()
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Saurial":
-            for animation in animation_types:
-                temp_list = []
-                match animation:
-                    case "run":
-                        # we just want the 3rd row of images, so we use start_index of 2
-                        # 8 cols, 4 rows, select 3rd row
-                        images = Tilesheet("assets/images/characters/Saurial/Saurial_running.png", 200, 200, 4, 8, 2)
-                    case "idle":
-                        images = Tilesheet("assets/images/characters/Saurial/Saurial_idle.png", 200, 200, 4,
-                                           3)  # 3 cols, 4 rows
-                    case "attack":
-                        images = Tilesheet("assets/images/characters/Saurial/Saurial_flying.png", 200, 200, 4, 8,
-                                           1)  # 3 cols, 4 rows
-                    case "death":
-                        images = Tilesheet("assets/images/characters/Saurial/Saurial_ko.png", 200, 200, 4, 3,
-                                           1)  # 3 cols, 4 rows, 2nd row
-                    case _:
-                        if constants.DEBUG_LEVEL:
-                            print("  MAIN.PY, line:{}\n   error loading Saurial".format(line_numb()))
-                        pygame.quit()
-                        sys.exit()
-
-                for x in range(images.cols):
-                    img = images.get_tile(x, 0)
-                    if character['scale'] != 1:
-                        img = scale_img(img, character['scale'])
-                    right_crop_percent = .7  # trims off 27% from left of demon
-                    y_crop_percent = 0  # trims off from top of demon
-                    drx = 0
-                    dry = 0
-                    drw = img.get_width() * right_crop_percent
-                    drh = img.get_height() * (1 - (2 * y_crop_percent))
-
-                    # crops off wasted space around demon images
-                    region = (10, 10, img.get_width() - 15, img.get_height() - 15)
-                    cropped_img = img.subsurface(region)
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Skeleton":  # tilesheet, done
-            for animation in animation_types:
-                temp_list = []
-                flip = character['flip_image']
-                trim_rect = character['trim_rect']
-                match animation:
-                    case "idle":
-                        # (filename, width, height, rows, cols, start_row_index= 0)
-                        images = Tilesheet("assets/images/characters/Skeleton/x240p_Spritesheets/Idle_Lookup_Right.png",
-                                           320, 240, 5, 6)
-                    case "attack":
-                        images = Tilesheet("assets/images/characters/Skeleton/x240p_Spritesheets/Attack_Combo_Left.png",
-                                           320, 240, 6, 7)
-                        flip = True
-                    case "death":
-                        images = Tilesheet(
-                            "assets/images/characters/Skeleton/x240p_Spritesheets/Death_Backward_Left.png",
-                            320, 240, 6, 4)
-                    case "run":
-                        images = Tilesheet("assets/images/characters/Skeleton/x240p_Spritesheets/Walk_Right.png",
-                                           320, 240, 5, 4)
-
-                for y in range(images.rows):
-                    for x in range(images.cols):
-                        img = images.get_tile(x, y)
-
-                        width = img.get_width() - (trim_rect[0] + trim_rect[1])
-                        height = img.get_height() - (trim_rect[2] + trim_rect[3])
-                        new_region = (trim_rect[0], trim_rect[2], width, height)
-                        cropped_img = img.subsurface(new_region)
-
-                        cropped_img = pygame.transform.flip(cropped_img, flip, False)
-
-                        if character['scale'] != 1:
-                            cropped_img = scale_img(cropped_img, character['scale'])
-                        temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Skeleton2" | "Skeleton3" | "Skeleton4":
-            for animation in animation_types:
-                temp_list = []
-                scale = character['scale']
-                num_images = character[animation]
-                for image_num in range(0, num_images - 1):
-
-                    file_index = "{:03}".format(image_num)
-
-                    match animation:
-                        case "run":
-                            file_prefix = "Run"
-                        case "idle":
-                            file_prefix = "Idle"
-                        case "attack":
-                            file_prefix = "Attack"
-                        case "death":
-                            file_prefix = "Dead"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    if character['scale'] != 1:
-                        img = scale_img(img, character['scale'])
-                    nw = img.get_width()
-                    nh = img.get_height()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Snake":  # done
-            for animation in animation_types:
-                num_images = character[animation] + 1
-                temp_list = []
-
-                for image_num in range(0, num_images):
-                    file_index = "{:04}".format(image_num)
-                    at = animation
-
-                    match animation:
-                        case "run":
-                            at = "Run"
-                            file_prefix = "snake_run"
-                        case "idle":
-                            file_prefix = "snake_idle"
-                        case "attack":
-                            file_prefix = "snake_attack"
-                        case "death":
-                            at = "die"
-                            file_prefix = "snake_die"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "SunkenGod":  # tilesheet, done
-            for animation in animation_types:
-                temp_list = []
-                flip = character['flip_image']
-                match animation:
-                    case "idle":
-                        # (filename, width, height, rows, cols, start_row_index= 0)
-                        images = Tilesheet("assets/images/characters/SunkenGod/Medieval_Bosses_SunkenGod_idle1.png",
-                                           512, 512, 4, 3, 0)  # 3 images, row 1
-                    case "attack":
-                        images = Tilesheet("assets/images/characters/SunkenGod/Medieval_Bosses_SunkenGod_MVsv.png", 512,
-                                           512, 6, 9, 1)  # 3 images, row 1
-                        flip = True
-                    case "death":
-                        images = Tilesheet("assets/images/characters/SunkenGod/Medieval_Bosses_SunkenGod_ko.png", 512,
-                                           512, 4, 3, 1)  # 3 images, row 1
-                    case "run":
-                        images = Tilesheet("assets/images/characters/SunkenGod/Medieval_Bosses_SunkenGod_running.png",
-                                           512, 512, 4, 8, 2)  # 3 images, row 1
-                for x in range(images.cols):
-                    img = images.get_tile(x, 0)
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-                    cropped_img = pygame.transform.flip(cropped_img, flip, False)
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "TheOldKing":  # Tilesheet, Done
-            for animation in animation_types:
-                temp_list = []
-
-                flip = character['flip_image']
-                trim_rect = character['trim_rect']
-
-                match animation:
-                    case "idle":
-                        # (filename, width, height, rows, cols, start_row_index= 0)
-                        images = Tilesheet("assets/images/characters/TheOldKing/Medieval_Bosses_TheOldKing_idle.png",
-                                           512, 512, 4, 3, 1)  # 3 images, row 1
-                        flip = True
-                    case "attack":
-                        images = Tilesheet("assets/images/characters/TheOldKing/Medieval_Bosses_TheOldKing_MVsv.png",
-                                           512, 512, 6, 9, 1)  # 3 images, row 1
-                    case "death":
-                        images = Tilesheet("assets/images/characters/TheOldKing/Medieval_Bosses_TheOldKing_ko.png", 512,
-                                           512, 4, 3, 1)  # 3 images, row 1
-                    case "run":
-                        images = Tilesheet("assets/images/characters/TheOldKing/Medieval_Bosses_TheOldKing_walking.png",
-                                           512, 512, 4, 8, 2)  # 3 images, row 1
-                        flip = False
-                for x in range(images.cols):
-                    img = images.get_tile(x, 0)
-                    width = img.get_width() - (trim_rect[0] + trim_rect[1])
-                    height = img.get_height() - (trim_rect[2] + trim_rect[3])
-                    new_region = (trim_rect[0], trim_rect[2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    cropped_img = pygame.transform.flip(cropped_img, flip, False)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "TheTriplets":  # tilesheet, done
-            for animation in animation_types:
-                temp_list = []
-                flip = character['flip_image']
-                match animation:
-                    case "idle":
-                        # (filename, width, height, rows, cols, start_row_index= 0)
-                        images = Tilesheet("assets/images/characters/TheTriplets/Medieval_Bosses_TheTriplets_idle1.png",
-                                           512, 512, 4, 3)  # 3 images, row 1
-                    case "attack":
-                        images = Tilesheet(
-                            "assets/images/characters/TheTriplets/Medieval_Bosses_TheTriplets_MVsv_alt_attack2.png",
-                            512, 512, 1, 3)  # 3 images, row 1
-                        flip = True
-                    case "death":
-                        images = Tilesheet(
-                            "assets/images/characters/TheTriplets/Medieval_Bosses_TheTriplets_MVsv_alt_attack2.png",
-                            512, 512, 1, 3)  # 3 images, row 1
-                    case "run":
-                        images = Tilesheet(
-                            "assets/images/characters/TheTriplets/Medieval_Bosses_TheTriplets_running.png", 512, 512, 4,
-                            8, 2)  # 3 images, row 1
-                for x in range(images.cols):
-                    img = images.get_tile(x, 0)
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-                    cropped_img = pygame.transform.flip(cropped_img, flip, False)
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Thief":
-            for animation in animation_types:
-                num_images = character[animation] + 1
-                temp_list = []
-
-                for image_num in range(0, num_images - 1):
-                    file_index = "{:04}".format(image_num + 1)
-                    at = animation
-
-                    match animation:
-                        case "run":
-                            at = "Run"
-                            file_prefix = "Run"
-                        case "idle":
-                            at = "Idle"
-                            angle = "180"
-                            file_prefix = "Idle"
-                        case "attack":
-                            at = "Attack1"
-                            file_prefix = "Attack1"
-                        case "death":
-                            at = "Death"
-                            file_prefix = "Death"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/512x512/{at}/{file_prefix}_{file_index}.png"
-
-                    img = pygame.image.load(path).convert_alpha()
-
-                    left_crop_pixels = 90  # trims off
-                    #                    right_crop_pixels = 140
-                    right_crop_pixels = 10
-                    top_crop_pixels = 60  # trims off from top
-                    bottom_crop_pixels = 140
-
-                    ix = img.get_width()
-                    ih = img.get_height()
-                    drx = left_crop_pixels
-                    dry = top_crop_pixels
-                    drw = img.get_width() - (left_crop_pixels + right_crop_pixels)
-                    drh = img.get_height() - (top_crop_pixels + bottom_crop_pixels)
-                    new_region = (drx, dry, drw, drh)  # crops off wasted space around images
-                    cropped_img = img.subsurface(new_region)
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Undead1" | "Undead2" | "Undead3":
-            if character['name'] == "Undead1":
-                prefix = "5_animation"
-            elif character['name'] == "Undead2":
-                prefix = "6_animation"
-            else:
-                prefix = "7_animation"
-
-            for animation in animation_types:
-                num_images = character[animation]
-                temp_list = []
-
-                for image_num in range(1, num_images):
-
-                    file_index = "{:03}".format(image_num)
-
-                    match animation:
-                        case "run":
-                            file_prefix = "walk"
-                        case "idle":
-                            file_prefix = "idle"
-                        case "attack":
-                            file_prefix = "attack"
-                        case "death":
-                            file_prefix = "hurt"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/{prefix}_{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    w = img.get_width()
-                    h = img.get_height()
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    w = cropped_img.get_width()
-                    h = cropped_img.get_height()
-
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Warrior":  # player
-            for animation in animation_types:
-                temp_list = []
-                if constants.DEBUG_LEVEL > 1:
-                    print(" MAIN.PY, line={}, character['name']={}, animation={}".
-                          format(line_numb(), character['name'], animation))
-
-                at = animation
-                num_images = character[animation] + 1
-
-                for image_num in range(0, num_images):
-                    file_index = "{:02}".format(image_num)
-
-                    match animation:
-                        case "run":
-                            at = animation.capitalize()
-                            file_prefix = "Armature_Walk"
-                        case "idle":
-                            file_prefix = "Armature_idle"
-                        case "attack":
-                            file_prefix = "Armature_Attack"
-                        case "death":
-                            file_prefix = "Armature_Death"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/{animation}/{file_prefix}_{file_index}.png"
-
-                    img = pygame.image.load(path).convert_alpha()
-
-                    if animation == "attack":
-                        drx = 260
-                        dry = 310
-                        drw = img.get_width() - drx
-                        drh = img.get_height() - dry
-                        new_region = (drx, dry, drw, drh)  # crops off wasted space around images
-
-                        cropped_img = img.subsurface(new_region)
-                        cropped_img = scale_img(cropped_img, character['scale'])
-
-                        temp_list.append(cropped_img)
-                    elif animation == "death":
-                        drx = 65
-                        dry = 45
-                        drw = img.get_width() - drx
-                        drh = img.get_height() - dry
-                        new_region = (drx, dry, drw, drh)  # crops off wasted space around images
-
-                        cropped_img = img.subsurface(new_region)
-                        cropped_img = scale_img(cropped_img, character['scale'])
-
-                        temp_list.append(cropped_img)
-                    else:
-                        left_crop_pixels = 0  # trims off
-                        right_crop_pixels = 25
-                        top_crop_pixels = 0  # trims off from top
-                        bottom_crop_pixels = 0
-
-                        ix = img.get_width()
-                        ih = img.get_height()
-                        drx = left_crop_pixels
-                        dry = top_crop_pixels
-                        drw = img.get_width() - (left_crop_pixels + right_crop_pixels)
-                        drh = img.get_height() - (top_crop_pixels + bottom_crop_pixels)
-                        new_region = (drx, dry, drw, drh)  # crops off wasted space around images
-                        cropped_img = img.subsurface(new_region)
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                        temp_list.append(cropped_img)
-
-                animation_list.append(temp_list)
-        case "Witch":
-            for animation in animation_types:
-                temp_list = []
-
-                match animation:
-                    case "idle":
-                        # (filename, width, height, rows, cols, start_row_index= 0)
-                        images = Tilesheet("assets/images/characters/Witch/Medieval_Bosses_Witch_idle1.png", 512, 512,
-                                           4, 3)  # 3 images, row 1
-                    case "attack":
-                        images = Tilesheet("assets/images/characters/Witch/Medieval_Bosses_Witch_MVsv_alt_attack2.png",
-                                           512, 512, 1, 3)  # 3 images, row 1
-                    case "death":
-                        images = Tilesheet("assets/images/characters/Witch/Medieval_Bosses_Witch_dead.png", 512, 512, 1,
-                                           3)  # 3 images, row 1
-                    case "run":
-                        images = Tilesheet("assets/images/characters/Witch/Medieval_Bosses_Witch_running.png", 512, 512,
-                                           4, 8, 2)  # 3 images, row 1
-                for x in range(images.cols):
-                    img = images.get_tile(x, 0)
-                    left_crop_pixels = 0  # trims off
-                    right_crop_pixels = 0
-                    top_crop_pixels = 0  # trims off from top
-                    bottom_crop_pixels = 0
-
-                    drx = left_crop_pixels
-                    dry = top_crop_pixels
-                    drw = img.get_width() - (left_crop_pixels + right_crop_pixels)
-                    drh = img.get_height() - (top_crop_pixels + bottom_crop_pixels)
-                    new_region = (drx, dry, drw, drh)  # crops off wasted space around images
-                    cropped_img = img.subsurface(new_region)
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Wolf":  # done
-            for animation in animation_types:
-                num_images = character[animation] + 1
-                temp_list = []
-
-                for image_num in range(0, num_images):
-                    file_index = "{:04}".format(image_num)
-                    at = animation.capitalize()
-                    match animation:
-                        case "run":
-                            file_prefix = "wolf_run"
-                        case "idle":
-                            file_prefix = "wolf_idle"
-                        case "attack":
-                            file_prefix = "wolf_attack"
-                        case "death":
-                            at = "die"
-                            file_prefix = "wolf_die"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    img = pygame.image.load(path).convert_alpha()
-
-                    w = img.get_width()
-                    h = img.get_height()
-
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-
-                    cropped_img = img.subsurface(new_region)
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Troll1" | "Troll2" | "Troll3":
-            for animation in animation_types:
-                num_images = character[animation]
-                temp_list = []
-
-                for image_num in range(0, num_images -1):
-
-                    file_index = "{:03}".format(image_num)
-
-                    match animation:
-                        case "run":
-                            file_prefix = "Run"
-                        case "idle":
-                            file_prefix = "Idle"
-                            # file_prefix = "Attack1"
-                        case "attack":
-                            file_prefix = "Attack"
-                        case "death":
-                            file_prefix = "Dead"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    w = img.get_width()
-                    h = img.get_height()
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    w = cropped_img.get_width()
-                    h = cropped_img.get_height()
-
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case "Zombie1" | "Zombie2" | "Zombie3":
-            for animation in animation_types:
-                num_images = character[animation]
-                temp_list = []
-
-                for image_num in range(1, num_images):
-
-                    file_index = str(image_num)
-
-                    match animation:
-                        case "run":
-                            file_prefix = "Run"
-                        case "idle":
-                            file_prefix = "Idle"
-                            # file_prefix = "Attack1"
-                        case "attack":
-                            file_prefix = "Attack"
-                        case "death":
-                            file_prefix = "Dead"
-                        case _:
-                            file_prefix = ""
-
-                    path = f"assets/images/characters/Zombie/{character['name']}/Animation/{file_prefix}{file_index}.png"
-                    img = pygame.image.load(path).convert_alpha()
-
-                    w = img.get_width()
-                    h = img.get_height()
-                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
-                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
-                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
-                    cropped_img = img.subsurface(new_region)
-
-                    if character['scale'] != 1:
-                        cropped_img = scale_img(cropped_img, character['scale'])
-                    w = cropped_img.get_width()
-                    h = cropped_img.get_height()
-
-                    temp_list.append(cropped_img)
-                animation_list.append(temp_list)
-        case _:
-            print("   MAIN.PY, line={}\nFailed loading images for {}".format(line_numb(), character['name']))
-            if constants.DEBUG_LEVEL == 0:
-                pygame.quit()
-                sys.exit()
-
-    if (constants.DEBUG_LEVEL > 1):
-        print(" line: {},  animation={}".format(line_numb(), animation))
-    mob_animations.append(animation_list)
-
-if constants.DEBUG_LEVEL:  # print the last load time stat
-    print(new_time - start_time)
-
 animation = ""
-animation_list = []
-if constants.DEBUG_LEVEL:
-    print("\n  Images for player and {} enemies loaded\n".format(i))
+
+
+# animation_list = []
 
 
 def draw_character(image, x, y):
@@ -1971,7 +193,7 @@ def draw_statusbar_info():
     pygame.draw.line(screen, constants.WHITE, (0, 50), (constants.SCREEN_WIDTH, 50))
     # draw lives
     half_heart_drawn = False
-    health_percentage = player.health / constants.PLAYER_START_HEALTH * 100
+    health_percentage = player.health / player.max_health * 100
     for i in range(5):
         if health_percentage >= ((i + 1) * 20):
             screen.blit(heart_full, (10 + i * 50, 0))
@@ -2000,7 +222,7 @@ def reset_level():
     item_group.empty()
     fireball_group.empty()
     lightning_group.empty()
-    sprite_group.empty()
+    enemy_stats_sprite_group.empty()
 
     # create empty tile list
     data = []
@@ -2064,8 +286,8 @@ class ScreenFade():
 
 # load in the level data
 if constants.DEBUG_LEVEL:
-    # path = "assets/levels/testing.tmx"
-    path = "assets/levels/level1.tmx"
+    path = "assets/levels/testing.tmx"
+    # path = "assets/levels/level1.tmx"
 
 else:
     path = "assets/levels/level1.tmx"
@@ -2088,12 +310,12 @@ if constants.DEBUG_LEVEL:
     print(" MAIN.PY, line={}\n   Creating World\n".format(line_numb()))
 
 # Create World
-world = World(character_classes, manager)
+world = World(character_classes_dict, manager)
 
 # sprite_group = pygame.sprite.Group()
-sprite_group = pygame.sprite.LayeredUpdates()
+enemy_stats_sprite_group = pygame.sprite.LayeredUpdates()
 
-success = world.process_data(tmx_map, item_images, mob_animations, sprite_group)
+success = world.process_data(tmx_map, item_images, mob_dict, enemy_stats_sprite_group)
 if not success:
     print(" MAIN.PY, line:{}, world.process_data failed".format(line_numb()))
     pygame.quit()
@@ -2117,14 +339,10 @@ arrow_group = pygame.sprite.LayeredUpdates()
 item_group = pygame.sprite.LayeredUpdates()
 fireball_group = pygame.sprite.LayeredUpdates()
 lightning_group = pygame.sprite.LayeredUpdates()
-# damage_text_group = pygame.sprite.Group()
-# arrow_group = pygame.sprite.Group()
-# item_group = pygame.sprite.Group()
-# fireball_group = pygame.sprite.Group()
-# lightning_group = pygame.sprite.Group()
 
 score_status = Item(constants.SCREEN_WIDTH - 115, 23, 0, coin_images, True)
 item_group.add(score_status)
+
 blue_potion_status = Item(constants.SCREEN_WIDTH - 225, 23, 2, blue_potion, True)
 green_potion_status = Item(constants.SCREEN_WIDTH - 300, 23, 3, green_potion, True)
 item_group.add(blue_potion_status)
@@ -2209,7 +427,7 @@ while run:
                 for enemy in enemy_list:
                     # TODO : why is fireball = enemy.ai run for every enemy?  How about lightning?
                     fireball, lightning = enemy.ai(player, world.obstacle_tiles, screen_scroll, fireball_image,
-                                                   lightning_image, character_classes, time_delta)
+                                                   lightning_image, character_classes_dict, time_delta)
                     if fireball:
                         fireball_group.add(fireball)
                     if lightning:
@@ -2223,34 +441,34 @@ while run:
                     arrow_group.add(arrow)
                     shot_fx.play()
                 for arrow in arrow_group:
-                    damage, damage_pos = arrow.update(screen_scroll, world.obstacle_tiles, enemy_list)
+                    damage, damage_pos, enemy_name = arrow.update(screen_scroll, world.obstacle_tiles, enemy_list)
 
                     if damage:
-                        new_damage, current_health = damage.split(" : ")
+                        new_damage, new_enemy_health = damage.split(" : ")
                         new_damage = -(int(new_damage))
-                        current_health = int(current_health)
+                        new_enemy_health = int(new_enemy_health)
 
                         damage_text = DamageText(damage_pos.centerx, damage_pos.y, str(new_damage), constants.RED)
                         damage_text_group.add(damage_text)
 
-                        if current_health <= 0:
-                            current_health = str("dead")
-                            damage_text = DamageText(damage_pos.centerx, damage_pos.y + 18, str(current_health),
+                        if new_enemy_health <= 0:
+                            new_enemy_health = str("dead")
+                            damage_text = DamageText(damage_pos.centerx, damage_pos.y + 18, str(new_enemy_health),
                                                      constants.BLUE)
                         else:
-                            damage_text = DamageText(damage_pos.centerx, damage_pos.y + 18, str(current_health),
+                            damage_text = DamageText(damage_pos.centerx, damage_pos.y + 18, str(new_enemy_health),
                                                      constants.GREEN)
                         damage_text_group.add(damage_text)
-                        if constants.DEBUG_LEVEL > 1:
-                            print(
-                                " MAIN.PY, line:{}, Damage_text={}, damage={}".format(line_numb(), damage_text, damage))
+                        if constants.DEBUG_SHOW_HIT_DAMAGE:
+                            print("  {} damage to {}.  HP: {}".format(new_damage, enemy_name, new_enemy_health))
                         hit_fx.play()
 
                 damage_text_group.update(time_delta)
                 fireball_group.update(screen_scroll, player)
                 lightning_group.update(screen_scroll, player)
 
-                sprite_group.update(time_delta, screen_scroll)
+                enemy_stats_sprite_group.update(time_delta, screen_scroll)
+                # enemy_stats_sprite_group.update(time_delta, screen_scroll)
                 manager.update(time_delta)
 
                 item_group.update(screen_scroll, player, coin_fx, heal_fx, time_delta)
@@ -2270,8 +488,7 @@ while run:
             # draw enemies
             for enemy in enemy_list:
                 if constants.DEBUG_LEVEL > 1:
-                    print(" MAIN.PY, F:main loop, line={}, enemy.char_type={} ({})".
-                          format(line_numb(), enemy.char_index, character_classes[enemy.char_index]['name']))
+                    print(" MAIN.PY, F:main loop, line={}, enemy.name={}".format(line_numb(), enemy.name))
                     print("   enemy.image={}".format(enemy.image))
                 enemy.draw(screen)
 
@@ -2288,8 +505,8 @@ while run:
             draw_statusbar_info()
 
             # draw the per enemy stats info
-            # enemy_status_overlay_sprite_list.draw(screen)
-            # manager.draw_ui(screen)
+            enemy_stats_sprite_group.draw(screen)
+            manager.draw_ui(screen)
 
             score_status.draw(screen)
             blue_potion_status.draw(screen)
@@ -2314,8 +531,8 @@ while run:
                 pygame.quit()
                 exit()
 
-            world = World(character_classes)
-            success = world.process_data(tmx_map, item_images, mob_animations, sprite_group)
+            world = World(character_classes_dict, manager)
+            success = world.process_data(tmx_map, item_images, mob_dict, sprite_group)
             if not success:
                 print("  world.process_data failed")
                 pygame.quit()
@@ -2358,8 +575,8 @@ while run:
                         pygame.quit()
                         exit()
 
-                    world = World(character_classes)
-                    success = world.process_data(tmx_map, item_images, mob_animations, sprite_group)
+                    world = World(character_classes_dict, manager)
+                    success = world.process_data(tmx_map, item_images, mob_dict, sprite_group)
                     if not success:
                         print("  world.process_data failed in MAIN.PY, line:{}".format(line_numb()))
                         pygame.quit()
@@ -2414,9 +631,9 @@ while run:
 
             moving_down = False
 
-    if god_mode:
+    if constants.GOD_MODE:
         if player and player.health < 50:
-            player.health = constants.PLAYER_START_HEALTH
+            player.health = player.character_classes_dict['player']['hp']
 
     # show fps
     if constants.FPS_MONITOR:

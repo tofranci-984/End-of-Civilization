@@ -77,7 +77,7 @@ class Arrow(pygame.sprite.Sprite):
         # reset variables
         damage = 0
         damage_pos = None
-
+        enemy_hit_name = ""
         # reposition based on speed
         self.rect.x += screen_scroll[0] + self.dx
         self.rect.y += screen_scroll[1] + self.dy
@@ -85,11 +85,11 @@ class Arrow(pygame.sprite.Sprite):
         # check for collision between arrow and tile walls
         for obstacle in obstacle_tiles:
             if obstacle[1].colliderect(self.rect):
-                self.kill()
+                self.kill() # kill the arrow object
 
         # check if arrow has gone off-screen
         if self.rect.right < 0 or self.rect.left > constants.SCREEN_WIDTH or self.rect.bottom < 0 or self.rect.top > constants.SCREEN_HEIGHT:
-            self.kill()
+            self.kill()  # kill the arrow object
 
         # check collision between arrow and enemies HITBOX
         for enemy in enemy_list:
@@ -97,12 +97,13 @@ class Arrow(pygame.sprite.Sprite):
                 damage = random.randrange(constants.ARROW_MIN_DAMAGE, constants.ARROW_MAX_DAMAGE)
                 damage_pos = enemy.rect
                 enemy.health -= damage
-                damage = str(damage) + " : " + str(enemy.health)
+                damage = str(damage) + " : " + str(enemy.health)    # return damage to enemy and enemies new health
                 enemy.hit = True
-                self.kill()
+                self.kill()   # kill the arrow object
+                enemy_hit_name = enemy.name
                 break
 
-        return damage, damage_pos
+        return damage, damage_pos, enemy_hit_name
 
     def draw(self, surface):
         surface.blit(self.image, (

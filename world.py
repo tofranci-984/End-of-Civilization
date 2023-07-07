@@ -1,4 +1,6 @@
 from character import Character
+from character import HealthBarSprite
+
 from items import Item
 import pygame
 import constants
@@ -25,7 +27,7 @@ class Tile(pygame.sprite.Sprite):
 
 
 class World():
-    def __init__(self, character_classes, manager):
+    def __init__(self, character_classes_dict, manager):
         fn = ""
         if constants.DEBUG_LEVEL > 0:  # get the function name for debugging
             fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
@@ -38,12 +40,12 @@ class World():
         self.item_list = []
         self.player = None
         self.character_list = []
-        self.character_classes = character_classes
+        self.character_classes_dict = character_classes_dict
         self.player_count = 0
         self.map_level = 1
-        self.UIManager = manager
+        self.UImanager = manager
 
-    def process_data(self, tmx_data, item_images, mob_animations, sprite_group):
+    def process_data(self, tmx_data, item_images, mob_dict, enemy_stats_sprite_group):
         fn = ""
         if constants.DEBUG_LEVEL:  # get the function name for debugging
             fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
@@ -54,8 +56,6 @@ class World():
         if constants.DEBUG_LEVEL:
             print(" WORLD.PY, F:{}, LN:{}\nPROCESSING {} objects (including enemies)".
                   format(fn, line_numb(), len(tmx_data.objects_by_id)))
-
-        # TODO: should we pass character using search_char or leave it as character_classes?
 
         for i, obj in enumerate(tmx_data.objects):
             pos = obj.x, obj.y
@@ -88,9 +88,19 @@ class World():
                     # (x, y, health, mob_animations, char name, character classes)
                     self.player_count += 1
                     # if the last field (size) is greater than 1, the enemy may bounce to a new spot if area is too small for him initially
-                    player = Character(image_x, image_y, mob_animations,
-                                       obj.properties['item_name'], self.character_classes,
-                                       self.UIManager)
+                    player = Character(image_x, image_y, mob_dict,
+                                       obj.properties['item_name'], self.character_classes_dict,
+                                       self.UImanager, enemy_stats_sprite_group)
+                    x_offset = player.rect.x
+                    y_offset = player.rect.y
+                    health_bar = pygame_gui.elements.UIStatusBar(pygame.Rect((0+x_offset, 30+y_offset), (50, 6)),
+                                                                 self.UImanager,
+                                                                 sprite=player.healthbar_sprite,
+                                                                 percent_method=player.get_health_percentage,
+                                                                 object_id=ObjectID(
+                                                                     '#health_bar', '@player_status_bars'))
+                    # player.healthbar_sprite.move_to_front()
+
                     self.player = player
                 case "gold":
                     coin = Item(image_x, image_y, 0, item_images[0])
@@ -148,20 +158,22 @@ class World():
                     if constants.DEBUG_LEVEL:
                         print("   in F:{}, ln:{}, name={}".format(fn, line_numb(), obj.properties['item_name']))
 
-                    enemy = Character(image_x, image_y, mob_animations, obj.properties['item_name'],
-                                      self.character_classes, self.UIManager)
-                    # enemy.health_bar = pygame_gui.elements.UIStatusBar(pygame.Rect((0, 30), (50, 6)),
-                    #                                                    self.UIManager,
-                    #                                                    sprite=sprite_group,
-                    #                                                    percent_method=enemy.get_health_percentage,
-                    #                                                    object_id=ObjectID(
-                    #                                                        '#health_bar', '@player_status_bars'))
+                    enemy = Character(image_x, image_y, mob_dict, obj.properties['item_name'],
+                                      self.character_classes_dict, self.UImanager, enemy_stats_sprite_group)
                     # health_bar = pygame_gui.elements.UIStatusBar(pygame.Rect((0, 30), (50, 6)),
-                    #                                              manager,
-                    #                                              sprite=enemy_status_sprite,
-                    #                                              percent_method=enemy_status_sprite.get_health_percentage,
+                    #                                              self.UImanager,
+                    #                                              sprite=enemy.healthbar_sprite,
+                    #                                              percent_method=enemy.get_health_percentage,
                     #                                              object_id=ObjectID(
                     #                                                  '#health_bar', '@player_status_bars'))
+                    x_offset = enemy.rect.x
+                    y_offset = enemy.rect.y
+                    health_bar = pygame_gui.elements.UIStatusBar(pygame.Rect((0+x_offset, 30+y_offset), (50, 6)),
+                                                                 self.UImanager,
+                                                                 sprite=enemy.healthbar_sprite,
+                                                                 percent_method=enemy.get_health_percentage,
+                                                                 object_id=ObjectID(
+                                                                     '#health_bar', '@player_status_bars'))
 
                     self.character_list.append(enemy)
 
@@ -221,7 +233,7 @@ class World():
                         wall_count += 1
                         self.obstacle_tiles.append(tile_data)
                         self.map_tiles.append(tile_data)
-                        Tile(pos=pos, surf=surf, groups=sprite_group)
+                        Tile(pos=pos, surf=surf, groups=enemy_stats_sprite_group)
                     case "floor" | "green" | "secret" | "holes":
                         if tile_group == "floor":
                             open_count += 1
@@ -233,7 +245,7 @@ class World():
                             green_count += 1
 
                         self.map_tiles.append(tile_data)
-                        Tile(pos=pos, surf=surf, groups=sprite_group)
+                        Tile(pos=pos, surf=surf, groups=enemy_stats_sprite_group)
                     case _:
                         print("   Unknown tile group={}, item_name={}".format(tile_group, tile_name))
                         unknown_tiles.append(tile_type)
