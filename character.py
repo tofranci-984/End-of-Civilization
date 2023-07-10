@@ -12,56 +12,12 @@ import pygame_gui
 from pygame_gui.core import ObjectID
 
 
-class HealthBarSprite(pygame.sprite.Sprite):
-    def __init__(self, character, x, y, *groups: pygame.sprite.AbstractGroup):
-        super().__init__(*groups)
-
-        self.parent = character
-        self.image = pygame.image.load('assets/images/items/transparentpixel.png')
-
-        self.position = pygame.Vector2(x, y)
-
-        self.rect = self.parent.image.get_rect()
-        self.rect.topleft = (x, y)
-
-
-    def get_health_percentage(self) -> float:
-        return self.parent.health / self.parent.health
-        # return self.current_health/self.max_health
-
-
-
-    def update(self, time_delta_secs: float, screen_scroll) -> None:
-        fn = ""
-        level_complete = False
-        if constants.DEBUG_LEVEL:  # get the function name for debugging
-            fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
-            if constants.DEBUG_LEVEL > 1:
-                print("ITEMS.PY, F {}, LN:{}".format(fn, line_numb()))
-
-        # doesn't apply to the dummy coin that is always displayed at the top of the screen
-        self.rect.x += screen_scroll[0]
-        self.rect.y += screen_scroll[1]
-
-
-# def scale_img(image, scale, smooth=False):
-#     w = image.get_width()
-#     h = image.get_height()
-#     gscale= constants.GLOBAL_SCALE * scale
-#     if smooth:
-#         if gscale == 2:
-#             return pygame.transform.scale2x(image)
-#         else:
-#             return pygame.transform.smoothscale(image, (w * gscale, h * gscale))
-#     else:
-#         return pygame.transform.scale(image, (w * gscale, h * gscale))
-#
 
 def load_character_images(char_name, mob_dict, character_classes_dict):
     #    global character, animation_list, animation, path, y, x
     animation_types = ["idle", "run", "attack", "death"]
     start_time = pygame.time.get_ticks()
-    number_of_images_loaded= 0
+    number_of_images_loaded = 0
 
     character = character_classes_dict[char_name]
     if constants.DEBUG_LEVEL:
@@ -70,7 +26,6 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
         print("Character={}".format(character['name']), end="")
 
     # reset temporary list of images
-    temp_list = []
     animation_list = []
 
     match character['name']:
@@ -1777,7 +1732,6 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
     return number_of_images_loaded
 
 
-
 def line_numb():
     '''Returns the current line number in our program'''
     return inspect.currentframe().f_back.f_lineno
@@ -1837,10 +1791,7 @@ class Character():
         if constants.DEBUG_LEVEL:
             print(" CHAR.PY, F:{}, LN:{}".format(fn, line_numb()), end="")
             print(" self.name={}\nmob_dict[self.name]={}".format(self.name, mob_dict[self.name]))
-            # print(" CHAR.PY, F:{}, LN:{}, self.name={}\nmob_dict[self.name][images]={}".
-            #       format(fn, line_numb(), mob_dict[self.name]['images']))
-            # print(" CHAR.PY, F:{}, LN:{}, self.name={}\nmob_dict[self.name][images]={}".
-            #       format(fn, line_numb(), mob_dict[self.name]['images']))
+
         self.animation_list = mob_dict[self.name]['images']
 
         self.frame_index = random.randrange(0,
@@ -1850,7 +1801,7 @@ class Character():
         self.update_time = pygame.time.get_ticks()
         self.running = False
         self.health = character_classes_dict[self.name]['hp']
-        self.max_health= constants.PLAYER_MAX_HEALTH
+        self.max_health = constants.PLAYER_MAX_HEALTH
         self.alive = True
         self.dying = False
         self.death_cooldown = 0
@@ -1874,17 +1825,16 @@ class Character():
         self.rect = pygame.Rect(0, 0, image_width, image_height)
         self.rect.center = (x, y)
 
-        # TODO: getting error when healthbar is uncommented
+        if constants.DEBUG_LEVEL:
+            print("CHAR.PY, F:{}, L:{}, name={}".format(fn, line_numb(), self.name))
+            print("  rect={}".format(self.rect))
 
-        self.healthbar_sprite = HealthBarSprite(self, x, y, enemy_stats_sprite_group)
-        if constants.DEBUG_LEVEL > 1:
+        if constants.DEBUG_LEVEL:
             print(" F: {}, line:{}\n  rect: {}\n  self.name={}".
                   format(fn, line_numb(), self.rect, self.name))
             print("   self.image={}".format(self.image))
+            print("   self.rect={}".format(self.rect))
             print("")
-
-    def get_health_percentage(self) -> float:
-        return self.health / self.max_health
 
 
     def move(self, dx, dy, obstacle_tiles, time_delta, exit_tile=None):
@@ -1915,7 +1865,6 @@ class Character():
 
         # check for collision with map in x direction
         self.rect.x += dx
-        self.healthbar_sprite.rect.x += dx   # keep healthbar x, y in sync
 
         for obstacle in obstacle_tiles:
             # check for collision
@@ -1927,7 +1876,6 @@ class Character():
                     self.rect.left = obstacle[1].right
 
         self.rect.y += dy
-        self.healthbar_sprite.rect.y += dy  # keep healthbar x, y in sync
 
         # check for collision with map in y direction
         for obstacle in obstacle_tiles:
@@ -1938,6 +1886,13 @@ class Character():
                     self.rect.bottom = obstacle[1].top
                 if dy < 0:
                     self.rect.top = obstacle[1].bottom
+
+        if constants.DEBUG_LEVEL:
+            print(" CHAR.PY, F: {}, line:{}\n  rect: {}\n  self.name={}".
+                  format(fn, line_numb(), self.rect, self.name))
+            print("   self.image={}".format(self.image))
+            print("   self.rect={}".format(self.rect))
+            print("")
 
         # EXIT LADDER logic only applicable to player, NOT enemies
         if self.name == "player":
@@ -1951,12 +1906,11 @@ class Character():
                 # exit_dist = math.sqrt(((self.rect.centerx - exit_tile[1].centerx) ** 2) +
                 # (self.rect.centery - exit_tile[1].centery) **2)
 
-# player attack options are triggered here
-# player attack options are triggered here
+                # player attack options are triggered here
+                # player attack options are triggered here
 
-
-# player attack options are triggered here
-# player attack options are triggered here
+                # player attack options are triggered here
+                # player attack options are triggered here
 
                 if constants.DEBUG_LEVEL:
                     print("   exit_dist={}".format(exit_dist))
@@ -2162,7 +2116,8 @@ class Character():
                     player.hit = True
                     player.last_hit = pygame.time.get_ticks()
                     if constants.DEBUG_SHOW_HIT_DAMAGE:
-                        print("  {} inflicts {} damage to you.  Health reduced to {}".format(self.name, new_damage, player.health))
+                        print("  {} inflicts {} damage to you.  Health reduced to {}".format(self.name, new_damage,
+                                                                                             player.health))
                     self.attacking = True
                     self.running = False
                 else:

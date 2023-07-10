@@ -17,15 +17,15 @@
         "misc":
         {
             "shadow_width": "1",
-            "border_width": "5"
+            "border_width": "0"
         }
     },
 
     "#health_bar":
     {
         "colours": {
-            "filled_bar": "#AA4040D0",
-            "unfilled_bar": "#888888D0"
+            "unfilled_bar": "#AA4040D0",
+            "filled_bar": "#888888D0"
         },
         "misc":
         {

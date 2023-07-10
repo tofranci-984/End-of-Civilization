@@ -38,7 +38,7 @@ def line_numb():
     return inspect.currentframe().f_back.f_lineno
 
 
-game_title = "End of Civ"
+game_title = "End of Civilization"
 
 if constants.DEBUG_LEVEL:
     print("\n\n{} starting\nPath {}\n".format(game_title, Path(__file__)))
@@ -129,11 +129,11 @@ resume_img = scale_img(pygame.image.load("assets/images/buttons/button_resume.pn
                        constants.BUTTON_SCALE, use_global_scale=False)
 
 # load heart images
-heart_empty = scale_img(pygame.image.load("assets/images/items/heart_empty.png").convert_alpha(), constants.ITEM_SCALE,
+heart_empty = scale_img(pygame.image.load("assets/images/items/heart_empty.png").convert_alpha(), constants.HEALTHBAR_SCALE,
                         use_global_scale=False)
-heart_half = scale_img(pygame.image.load("assets/images/items/heart_half.png").convert_alpha(), constants.ITEM_SCALE,
+heart_half = scale_img(pygame.image.load("assets/images/items/heart_half.png").convert_alpha(), constants.HEALTHBAR_SCALE,
                        use_global_scale=False)
-heart_full = scale_img(pygame.image.load("assets/images/items/heart_full.png").convert_alpha(), constants.ITEM_SCALE,
+heart_full = scale_img(pygame.image.load("assets/images/items/heart_full.png").convert_alpha(), constants.HEALTHBAR_SCALE,
                        use_global_scale=False)
 
 # load weapon images
@@ -207,10 +207,8 @@ def draw_statusbar_info():
     draw_statusbar_text("HP: " + str(player.health), font, constants.WHITE, 260, 15)
     # level
     draw_statusbar_text("LEVEL: " + str(level), font, constants.WHITE, constants.SCREEN_WIDTH / 2, 15)
-
     # exp
     draw_statusbar_text("EXP: " + str(player.exp), font, constants.WHITE, constants.SCREEN_WIDTH / 2 + 185, 15)
-
     # show score
     draw_statusbar_text(f"X{player.score}", font, constants.WHITE, constants.SCREEN_WIDTH - 100, 15)
 
@@ -286,7 +284,7 @@ class ScreenFade():
 
 # load in the level data
 if constants.DEBUG_LEVEL:
-    path = "assets/levels/testing.tmx"
+    path = "assets/levels/testing2.tmx"
     # path = "assets/levels/level1.tmx"
 
 else:
@@ -408,16 +406,20 @@ while run:
 
             if player.alive:
                 # calculate player movement
+                if constants.DEBUG_FAST_TRAVEL:
+                    speed = 10
+                else:
+                    speed = character_classes_dict['player']['speed']
                 dx = 0
                 dy = 0
                 if moving_right:
-                    dx = constants.PLAYER_SPEED
+                    dx = speed
                 if moving_left:
-                    dx = -constants.PLAYER_SPEED
+                    dx = -speed
                 if moving_up:
-                    dy = -constants.PLAYER_SPEED
+                    dy = -speed
                 if moving_down:
-                    dy = constants.PLAYER_SPEED
+                    dy = speed
 
                 # move player
                 screen_scroll, level_complete = player.move(dx, dy, world.obstacle_tiles, time_delta, world.exit_tile)
@@ -468,7 +470,6 @@ while run:
                 lightning_group.update(screen_scroll, player)
 
                 enemy_stats_sprite_group.update(time_delta, screen_scroll)
-                # enemy_stats_sprite_group.update(time_delta, screen_scroll)
                 manager.update(time_delta)
 
                 item_group.update(screen_scroll, player, coin_fx, heal_fx, time_delta)
@@ -505,7 +506,7 @@ while run:
             draw_statusbar_info()
 
             # draw the per enemy stats info
-            enemy_stats_sprite_group.draw(screen)
+            # enemy_stats_sprite_group.draw(screen)
             manager.draw_ui(screen)
 
             score_status.draw(screen)
@@ -521,7 +522,11 @@ while run:
 
             world_data = reset_level()
 
-            path = "assets/levels/level{}.tmx".format(level)
+            # load in the level data
+            if constants.DEBUG_LEVEL:
+                path = "assets/levels/testing2.tmx"
+            else:
+                path = "assets/levels/level{}.tmx".format(level)
 
             try:
                 tmx_map = load_pygame(path)
@@ -532,7 +537,8 @@ while run:
                 exit()
 
             world = World(character_classes_dict, manager)
-            success = world.process_data(tmx_map, item_images, mob_dict, sprite_group)
+            success = world.process_data(tmx_map, item_images, mob_dict, enemy_stats_sprite_group)
+
             if not success:
                 print("  world.process_data failed")
                 pygame.quit()
@@ -639,11 +645,6 @@ while run:
     if constants.FPS_MONITOR:
         fps.render(screen, str(level))
         fps.clock.tick(constants.FPS)
-
-        # sort sprites by ascending _layer
-    # for sprite in sorted(, key=lambda x: x._layer):
-    #     # and then paint
-    #     screen.blit(sprite.image, sprite.rect)
 
     pygame.display.update()
 #     pygame.display.flip()

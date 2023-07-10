@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="256" tileheight="256" infinite="0" nextlayerid="6" nextobjectid="542">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="256" tileheight="256" infinite="0" nextlayerid="6" nextobjectid="544">
  <tileset firstgid="1" source="objects.tsx"/>
  <tileset firstgid="188" source="tiles.tsx"/>
  <tileset firstgid="428" source="characters.tsx"/>
+ <tileset firstgid="660" source="../../../Final_game/assets/levels/objects.tsx"/>
  <layer id="1" name="ground" width="50" height="50">
   <data encoding="csv">
 266,226,226,225,226,226,269,0,247,226,225,225,225,226,226,226,226,248,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -60,9 +61,8 @@
  <objectgroup color="#64db38" id="3" name="objects">
   <object id="240" gid="149" x="1281.83" y="760.058" width="200" height="200"/>
   <object id="245" gid="143" x="380.903" y="1220.48" width="129" height="192"/>
-  <object id="539" gid="657" x="659" y="534" width="147" height="108"/>
-  <object id="540" gid="658" x="679" y="786" width="134" height="99"/>
-  <object id="541" gid="659" x="684" y="1073" width="140" height="110"/>
+  <object id="542" gid="603" x="796" y="711" width="121" height="141"/>
+  <object id="543" gid="672" x="1083" y="988" width="107" height="136"/>
  </objectgroup>
  <objectgroup id="5" name="enemies"/>
 </map>

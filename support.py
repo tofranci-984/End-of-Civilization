@@ -65,13 +65,13 @@ def load_potions():
     # load potion images
     red_potion = scale_img(pygame.image.load(
         "assets/images/environment/Sprites/PNG/Additional Sprites/bottle-red-new.png").convert_alpha(),
-                           constants.POTION_SCALE)
+                           constants.POTION_SCALE, use_global_scale=False)
     blue_potion = scale_img(pygame.image.load(
         "assets/images/environment/Sprites/PNG/Additional Sprites/bottle-blue-new.png").convert_alpha(),
-                            constants.POTION_SCALE)
+                            constants.POTION_SCALE, use_global_scale=False)
     green_potion = scale_img(pygame.image.load(
         "assets/images/environment/Sprites/PNG/Additional Sprites/bottle-green-new.png").convert_alpha(),
-                             constants.POTION_SCALE)
+                             constants.POTION_SCALE, use_global_scale=False)
 
     return red_potion, blue_potion, green_potion
 

@@ -62,10 +62,10 @@ class Item(pygame.sprite.Sprite):
         # doesn't apply to the dummy coin that is always displayed at the top of the screen
         if not self.dummy_coin:
             # reposition based on screen scroll
-            self.rect.x += screen_scroll[0]
-            self.rect.y += screen_scroll[1]
-            # self.rect.x += screen_scroll[0] + time_delta
-            # self.rect.y += screen_scroll[1] + time_delta
+            # self.rect.x += screen_scroll[0]
+            # self.rect.y += screen_scroll[1]
+            self.rect.x += screen_scroll[0] + time_delta
+            self.rect.y += screen_scroll[1] + time_delta
 
         # check to see if item has been collected by the player
         if self.rect.colliderect(player.rect):
@@ -86,7 +86,7 @@ class Item(pygame.sprite.Sprite):
                     heal_fx.play()
                 case 100:  # exit portal
                     pass
-                    # player.level_complete = True
+                    player.level_complete = True
                 case _:  # gold pile
                     if constants.DEBUG_LEVEL:
                         print("ITEMS.PY f:{}, line:{}, item_type={}".format(fn, ln, self.item_type))

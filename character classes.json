@@ -107,7 +107,7 @@
     "is_Hitbox_Symmetrical": false,
     "name": "Cyclops1",
     "run": 10,
-    "scale": 0.5,
+    "scale": 0.25,
     "speed": 4,
     "trim_hitbox": [
       100,
@@ -135,7 +135,7 @@
     "is_Hitbox_Symmetrical": false,
     "name": "Cyclops2",
     "run": 10,
-    "scale": 0.5,
+    "scale": 0.25,
     "speed": 4,
     "trim_hitbox": [
       100,
@@ -163,7 +163,7 @@
     "is_Hitbox_Symmetrical": false,
     "name": "Cyclops3",
     "run": 10,
-    "scale": 0.5,
+    "scale": 0.25,
     "speed": 4,
     "trim_hitbox": [
       100,
