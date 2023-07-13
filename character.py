@@ -28,7 +28,6 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
         case "Bear":
             animation_list.append(char_name)
             for animation in animation_types:
-                at = animation
                 temp_list = []
 
                 num_images = character[animation] + 1
@@ -37,7 +36,6 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     file_index = "{:04}".format(image_num)
                     match animation:
                         case "run":
-                            at = animation.capitalize()
                             file_prefix = "bear_run"
                         case "idle":
                             file_prefix = "bear_idle"
@@ -48,7 +46,8 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         case _:
                             file_prefix = ""
 
-                    path = f"assets/images/characters/{character['name']}/Sprites/{animation}/{file_prefix}_{file_index}.png"
+                    path = "assets/images/characters/{}/Sprites/{}/{}_{}.png".format(character['name'],
+                                                                                     animation, file_prefix, file_index)
                     img = pygame.image.load(path).convert_alpha()
 
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
@@ -105,13 +104,9 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
             path = "assets/images/characters/Crab Monster/x320p_Spritesheets"
             for animation in animation_types:
                 temp_list = []
-                # scale = character['scale']
+                scale = character['scale']
 
                 match animation:
-                    case "idle":
-                        # (filename, width, height, rows, cols, start_row_index= 0)
-                        images = Tilesheet(f"{path}/Idle2.png", 512, 320, 8, 5)
-                        trim_rect = character['trim_rect']
                     case "attack":
                         images = Tilesheet(f"{path}/Attack1.png", 320, 200, 5, 4)
                         trim_rect = character['trim_rect_320']
@@ -122,6 +117,12 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     case "run":
                         images = Tilesheet(f"{path}/Walk_Forward.png", 512, 320, 4, 5)
                         trim_rect = character['trim_rect']
+                    case "idle":
+                        # (filename, width, height, rows, cols, start_row_index= 0)
+                        images = Tilesheet(f"{path}/Idle2.png", 512, 320, 8, 5)
+                        trim_rect = character['trim_rect']
+                    case _:
+                        images = ""
 
                 for y in range(images.rows):
                     for x in range(images.cols):
@@ -135,7 +136,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         cropped_img = pygame.transform.flip(cropped_img, character['flip_image'], False)
 
                         if scale != 1:
-                            cropped_img = scale_img(cropped_img, character['scale'])
+                            cropped_img = scale_img(cropped_img, scale)
                         temp_list.append(cropped_img)
                     number_of_images_loaded += 1
 
@@ -148,6 +149,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 for image_num in range(1, num_images):
 
                     file_index = "{:03}".format(image_num)
+                    scale = character['scale']
 
                     match animation:
                         case "run":
@@ -167,19 +169,18 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
                     path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
-                    w = img.get_width()
-                    h = img.get_height()
 
                     if character['scale'] != 1:
                         img = scale_img(img, character['scale'])
-                    nw = img.get_width()
-                    nh = img.get_height()
 
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
                     height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
 
                     new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
                     cropped_img = img.subsurface(new_region)
+                    if scale != 1:
+                        cropped_img = scale_img(cropped_img, scale)
+
                     temp_list.append(cropped_img)
                     number_of_images_loaded += 1
 
@@ -251,13 +252,9 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
                     path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
-                    w = img.get_width()
-                    h = img.get_height()
 
                     if scale != 1:
                         img = scale_img(img, scale)
-                    nw = img.get_width()
-                    nh = img.get_height()
 
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
                     height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
@@ -275,7 +272,6 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
                 for image_num in range(1, num_images):
                     file_index = "{}".format(image_num)
-                    at = animation.capitalize()
 
                     match animation:
                         case "run":
@@ -285,7 +281,6 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         case "attack":
                             file_prefix = "Attack"
                         case "death":
-                            at = "Die"
                             file_prefix = "Death"
                         case _:
                             file_prefix = ""
@@ -364,8 +359,6 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
 
-                    w = img.get_width()
-                    h = img.get_height()
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
                     height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
                     new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
@@ -373,8 +366,6 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
                     if character['scale'] != 1:
                         cropped_img = scale_img(cropped_img, character['scale'])
-                    w = cropped_img.get_width()
-                    h = cropped_img.get_height()
 
                     temp_list.append(cropped_img)
                     number_of_images_loaded += 1
@@ -446,6 +437,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         images = ""
 
                 trim_rect = character['trim_rect']
+                flip = character['flip_image']
 
                 for x in range(images.cols):
                     img = images.get_tile(x, 0)
@@ -561,6 +553,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                             file_prefix = "DIE"
                             at = "DIE"
                         case _:
+                            at = "ERROR"
                             file_prefix = ""
 
                     path = f"assets/images/characters/{character['name']}/{at}/{file_prefix}_{file_index}.png"
@@ -753,6 +746,9 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         images = Tilesheet("assets/images/characters/lordesther/LordEsther_walking.png",
                                            128, 128, 4, 8, 2)  # 8 images, row 3
                         flip = False
+                    case _:
+                        images= ""
+
                 for x in range(images.cols):
                     img = images.get_tile(x, 0)
 
@@ -988,6 +984,9 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         images = Tilesheet(
                             "assets/images/characters/PrinceTaerron/Medieval_Bosses_PrinceTaerron_running.png", 512,
                             512, 4, 8, 2)  # 3 images, row 1
+                    case _:
+                        images = ""
+
                 for x in range(images.cols):
                     img = images.get_tile(x, 0)
                     width = img.get_width() - (trim_rect[0] + trim_rect[1])
@@ -1054,6 +1053,8 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                                            4)
                     case "death":
                         images = Tilesheet("assets/images/characters/red demon/Death Body 090.png", 256, 256, 5, 6)
+                    case _:
+                        images= ""
 
                 for y in range(images.rows):
                     for x in range(images.cols):
@@ -1175,6 +1176,8 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     case "run":
                         images = Tilesheet("assets/images/characters/Skeleton/x240p_Spritesheets/Walk_Right.png",
                                            320, 240, 5, 4)
+                    case _:
+                        images= ""
 
                 for y in range(images.rows):
                     for x in range(images.cols):
@@ -1289,6 +1292,9 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         images = Tilesheet(
                             "assets/images/characters/SunkenGod/Medieval_Bosses_SunkenGod_running.png",
                             512, 512, 4, 8, 2)  # 3 images, row 1
+                    case _:
+                        images= ""
+
                 for x in range(images.cols):
                     img = images.get_tile(x, 0)
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
@@ -1329,6 +1335,9 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                             "assets/images/characters/TheOldKing/Medieval_Bosses_TheOldKing_walking.png",
                             512, 512, 4, 8, 2)  # 3 images, row 1
                         flip = False
+                    case _:
+                        images = ""
+
                 for x in range(images.cols):
                     img = images.get_tile(x, 0)
                     width = img.get_width() - (trim_rect[0] + trim_rect[1])
@@ -1369,6 +1378,9 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                             "assets/images/characters/TheTriplets/Medieval_Bosses_TheTriplets_running.png", 512,
                             512, 4,
                             8, 2)  # 3 images, row 1
+                    case _:
+                        images = ""
+
                 for x in range(images.cols):
                     img = images.get_tile(x, 0)
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
@@ -1617,6 +1629,9 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         images = Tilesheet("assets/images/characters/Witch/Medieval_Bosses_Witch_running.png", 512,
                                            512,
                                            4, 8, 2)  # 3 images, row 1
+                    case _:
+                        images =""
+
                 for x in range(images.cols):
                     img = images.get_tile(x, 0)
                     left_crop_pixels = 0  # trims off
@@ -1887,7 +1902,7 @@ class Character(pygame.sprite.Sprite):
             ln = inspect.getframeinfo(inspect.currentframe())[1]
             if constants.DEBUG_LEVEL > 1 and (dx != 0 or dy != 0):
                 print(" CHARACTER.PY, F:[{}], ticks={}, line={}, self.name={}, dx={}, dy={}".
-                      format(fn, pygame.time.get_ticks(), ln, self.char_index, self.name, dx, dy))
+                      format(fn, pygame.time.get_ticks(), ln, self.name, dx, dy))
                 print("  self.rect={}".format(self.rect))
 
         screen_scroll = [0, 0]
@@ -2064,8 +2079,8 @@ class Character(pygame.sprite.Sprite):
 
         if constants.DEBUG_ENEMY_MOTION_OFF:
             if constants.DEBUG_LEVEL > 1:
-                print(" F:{}, line: {}, char_type={}, speed={}, enemy motion is OFF"
-                      .format(fn, line_numb(), self.char_index, speed))
+                print(" F:{}, line: {}, self.name={}, speed={}, enemy motion is OFF"
+                      .format(fn, line_numb(), self.name, speed))
             speed = 0  # stop enemies from moving towards player
 
         # check if line of sight passes through an obstacle tile
@@ -2223,11 +2238,12 @@ class Character(pygame.sprite.Sprite):
         return fireball, lightning
 
     def update(self, player):
+        fn= ""
         if constants.DEBUG_LEVEL:  # get the function name for debugging
             fn = inspect.getframeinfo(inspect.currentframe())[2]
             if constants.DEBUG_LEVEL > 1:
-                print("[{},ln={}]: self.name={}, self.char_type= {},  self.image={}".
-                      format(fn, line_numb(), self.name, self.char_index, self.image))
+                print("[{},ln={}]: self.name={}, self.image={}".
+                      format(fn, line_numb(), self.name, self.image))
 
         # check if character has died
         if self.health <= 0:
@@ -2304,8 +2320,7 @@ class Character(pygame.sprite.Sprite):
     def update_action(self, new_action):
         if constants.DEBUG_LEVEL > 1:  # get the function name for debugging
             fn = inspect.getframeinfo(inspect.currentframe())[2]
-            print("[{},line={}]: self.name={}, self.char_imdex={}, self.image={}".format(fn, line_numb(), self.name,
-                                                                                         self.char_index, self.image))
+            print("[{},line={}]: self.name={}, self.image={}".format(fn, line_numb(), self.name, self.image))
 
         # check if the new action is different to the previous one
         if new_action != self.action:
