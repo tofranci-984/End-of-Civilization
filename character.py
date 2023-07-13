@@ -1,15 +1,12 @@
+import inspect
+import math
 import random
 import sys
 
-import pygame
-import math
-import weapon
-import constants
-import inspect
 from pygame.locals import *
+
+import weapon
 from support import *
-import pygame_gui
-from pygame_gui.core import ObjectID
 
 
 def load_character_images(char_name, mob_dict, character_classes_dict):
@@ -1045,6 +1042,8 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
             for animation in animation_types:
                 temp_list = []
                 trim_rect = character['trim_rect']
+                flip = character['flip_image']
+
                 match animation:
                     case "run":
                         images = Tilesheet("assets/images/characters/red demon/Walk Body 090.png", 256, 256, 5, 4)
