@@ -15,8 +15,6 @@ from pathlib import Path
 import pygame
 from support import *
 
-import pygame_gui
-
 
 class FPS:
     def __init__(self):
@@ -36,149 +34,6 @@ def line_numb():
     """ Returns the current line number in our program
     """
     return inspect.currentframe().f_back.f_lineno
-
-
-game_title = "End of Civilization"
-
-if constants.DEBUG_LEVEL:
-    print("\n\n{} starting\nPath {}\n".format(game_title, Path(__file__)))
-
-# read in enemy info from JSON file
-character_classes_dict = read_code_from_json('character classes.json')
-
-# load music (has to be done before pygame.init for perf reasons)
-mixer.init()
-pygame.mixer.music.load("assets/audio/music.wav")
-pygame.mixer.music.set_volume(0.2)
-
-# play background music only if SOUND_FX True
-if constants.MUSIC:
-    pygame.mixer.music.play(-1, 0.0, 5000)
-
-if not constants.SOUND_FX:
-    volume = 0.0
-else:
-    volume = .5
-
-pygame.init()
-
-if constants.DEBUG_LEVEL:
-    print("[pygame.mixer] init")
-    print("[pygame.mixer.music] loaded, volume is {}".format(volume))
-
-# minimum game screen width / height
-if constants.SCREEN_WIDTH <= 680:
-    constants.SCREEN_WIDTH = 680
-if constants.SCREEN_HEIGHT <= 480:
-    constants.SCREEN_HEIGHT = 480
-
-screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT))
-# screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT), pygame.HWSURFACE | pygame.DOUBLEBUF, vsync=1)
-pygame.display.set_caption(game_title)
-
-# stats bars manager for each enemy
-manager = pygame_gui.UIManager((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT),
-                               'assets/themes/status_bar_theme.json')
-
-# create clock for maintaining frame rate
-clock = pygame.time.Clock()
-
-# define game variables
-level = 1
-# god_mode = constants.GOD_MODE
-start_game = False
-pause_game = False
-start_intro = False
-screen_scroll = [0, 0]
-
-# define player movement variables
-moving_left = False
-moving_right = False
-moving_up = False
-moving_down = False
-
-# define font
-font = pygame.font.Font("assets/fonts/AtariClassic.ttf", 20)
-colors = ColorDict()
-black = colors['black']
-white = colors['white']
-green = colors['green']
-indigo = colors['indigo']
-cyan = colors['cyan']
-
-shot_fx = pygame.mixer.Sound("assets/audio/arrow_shot.mp3")
-shot_fx.set_volume(volume)
-hit_fx = pygame.mixer.Sound("assets/audio/arrow_hit.wav")
-hit_fx.set_volume(volume)
-coin_fx = pygame.mixer.Sound("assets/audio/coin.wav")
-coin_fx.set_volume(volume)
-heal_fx = pygame.mixer.Sound("assets/audio/heal.wav")
-heal_fx.set_volume(volume)
-
-if constants.DEBUG_LEVEL:
-    print("action sounds loaded")
-
-# load button images
-start_img = scale_img(pygame.image.load("assets/images/buttons/button_start.png").convert_alpha(),
-                      constants.BUTTON_SCALE, use_global_scale=False)
-exit_img = scale_img(pygame.image.load("assets/images/buttons/button_exit.png").convert_alpha(), constants.BUTTON_SCALE,
-                     use_global_scale=False)
-restart_img = scale_img(pygame.image.load("assets/images/buttons/button_restart.png").convert_alpha(),
-                        constants.BUTTON_SCALE, use_global_scale=False)
-resume_img = scale_img(pygame.image.load("assets/images/buttons/button_resume.png").convert_alpha(),
-                       constants.BUTTON_SCALE, use_global_scale=False)
-
-# load heart images
-heart_empty = scale_img(pygame.image.load("assets/images/items/heart_empty.png").convert_alpha(), constants.HEALTHBAR_SCALE,
-                        use_global_scale=False)
-heart_half = scale_img(pygame.image.load("assets/images/items/heart_half.png").convert_alpha(), constants.HEALTHBAR_SCALE,
-                       use_global_scale=False)
-heart_full = scale_img(pygame.image.load("assets/images/items/heart_full.png").convert_alpha(), constants.HEALTHBAR_SCALE,
-                       use_global_scale=False)
-
-# load weapon images
-bow_image = scale_img(pygame.image.load("assets/images/weapons/bow-new.png").convert_alpha(), constants.WEAPON_SCALE,
-                      use_global_scale=False)
-sword_image = scale_img(pygame.image.load("assets/images/weapons/sword.png").convert_alpha(), constants.WEAPON_SCALE,
-                        use_global_scale=False)
-arrow_image = scale_img(pygame.image.load("assets/images/weapons/arrow.png").convert_alpha(), constants.WEAPON_SCALE,
-                        use_global_scale=False)
-fireball_image = scale_img(pygame.image.load("assets/images/weapons/fireball.png").convert_alpha(),
-                           constants.FIREBALL_SCALE, use_global_scale=False)
-lightning_image = scale_img(pygame.image.load("assets/images/weapons/red-lightning.png").convert_alpha(),
-                            constants.LIGHTNING_SCALE, use_global_scale=False)
-
-# load coin images
-coin_images = []
-gold_images = []
-load_gold_images(coin_images, gold_images)
-
-# load image for exit portal
-filename = 'assets/images/environment/Sprites/PNG/doors 2 type/portal-new.png'
-exit_portal = pygame.image.load(filename).convert_alpha()
-
-red_potion, blue_potion, green_potion = load_potions()
-
-# group all items together
-item_images = [coin_images, red_potion, blue_potion, green_potion, exit_portal, gold_images]
-
-if constants.DEBUG_LEVEL:
-    print(" line: {}. weapon images loaded".format(line_numb()))
-
-# dictionary for character images
-mob_dict = dict()
-
-animation_types = ["idle", "run", "attack", "death"]
-animation_list = []
-
-animation = ""
-
-
-# animation_list = []
-
-
-def draw_character(image, x, y):
-    screen.blit(image, (x, y))
 
 
 # function for outputting text onto the screen
@@ -282,9 +137,149 @@ class ScreenFade():
         return fade_complete
 
 
+
+# Begin Game code
+# Begin Game code
+# Begin Game code
+
+game_title = "End of Civilization"
+
+if constants.DEBUG_LEVEL:
+    print("\n\n{} starting\nPath {}\n".format(game_title, Path(__file__)))
+
+# load music (has to be done before pygame.init for perf reasons)
+mixer.init()
+pygame.mixer.music.load("assets/audio/music.wav")
+pygame.mixer.music.set_volume(0.2)
+
+# play background music only if SOUND_FX True
+if constants.MUSIC:
+    pygame.mixer.music.play(-1, 0.0, 5000)
+
+if not constants.SOUND_FX:
+    volume = 0.0
+else:
+    volume = .5
+
+pygame.init()
+
+if constants.DEBUG_LEVEL:
+    print("[pygame.mixer] init")
+    print("[pygame.mixer.music] loaded, volume is {}".format(volume))
+
+# minimum game screen width / height
+if constants.SCREEN_WIDTH <= 680:
+    constants.SCREEN_WIDTH = 680
+if constants.SCREEN_HEIGHT <= 480:
+    constants.SCREEN_HEIGHT = 480
+
+# vsync setting removes tearing issue when running
+screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT),
+                                 pygame.HWSURFACE | pygame.DOUBLEBUF, vsync=1)
+
+# create clock for maintaining frame rate
+clock = pygame.time.Clock()
+
+# define game variables
+level = 1
+# god_mode = constants.GOD_MODE
+start_game = False
+pause_game = False
+start_intro = False
+screen_scroll = [0, 0]
+
+# define player movement variables
+moving_left = False
+moving_right = False
+moving_up = False
+moving_down = False
+
+# define font
+font = pygame.font.Font("assets/fonts/AtariClassic.ttf", 20)
+colors = ColorDict()
+black = colors['black']
+white = colors['white']
+green = colors['green']
+indigo = colors['indigo']
+cyan = colors['cyan']
+
+shot_fx = pygame.mixer.Sound("assets/audio/arrow_shot.mp3")
+shot_fx.set_volume(volume)
+hit_fx = pygame.mixer.Sound("assets/audio/arrow_hit.wav")
+hit_fx.set_volume(volume)
+coin_fx = pygame.mixer.Sound("assets/audio/coin.wav")
+coin_fx.set_volume(volume)
+heal_fx = pygame.mixer.Sound("assets/audio/heal.wav")
+heal_fx.set_volume(volume)
+
+if constants.DEBUG_LEVEL:
+    print("action sounds loaded")
+
+# load button images
+start_img = scale_img(pygame.image.load("assets/images/buttons/button_start.png").convert_alpha(),
+                      constants.BUTTON_SCALE, use_global_scale=False)
+exit_img = scale_img(pygame.image.load("assets/images/buttons/button_exit.png").convert_alpha(), constants.BUTTON_SCALE,
+                     use_global_scale=False)
+restart_img = scale_img(pygame.image.load("assets/images/buttons/button_restart.png").convert_alpha(),
+                        constants.BUTTON_SCALE, use_global_scale=False)
+resume_img = scale_img(pygame.image.load("assets/images/buttons/button_resume.png").convert_alpha(),
+                       constants.BUTTON_SCALE, use_global_scale=False)
+
+# load heart images
+heart_empty = scale_img(pygame.image.load("assets/images/items/heart_empty.png").convert_alpha(),
+                        constants.HEALTHBAR_SCALE,
+                        use_global_scale=False)
+heart_half = scale_img(pygame.image.load("assets/images/items/heart_half.png").convert_alpha(),
+                       constants.HEALTHBAR_SCALE,
+                       use_global_scale=False)
+heart_full = scale_img(pygame.image.load("assets/images/items/heart_full.png").convert_alpha(),
+                       constants.HEALTHBAR_SCALE,
+                       use_global_scale=False)
+
+# load weapon images
+bow_image = scale_img(pygame.image.load("assets/images/weapons/bow-new.png").convert_alpha(), constants.WEAPON_SCALE,
+                      use_global_scale=False)
+sword_image = scale_img(pygame.image.load("assets/images/weapons/sword.png").convert_alpha(), constants.WEAPON_SCALE,
+                        use_global_scale=False)
+arrow_image = scale_img(pygame.image.load("assets/images/weapons/arrow.png").convert_alpha(), constants.WEAPON_SCALE,
+                        use_global_scale=False)
+fireball_image = scale_img(pygame.image.load("assets/images/weapons/fireball.png").convert_alpha(),
+                           constants.FIREBALL_SCALE, use_global_scale=False)
+lightning_image = scale_img(pygame.image.load("assets/images/weapons/red-lightning.png").convert_alpha(),
+                            constants.LIGHTNING_SCALE, use_global_scale=False)
+
+# load coin images
+coin_images = []
+gold_images = []
+load_gold_images(coin_images, gold_images)
+
+# load image for exit portal
+filename = 'assets/images/environment/Sprites/PNG/doors 2 type/portal-new.png'
+exit_portal = pygame.image.load(filename).convert_alpha()
+
+red_potion, blue_potion, green_potion = load_potions()
+
+# group all items together
+item_images = [coin_images, red_potion, blue_potion, green_potion, exit_portal, gold_images]
+
+if constants.DEBUG_LEVEL:
+    print(" line: {}. weapon images loaded".format(line_numb()))
+
+# dictionary for character images
+mob_dict = dict()
+
+animation_types = ["idle", "run", "attack", "death"]
+animation_list = []
+
+animation = ""
+
+# read in character / enemy info from JSON file
+character_classes_dict = read_code_from_json('character classes.json')
+
+
 # load in the level data
 if constants.DEBUG_LEVEL:
-    path = "assets/levels/testing2.tmx"
+    path = "assets/levels/testing.tmx"
     # path = "assets/levels/level1.tmx"
 
 else:
@@ -308,7 +303,7 @@ if constants.DEBUG_LEVEL:
     print(" MAIN.PY, line={}\n   Creating World\n".format(line_numb()))
 
 # Create World
-world = World(character_classes_dict, manager)
+world = World(character_classes_dict)
 
 # sprite_group = pygame.sprite.Group()
 enemy_stats_sprite_group = pygame.sprite.LayeredUpdates()
@@ -470,7 +465,6 @@ while run:
                 lightning_group.update(screen_scroll, player)
 
                 enemy_stats_sprite_group.update(time_delta, screen_scroll)
-                manager.update(time_delta)
 
                 item_group.update(screen_scroll, player, coin_fx, heal_fx, time_delta)
 
@@ -485,6 +479,7 @@ while run:
             # draw player on screen
             player.draw(screen)
             bow.draw(screen)
+            player.draw_health(screen)
 
             # draw enemies
             for enemy in enemy_list:
@@ -492,6 +487,7 @@ while run:
                     print(" MAIN.PY, F:main loop, line={}, enemy.name={}".format(line_numb(), enemy.name))
                     print("   enemy.image={}".format(enemy.image))
                 enemy.draw(screen)
+                enemy.draw_health(screen)
 
             # put player.draw here to have player on top of enemies, leave above for enemies to be on top.
             # player.draw(screen)
@@ -504,14 +500,11 @@ while run:
                 lightning.draw(screen)
             damage_text_group.draw(screen)
             draw_statusbar_info()
-
-            # draw the per enemy stats info
-            # enemy_stats_sprite_group.draw(screen)
-            manager.draw_ui(screen)
-
             score_status.draw(screen)
             blue_potion_status.draw(screen)
             green_potion_status.draw(screen)
+
+            # draw_rect_alpha(screen, (0, 0, 255, 127), (55, 90, 140, 140))
 
         # check level complete
         if level_complete:
@@ -536,7 +529,7 @@ while run:
                 pygame.quit()
                 exit()
 
-            world = World(character_classes_dict, manager)
+            world = World(character_classes_dict)
             success = world.process_data(tmx_map, item_images, mob_dict, enemy_stats_sprite_group)
 
             if not success:

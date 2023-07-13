@@ -12,7 +12,6 @@ import pygame_gui
 from pygame_gui.core import ObjectID
 
 
-
 def load_character_images(char_name, mob_dict, character_classes_dict):
     #    global character, animation_list, animation, path, y, x
     animation_types = ["idle", "run", "attack", "death"]
@@ -1737,8 +1736,33 @@ def line_numb():
     return inspect.currentframe().f_back.f_lineno
 
 
-class Character():
-    def __init__(self, x, y, mob_dict, char_name, character_classes_dict, manager, enemy_stats_sprite_group):
+def draw_health_bar(surf, rect, border_color, back_color, health_color, progress):
+    # draw_health_bar(surf, health_rect.topleft, health_rect.size,
+    #                 (0, 0, 0), (255, 0, 0), (0, 255, 0), 50, self.health / self.max_health)
+    size = rect.size
+    pos = rect.topleft
+
+    shape_surf = pygame.Surface(size, pygame.SRCALPHA)
+    pygame.draw.rect(shape_surf, border_color, shape_surf.get_rect(), 1)
+    surf.blit(shape_surf, rect)
+
+    # draw red background
+    pygame.draw.rect(shape_surf, back_color, shape_surf.get_rect())
+    surf.blit(shape_surf, rect)
+
+    inner_pos = (pos[0] + 1, pos[1] + 1)
+    inner_size = ((size[0] - 2) * progress, size[1] - 2)
+    rect = (round(inner_pos[0]), round(inner_pos[1]), round(inner_size[0]), round(inner_size[1]))
+    # # progress_rect = (round(inner_pos[0]), round(inner_pos[1]), round(inner_size[0]), round(inner_size[1]))
+
+    # draw green progress
+    pygame.draw.rect(shape_surf, health_color, shape_surf.get_rect())
+    surf.blit(shape_surf, rect)
+
+
+class Character(pygame.sprite.Sprite):
+    def __init__(self, x, y, mob_dict, char_name, character_classes_dict, enemy_stats_sprite_group):
+        pygame.sprite.Sprite.__init__(self)
         fn = ""
         if constants.DEBUG_LEVEL:  # get the function name for debugging
             fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
@@ -1765,6 +1789,8 @@ class Character():
         self.level_complete = False
         self.ghost = False
 
+        self.fading_counter= 0
+
         # assign initial hitbox info
         self.hitbox = (0, 0, 0, 0)
         self.character_classes_dict = character_classes_dict
@@ -1772,7 +1798,7 @@ class Character():
         if self.name == "player" and constants.DEBUG_GHOST_MODE_ON:
             self.ghost = True
 
-        if char_name == "player" or char_name in character_classes_dict:
+        if self.name == "player" or self.name in character_classes_dict:
             pass
         else:
             print(
@@ -1785,8 +1811,11 @@ class Character():
             pygame.quit()
             sys.exit()
 
-        # load images for this character only into mob_dict
-        load_character_images(char_name, mob_dict, character_classes_dict)
+        # if images for this character are not already loaded, load them
+        if self.name in mob_dict:
+            pass
+        else:
+            load_character_images(self.name, mob_dict, character_classes_dict)
 
         if constants.DEBUG_LEVEL:
             print(" CHAR.PY, F:{}, LN:{}".format(fn, line_numb()), end="")
@@ -1836,6 +1865,21 @@ class Character():
             print("   self.rect={}".format(self.rect))
             print("")
 
+    def draw_health(self, surf):
+        health_rect = pygame.Rect(0, 0, self.image.get_width(), 7)
+        health_rect.midbottom = self.rect.centerx, self.rect.top
+
+        health_percentage = self.health / self.max_health
+        if not self.fading_counter:
+            if health_percentage <= 0:
+                self.fading_counter= 1
+        else:
+            self.fading_counter+= 1
+
+        draw_health_bar(surf, health_rect,
+                        (0, 0, 0, 127), (255, 0, 0, 127), (0, 255, 0, 127), self.health / self.max_health)
+        # draw_health_bar(surf, health_rect.topleft, health_rect.size,
+        #                 (0, 0, 0), (255, 0, 0), (0, 255, 0), 50, self.health / self.max_health)
 
     def move(self, dx, dy, obstacle_tiles, time_delta, exit_tile=None):
         fn = ""
@@ -1887,7 +1931,7 @@ class Character():
                 if dy < 0:
                     self.rect.top = obstacle[1].bottom
 
-        if constants.DEBUG_LEVEL:
+        if constants.DEBUG_LEVEL> 1:
             print(" CHAR.PY, F: {}, line:{}\n  rect: {}\n  self.name={}".
                   format(fn, line_numb(), self.rect, self.name))
             print("   self.image={}".format(self.image))

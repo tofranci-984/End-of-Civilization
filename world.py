@@ -26,7 +26,7 @@ class Tile(pygame.sprite.Sprite):
 
 
 class World():
-    def __init__(self, character_classes_dict, manager):
+    def __init__(self, character_classes_dict):
         fn = ""
         if constants.DEBUG_LEVEL > 0:  # get the function name for debugging
             fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
@@ -42,7 +42,6 @@ class World():
         self.character_classes_dict = character_classes_dict
         self.player_count = 0
         self.map_level = 1
-        self.UImanager = manager
 
     def process_data(self, tmx_data, item_images, mob_dict, sprite_group):
         fn = ""
@@ -89,7 +88,7 @@ class World():
                     # if the last field (size) is greater than 1, the enemy may bounce to a new spot if area is too small for him initially
                     player = Character(image_x, image_y, mob_dict,
                                        obj.properties['item_name'], self.character_classes_dict,
-                                       self.UImanager, sprite_group)
+                                       sprite_group)
                     self.player = player
                 case "gold":
                     coin = Item(image_x, image_y, 0, item_images[0])
@@ -148,7 +147,7 @@ class World():
                         print("   in F:{}, ln:{}, name={}".format(fn, line_numb(), obj.properties['item_name']))
 
                     enemy = Character(image_x, image_y, mob_dict, obj.properties['item_name'],
-                                      self.character_classes_dict, self.UImanager, sprite_group)
+                                      self.character_classes_dict, sprite_group)
                     self.character_list.append(enemy)
 
         # process ground tiles

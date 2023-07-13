@@ -1785,7 +1785,7 @@
     "death": 12,
     "exp": 10,
     "flip_image": true,
-    "hp": 200,
+    "hp": 100,
     "idle": 60,
     "is_Hitbox_Symmetrical": true,
     "name": "Warrior",

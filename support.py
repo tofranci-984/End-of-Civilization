@@ -4,6 +4,12 @@ import constants
 from tilesheet import Tilesheet
 
 
+def draw_rect_alpha(surface, color, rect):
+    shape_surf = pygame.Surface(pygame.Rect(rect).size, pygame.SRCALPHA)
+    pygame.draw.rect(shape_surf, color, shape_surf.get_rect())
+    surface.blit(shape_surf, rect)
+
+
 def write_code_to_json1(code, filename):
     with open(filename, 'w') as file:
         json.dump(code, file, indent=2, sort_keys=True)
@@ -16,17 +22,18 @@ def read_code_from_json(filename):
 
 
 # helper function to scale image
-def scale_img(image, scale, smooth=False, use_global_scale= True):
+def scale_img(image, scale, smooth=False, use_global_scale=True):
     w = image.get_width()
     h = image.get_height()
     if use_global_scale:
         global_scale = constants.GLOBAL_SCALE * scale
     else:
         global_scale = scale
-    if smooth and scale ==2:
+    if smooth and scale == 2:
         return pygame.transform.scale2x(image)
     else:
         return pygame.transform.scale(image, (w * global_scale, h * global_scale))
+
 
 def load_gold_images(coin_images, gold_images):
     # Load gold COIN images
@@ -74,8 +81,6 @@ def load_potions():
                              constants.POTION_SCALE, use_global_scale=False)
 
     return red_potion, blue_potion, green_potion
-
-
 
 # def load_files(directory, prefix, file_array):
 #     count = 0
