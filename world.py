@@ -1,16 +1,14 @@
-from character import Character
-
-from items import Item
-import pygame
-import constants
 # import pytmx
 # from pytmx.util_pygame import load_pygame
 import inspect
 # from pathlib import Path
 import sys
-import pygame_gui
-from pygame_gui.core import ObjectID
 
+import pygame
+
+import constants
+from character import Character
+from items import Item
 
 
 def line_numb():
@@ -79,7 +77,7 @@ class World():
 
             # TODO: add a function to create_gold_coin to clean up below
 
-            enemy = None
+            # enemy = None
 
             match obj.properties['item_name']:
                 case "player":
@@ -87,8 +85,7 @@ class World():
                     self.player_count += 1
                     # if the last field (size) is greater than 1, the enemy may bounce to a new spot if area is too small for him initially
                     player = Character(image_x, image_y, mob_dict,
-                                       obj.properties['item_name'], self.character_classes_dict,
-                                       sprite_group)
+                                       obj.properties['item_name'], self.character_classes_dict)
                     self.player = player
                 case "gold":
                     coin = Item(image_x, image_y, 0, item_images[0])
@@ -147,7 +144,7 @@ class World():
                         print("   in F:{}, ln:{}, name={}".format(fn, line_numb(), obj.properties['item_name']))
 
                     enemy = Character(image_x, image_y, mob_dict, obj.properties['item_name'],
-                                      self.character_classes_dict, sprite_group)
+                                      self.character_classes_dict)
                     self.character_list.append(enemy)
 
         # process ground tiles

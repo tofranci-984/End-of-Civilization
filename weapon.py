@@ -65,14 +65,14 @@ class Arrow(pygame.sprite.Sprite):
             self.angle)) * constants.ARROW_SPEED)  # -ve because pygame y coordinate increases down the screen
 
     def update(self, screen_scroll, obstacle_tiles, enemy_list):
-        # fn = ""
-        # if constants.DEBUG_LEVEL:
-        #     fn = "["+inspect.getframeinfo(inspect.currentframe())[2]+"]"
-        #     ln = inspect.getframeinfo(inspect.currentframe())[1]
-        #     if constants.DEBUG_LEVEL>1 and (dx != 0 or dy != 0):
-        #         print(" MAIN.PY, F:[{}], line={}, self.name={}, dx={}, dy={}".
-        #               format(fn, pygame.time.get_ticks(), ln, self.char_index, self.name, dx, dy))
-        #         print("  self.rect={}".format(self.rect))
+        fn = ""
+        if constants.DEBUG_LEVEL:
+            fn = "["+inspect.getframeinfo(inspect.currentframe())[2]+"]"
+            ln = inspect.getframeinfo(inspect.currentframe())[1]
+            if constants.DEBUG_LEVEL > 1:
+                print(" MAIN.PY, F:[{}], line={}, self.name={}".
+                      format(fn, pygame.time.get_ticks(), ln, self.char_index, self.name))
+                print("  self.rect={}".format(self.rect))
 
         # reset variables
         damage = 0
@@ -85,10 +85,11 @@ class Arrow(pygame.sprite.Sprite):
         # check for collision between arrow and tile walls
         for obstacle in obstacle_tiles:
             if obstacle[1].colliderect(self.rect):
-                self.kill() # kill the arrow object
+                self.kill()  # kill the arrow object
 
         # check if arrow has gone off-screen
-        if self.rect.right < 0 or self.rect.left > constants.SCREEN_WIDTH or self.rect.bottom < 0 or self.rect.top > constants.SCREEN_HEIGHT:
+        if self.rect.right < 0 or self.rect.left > constants.SCREEN_WIDTH or \
+                self.rect.bottom < 0 or self.rect.top > constants.SCREEN_HEIGHT:
             self.kill()  # kill the arrow object
 
         # check collision between arrow and enemies HITBOX
@@ -142,7 +143,8 @@ class Fireball(pygame.sprite.Sprite):
         self.rect.y += screen_scroll[1] + self.dy
 
         # check if fireball has gone off-screen
-        if self.rect.right < 0 or self.rect.left > constants.SCREEN_WIDTH or self.rect.bottom < 0 or self.rect.top > constants.SCREEN_HEIGHT:
+        if self.rect.right < 0 or self.rect.left > constants.SCREEN_WIDTH or \
+                self.rect.bottom < 0 or self.rect.top > constants.SCREEN_HEIGHT:
             self.kill()
 
         # check collision between self and player
@@ -189,7 +191,8 @@ class Lightning(pygame.sprite.Sprite):
         self.rect.y += screen_scroll[1] + self.dy
 
         # check if fireball has gone off-screen
-        if self.rect.right < 0 or self.rect.left > constants.SCREEN_WIDTH or self.rect.bottom < 0 or self.rect.top > constants.SCREEN_HEIGHT:
+        if self.rect.right < 0 or self.rect.left > constants.SCREEN_WIDTH or \
+                self.rect.bottom < 0 or self.rect.top > constants.SCREEN_HEIGHT:
             self.kill()
 
         # check collision between self and player

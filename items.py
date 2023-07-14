@@ -24,10 +24,7 @@ class Item(pygame.sprite.Sprite):
             case 1:  # health potion
                 self.frame_index = 0
                 self.image = self.animation_list[self.frame_index]
-            case 2:  # blue potion
-                self.frame_index = 0
-                self.image = self.animation_list
-            case 3:  # green potion
+            case 2 | 3:  # potions
                 self.frame_index = 0
                 self.image = self.animation_list
             case 100:  # exit portal
@@ -52,7 +49,7 @@ class Item(pygame.sprite.Sprite):
 
     def update(self, screen_scroll, player, coin_fx, heal_fx, time_delta):
         fn = ""
-        level_complete = False
+        # level_complete = False
         if constants.DEBUG_LEVEL:  # get the function name for debugging
             fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
             ln = inspect.getframeinfo(inspect.currentframe())[1]
@@ -62,10 +59,12 @@ class Item(pygame.sprite.Sprite):
         # doesn't apply to the dummy coin that is always displayed at the top of the screen
         if not self.dummy_coin:
             # reposition based on screen scroll
-            # self.rect.x += screen_scroll[0]
-            # self.rect.y += screen_scroll[1]
-            self.rect.x += screen_scroll[0] + time_delta
-            self.rect.y += screen_scroll[1] + time_delta
+            self.rect.x += screen_scroll[0]
+            self.rect.y += screen_scroll[1]
+
+# TODO: want to use time delta but it causes portal to move back on screen when offscreen
+            # self.rect.x += screen_scroll[0] + time_delta
+            # self.rect.y += screen_scroll[1] + time_delta
 
         # check to see if item has been collected by the player
         if self.rect.colliderect(player.rect):
@@ -107,7 +106,7 @@ class Item(pygame.sprite.Sprite):
         # update image
         if self.item_type != 100 and self.item_type >= 10:  # gold piles are images not animations
             self.image = self.animation_list[self.item_type - 10]
-        elif (self.item_type in [2, 3]):  # potions
+        elif self.item_type in [2, 3]:  # potions
             self.image = self.animation_list
         else:  #
             self.image = self.animation_list[self.frame_index]

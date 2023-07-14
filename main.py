@@ -1,19 +1,17 @@
+import inspect
 import sys
+from pathlib import Path
 
+from colordict import *
+from pygame import mixer
 # import pytmx
 from pytmx.util_pygame import *
-from pygame import mixer
-import constants
-from weapon import Weapon
-from items import Item
-from world import World
+
 from button import Button
-from tilesheet import Tilesheet
-from colordict import *
-import inspect
-from pathlib import Path
-import pygame
+from items import Item
 from support import *
+from weapon import Weapon
+from world import World
 
 
 class FPS:
@@ -135,7 +133,6 @@ class ScreenFade():
             fade_complete = True
 
         return fade_complete
-
 
 
 # Begin Game code
@@ -275,7 +272,6 @@ animation = ""
 
 # read in character / enemy info from JSON file
 character_classes_dict = read_code_from_json('character classes.json')
-
 
 # load in the level data
 if constants.DEBUG_LEVEL:
@@ -574,8 +570,8 @@ while run:
                         pygame.quit()
                         exit()
 
-                    world = World(character_classes_dict, manager)
-                    success = world.process_data(tmx_map, item_images, mob_dict, sprite_group)
+                    world = World(character_classes_dict)
+                    success = world.process_data(tmx_map, item_images, mob_dict, enemy_stats_sprite_group)
                     if not success:
                         print("  world.process_data failed in MAIN.PY, line:{}".format(line_numb()))
                         pygame.quit()

@@ -1,7 +1,4 @@
 import pygame
-import pytiled_parser
-import pathlib
-import constants
 
 
 class Tilesheet:
