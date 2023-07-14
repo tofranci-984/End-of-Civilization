@@ -139,7 +139,7 @@ class ScreenFade():
 # Begin Game code
 # Begin Game code
 
-game_title = "End of Civilization"
+game_title = "The End of Civilization"
 
 if constants.DEBUG_LEVEL:
     print("\n\n{} starting\nPath {}\n".format(game_title, Path(__file__)))
