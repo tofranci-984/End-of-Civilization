@@ -275,15 +275,17 @@ character_classes_dict = read_code_from_json('character classes.json')
 
 # load in the level data
 if constants.DEBUG_LEVEL:
-    path = "assets/levels/testing.tmx"
-    # path = "assets/levels/level1.tmx"
+    path = "assets/testing.tmx"
+    # path = "assets/level1.tmx"
 
 else:
-    path = "assets/levels/level1.tmx"
+    path = "assets/level1.tmx"
 
 if constants.DEBUG_LEVEL:
     print("MAIN.PY, line:{}, Loading TMX_MAP file: {}".format(line_numb(), path))
 
+# tmx file should be at root of images directory.  Otherwise images path can get messed up and have to be re-located
+# for each file / image in tiled maps :(
 try:
     tmx_map = load_pygame(path)
 
