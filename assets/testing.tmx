@@ -2,7 +2,7 @@
 <map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="256" tileheight="256" infinite="0" nextlayerid="6" nextobjectid="340">
  <tileset firstgid="1" source="objects.tsx"/>
  <tileset firstgid="178" source="tiles.tsx"/>
- <tileset firstgid="418" source="characters.tsx"/>
+ <tileset firstgid="418" source="../../Final_game/assets/levels/characters.tsx"/>
  <layer id="1" name="ground" width="50" height="50">
   <data encoding="csv">
 237,215,216,178,178,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -66,6 +66,5 @@
   <object id="336" gid="603" x="1058" y="703" width="125" height="125"/>
   <object id="337" gid="581" x="778.788" y="506.061" width="200" height="200"/>
   <object id="338" gid="596" x="684.121" y="764.364" width="256" height="256"/>
-  <object id="339" gid="596" x="-34.0606" y="-293.212" width="256" height="256"/>
  </objectgroup>
 </map>
