@@ -1728,48 +1728,37 @@ def line_numb():
 
 
 def draw_health_bar(surf, rect, border_color, back_color, health_color, progress):
+
     size = rect.size
     pos = rect.topleft
 
     # shape_surf = surf.copy()
 
     # TODO to make status bar opaque, need to use SRCALPHA on surface.
+    # def draw_rect_alpha(surface, color, rect):
+    #     shape_surf = pygame.Surface(pygame.Rect(rect).size, pygame.SRCALPHA)
+    #     pygame.draw.rect(shape_surf, color, shape_surf.get_rect())
+    #     surface.blit(shape_surf, rect)
+
     # shape_surf = pygame.Surface(size, pygame.SRCALPHA)
 
     # pygame.draw.rect(shape_surf, back_color, (*pos, *size))
     # pygame.draw.rect(shape_surf, border_color, (*pos, *size), 1)
-    pygame.draw.rect(surf, back_color, (*pos, *size))
-    pygame.draw.rect(surf, border_color, (*pos, *size), 1)
-
-    # # draw border
-    # # pygame.draw.rect(shape_surf, health_color, rect, 1)
-    # pygame.draw.rect(shape_surf, health_color, shape_surf.get_rect(), 1)
-    # surf.blit(shape_surf, rect)
-    # print("border rect={}".format(rect))
-    #
-    # # draw red background
     # pygame.draw.rect(shape_surf, health_color, shape_surf.get_rect())
+
+    # draw red background
+    pygame.draw.rect(surf, back_color, (*pos, *size))
+
+    # draw border
+    pygame.draw.rect(surf, border_color, (*pos, *size), 1)
+    # pygame.draw.rect(shape_surf, health_color, rect, 1)
     # surf.blit(shape_surf, rect)
-    # print("health rect={}".format(rect))
-#
+
     inner_pos = (pos[0] + 1, pos[1] + 1)
     inner_size = ((size[0] - 2) * progress, size[1] - 2)
     rect = (round(inner_pos[0]), round(inner_pos[1]), round(inner_size[0]), round(inner_size[1]))
     pygame.draw.rect(surf, health_color, rect)
-    # pygame.draw.rect(shape_surf, health_color, (*pos, *size), 1)
-
-
-# #     inner_size = (10, 100)
-#     progress_rect = (round(inner_pos[0]+ inner_size[0]), round(inner_pos[1]), round(inner_size[0]), round(inner_size[1]))
-# #    rect = (round(inner_pos[0]), round(inner_pos[1]), round(inner_size[0]), round(inner_size[1]))
-# #     progress_rect = (round(inner_pos[0]), round(inner_pos[1]), round(inner_size[0]), round(inner_size[1]))
-#
-#     # progress_rect = Rect()
-#     # draw green progress
-#     pygame.draw.rect(shape_surf, back_color, progress_rect)
-#     # pygame.draw.rect(shape_surf, back_color, shape_surf.get_rect())
-#     surf.blit(shape_surf, progress_rect)
-#     print("progress rect={}".format(progress_rect))
+    # pygame.draw.rect(shape_surf, back_color, shape_surf.get_rect())
 
 
 class Character(pygame.sprite.Sprite):
@@ -1843,7 +1832,10 @@ class Character(pygame.sprite.Sprite):
         self.update_time = pygame.time.get_ticks()
         self.running = False
         self.health = character_classes_dict[self.name]['hp']
-        self.max_health = constants.PLAYER_MAX_HEALTH
+        if "max_health" in character_classes_dict[self.name]:
+            self.max_health = character_classes_dict[self.name]['max_health']
+        else:
+            self.max_health = self.health
         self.alive = True
         self.dying = False
         self.death_cooldown = 0
@@ -1889,6 +1881,10 @@ class Character(pygame.sprite.Sprite):
         else:
             self.fading_counter += 1
 
+        if constants.DEBUG_LEVEL:
+            if self.name != "player":
+                print ("self.name={}, self.health={}, self.max_health={}".format(self.name, self.health, self.max_health))
+                print("self.image.rect={}".format(self.image.get_rect()))
         draw_health_bar(surf, health_rect,
                         (0, 0, 0, 127), (255, 0, 0, 127), (0, 255, 0, 127), self.health / self.max_health)
 

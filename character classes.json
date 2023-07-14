@@ -1786,6 +1786,7 @@
     "exp": 10,
     "flip_image": true,
     "hp": 100,
+    "max_health": 200,
     "idle": 60,
     "is_Hitbox_Symmetrical": true,
     "name": "Warrior",
