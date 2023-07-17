@@ -1574,7 +1574,7 @@
     "is_Hitbox_Symmetrical": false,
     "name": "Undead1",
     "run": 20,
-    "scale": 0.5,
+    "scale": 0.4,
     "speed": 4,
     "trim_hitbox": [
       50,
@@ -1601,7 +1601,7 @@
     "is_Hitbox_Symmetrical": false,
     "name": "Undead2",
     "run": 20,
-    "scale": 0.5,
+    "scale": 0.4,
     "speed": 4,
     "trim_hitbox": [
       50,
@@ -1628,7 +1628,7 @@
     "is_Hitbox_Symmetrical": false,
     "name": "Undead3",
     "run": 20,
-    "scale": 0.5,
+    "scale": 0.4,
     "speed": 4,
     "trim_hitbox": [
       50,
