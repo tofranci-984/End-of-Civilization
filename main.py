@@ -631,6 +631,7 @@ while run:
     if constants.GOD_MODE:
         if player and player.health < 50:
             player.health = player.character_classes_dict['player']['hp']
+            print("  *GOD_MODE* has restored your health to {}".format(player.character_classes_dict['player']['hp']))
 
     # show fps
     if constants.FPS_MONITOR:

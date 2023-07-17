@@ -1881,10 +1881,10 @@ class Character(pygame.sprite.Sprite):
         else:
             self.fading_counter += 1
 
-        if constants.DEBUG_LEVEL:
-            if self.name != "player":
-                print ("self.name={}, self.health={}, self.max_health={}".format(self.name, self.health, self.max_health))
-                print("self.image.rect={}".format(self.image.get_rect()))
+        # if constants.DEBUG_LEVEL:
+        #     if self.name != "player":
+        #         print ("self.name={}, self.health={}, self.max_health={}".format(self.name, self.health, self.max_health))
+        #         print("self.image.rect={}".format(self.image.get_rect()))
         draw_health_bar(surf, health_rect,
                         (0, 0, 0, 127), (255, 0, 0, 127), (0, 255, 0, 127), self.health / self.max_health)
 
