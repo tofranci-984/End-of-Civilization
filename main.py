@@ -38,7 +38,7 @@ def get_loot(player, enemy, x, y):
     loot_output = " *{} looted*, found ".format(enemy.name)
 
     for i in range(random.randint(1, constants.LOOT_MAXIMUM)):
-        random_loot = random.randint(0, 10)
+        random_loot = random.randint(1, 20)
 
         if constants.DEBUG_LEVEL > 1:
             print("x={}, y={}, count={}, random_loot={}".format(x, y, i, random_loot))
@@ -59,8 +59,8 @@ def get_loot(player, enemy, x, y):
             loot_name = "Green Healing Potion"
             loot_images = item_images[3]
             item_type = 3
-            loot = Item(ox, oy, item_type, [item_images[3]])
-        elif random_loot == 5:
+            loot = Item(ox, oy, item_type, item_images[3])
+        elif random_loot == 4:
             loot_name = "Gold Pile"
             item_type = random.randint(10, 21)
             loot_images = item_images[5]
@@ -71,7 +71,7 @@ def get_loot(player, enemy, x, y):
             item_type = 0
             loot = Item(ox, oy, item_type, loot_images)
 
-        if constants.DEBUG_LEVEL:
+        if constants.DEBUG_LEVEL > 1:
             print("F:{}, L:{}, item_type={}, loot_images={}".format(fn, line_numb(), item_type, loot_images))
 
         # loot = Item(ox, oy, item_type, loot_images)

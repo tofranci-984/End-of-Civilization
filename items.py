@@ -101,7 +101,7 @@ class Item(pygame.sprite.Sprite):
 
             # TODO add some exit level sound here
 
-            if constants.DEBUG_LEVEL:
+            if constants.DEBUG_LEVEL > 1:
                 print("ITEMS.PY, F:{}, L:{}, item_type= {}".format(fn, line_numb(), self.item_type))
 
             # kill / remove item unless it is the exit portal
