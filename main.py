@@ -103,7 +103,7 @@ def draw_statusbar_info():
     #     else:
     #         screen.blit(heart_empty, (10 + i * 50, 0))
 
-    text_pos_percentage = { "hp" : 1, "mana": 19, "level": 32, "exp": 45, "health_potion": 67, "poison_potion": 74,
+    text_pos_percentage = { "hp" : 1, "mana": 19, "map": 33, "exp": 45, "health_potion": 67, "poison_potion": 74,
                             "mana_potion": 81, "score": 92}
 
     for item in text_pos_percentage:
@@ -116,9 +116,9 @@ def draw_statusbar_info():
     draw_statusbar_text("MANA: " + str(player.mana), font, constants.WHITE, text_pos_percentage['mana'], 15)
 
     # level
-    draw_statusbar_text("LEVEL: " + str(level), font, constants.WHITE, text_pos_percentage['level'], 15)
+    draw_statusbar_text("MAP: " + str(level), font, constants.WHITE, text_pos_percentage['map'], 15)
     # exp
-    draw_statusbar_text("EXP: " + str(player.exp), font, constants.WHITE, text_pos_percentage['exp'], 15)
+    draw_statusbar_text("EXP: " + str(player.exp) + "/" + str(player.rank), font, constants.WHITE, text_pos_percentage['exp'], 15)
     # show score
     draw_statusbar_text(f"X{player.score}", font, constants.WHITE, text_pos_percentage['score'], 15)
 
@@ -525,7 +525,7 @@ while run:
                     arrow_group.add(arrow)
                     shot_fx.play()
                 for arrow in arrow_group:
-                    damage, damage_pos, enemy_name = arrow.update(screen_scroll, world.obstacle_tiles, enemy_list)
+                    damage, damage_pos, enemy_name = arrow.update(screen_scroll, world.obstacle_tiles, enemy_list, player)
 
                     if damage:
                         new_damage, new_enemy_health = damage.split(" : ")
@@ -706,6 +706,8 @@ while run:
                     use_mana_potion = True
                 case pygame.K_p:
                     use_poison_potion = True
+                    player.exp += 199
+
                 case pygame.K_ESCAPE:
                     pause_game = True
 

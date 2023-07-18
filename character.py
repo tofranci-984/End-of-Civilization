@@ -1798,6 +1798,7 @@ class Character(pygame.sprite.Sprite):
         self.fading_counter = 0
         self.mana = 100
         self.poison = 0
+        self.rank = 1
 
         # assign initial hitbox info
         self.hitbox = (0, 0, 0, 0)
@@ -2255,10 +2256,13 @@ class Character(pygame.sprite.Sprite):
             self.health = 0
             if self.alive:
                 if not self.dying:
+                    # add enemy's exp to player
                     player.exp += self.character_classes_dict[self.name]['exp']
+                    if player.exp >= 1000:
+                        rank = player.exp // 1000
+                        player.rank = rank
                 self.dying = True
                 self.running = False
-                # add enemy's exp to player
 
             if constants.DEBUG_LEVEL > 1:
                 print("CHARACTER.PY, F:[{}], line:{}, name={}".format(fn, line_numb(), self.name))

@@ -64,7 +64,7 @@ class Arrow(pygame.sprite.Sprite):
         self.dy = -(math.sin(math.radians(
             self.angle)) * constants.ARROW_SPEED)  # -ve because pygame y coordinate increases down the screen
 
-    def update(self, screen_scroll, obstacle_tiles, enemy_list):
+    def update(self, screen_scroll, obstacle_tiles, enemy_list, player):
         fn = ""
         if constants.DEBUG_LEVEL:
             fn = "["+inspect.getframeinfo(inspect.currentframe())[2]+"]"
@@ -96,6 +96,7 @@ class Arrow(pygame.sprite.Sprite):
         for enemy in enemy_list:
             if self.rect.colliderect(enemy.hitbox) and enemy.alive and not enemy.dying:
                 damage = random.randrange(constants.ARROW_MIN_DAMAGE, constants.ARROW_MAX_DAMAGE)
+                damage *= player.rank
                 damage_pos = enemy.rect
                 enemy.health -= damage
                 damage = str(damage) + " : " + str(enemy.health)    # return damage to enemy and enemies new health
