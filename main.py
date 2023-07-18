@@ -2,19 +2,14 @@ import inspect
 import random
 import sys
 from pathlib import Path
-
-from colordict import *
-from pygame import mixer
-# import pytmx
-from pytmx.util_pygame import *
-
-import constants
 from button import Button
+from colordict import *
 from items import Item
+from pytmx.util_pygame import *
+from pygame import mixer
 from support import *
 from weapon import Weapon
 from world import World
-
 
 class FPS:
     def __init__(self):
@@ -30,37 +25,59 @@ class FPS:
         display.blit(self.font.render(self.text, True, green), ((constants.SCREEN_WIDTH / 2) - 250, 12))
 
 
-def GetLoot(player, enemy, x, y):
-    # count =
+def line_numb():
+    """ Returns the current line number in our program
+    """
+    return inspect.currentframe().f_back.f_lineno
+
+
+def get_loot(player, enemy, x, y):
+    if constants.DEBUG_LEVEL:  # get the function name for debugging
+        fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
+
     loot_output = " *{} looted*, found ".format(enemy.name)
-    for i in range(random.randint(1, 5)):
+
+    for i in range(random.randint(1, constants.LOOT_MAXIMUM)):
         random_loot = random.randint(0, 10)
+
         if constants.DEBUG_LEVEL > 1:
             print("x={}, y={}, count={}, random_loot={}".format(x, y, i, random_loot))
         ox = x + random.randint(-15, 15)
         oy = y + random.randint(-15, 15)
         if random_loot == 1:
             loot_name = "Red Healing Potion"
-            loot_images = [item_images[1]]
+            loot_images = item_images[1]
+            item_type = 1
+            loot = Item(ox, oy, item_type, [item_images[1]])
+
         elif random_loot == 2:
             loot_name = "Blue Healing Potion"
-            loot_images = [item_images[2]]
+            loot_images = item_images[2]
+            item_type = 2
+            loot = Item(ox, oy, item_type, item_images[2])
         elif random_loot == 3:
             loot_name = "Green Healing Potion"
-            loot_images = [item_images[3]]
+            loot_images = item_images[3]
+            item_type = 3
+            loot = Item(ox, oy, item_type, [item_images[3]])
+        elif random_loot == 5:
+            loot_name = "Gold Pile"
+            item_type = random.randint(10, 21)
+            loot_images = item_images[5]
+            loot = Item(ox, oy, item_type, loot_images)
         else:
             loot_name = "Coin"
             loot_images = item_images[0]
-        loot = Item(ox, oy, 1 if "Potion" in loot_name else 0, loot_images)
+            item_type = 0
+            loot = Item(ox, oy, item_type, loot_images)
+
+        if constants.DEBUG_LEVEL:
+            print("F:{}, L:{}, item_type={}, loot_images={}".format(fn, line_numb(), item_type, loot_images))
+
+        # loot = Item(ox, oy, item_type, loot_images)
         loot_output += loot_name + ", "
         item_group.add(loot)
     print(loot_output)
-
-
-def line_numb():
-    """ Returns the current line number in our program
-    """
-    return inspect.currentframe().f_back.f_lineno
 
 
 # function for outputting text onto the screen
@@ -303,12 +320,7 @@ animation = ""
 character_classes_dict = read_code_from_json('character classes.json')
 
 # load in the level data
-if constants.DEBUG_LEVEL:
-    path = "assets/testing.tmx"
-    # path = "assets/level1.tmx"
-
-else:
-    path = "assets/level1.tmx"
+path = "assets/testing.tmx" if constants.DEBUG_LEVEL else "assets/level1.tmx"
 
 if constants.DEBUG_LEVEL:
     print("MAIN.PY, line:{}, Loading TMX_MAP file: {}".format(line_numb(), path))
@@ -480,7 +492,7 @@ while run:
                             damage_text = DamageText(damage_pos.centerx, damage_pos.y + 18, str(new_enemy_health),
                                                      constants.BLUE)
 
-                            GetLoot(player, enemy, damage_pos.centerx, damage_pos.centery)
+                            get_loot(player, enemy, damage_pos.centerx, damage_pos.centery)
                         else:
                             damage_text = DamageText(damage_pos.centerx, damage_pos.y + 18, str(new_enemy_health),
                                                      constants.GREEN)

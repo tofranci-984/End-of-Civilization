@@ -65,6 +65,7 @@ def load_gold_images(coin_images, gold_images):
             print(" x={}, item={}, file={}".format(x, item, gold[item]))
         img = pygame.image.load(
             "assets/images/environment/Sprites/PNG/gold piles/{}".format(gold[item])).convert_alpha()
+        img = scale_img(img, constants.GOLD_PILE_SCALE, use_global_scale=False)
         gold_images.append(img)
 
 

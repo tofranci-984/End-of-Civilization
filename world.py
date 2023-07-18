@@ -75,56 +75,18 @@ class World():
                 pygame.quit()
                 sys.exit()
 
-            # TODO: add a function to create_gold_coin to clean up below
-
-            # enemy = None
-
+            item_name_to_index = {
+                "gold1": 10, "gold2": 11, "gold3": 12, "gold4": 13, "gold5": 14, "gold6": 15,
+                "gold7": 16, "gold8": 17, "gold9": 18, "gold10": 19, "gold11": 20, "gold12": 21
+            }
             match obj.properties['item_name']:
                 case "player":
-                    # (x, y, health, mob_animations, char name, character classes)
                     self.player_count += 1
-                    # if the last field (size) is greater than 1, the enemy may bounce to a new spot if area is too small for him initially
                     player = Character(image_x, image_y, mob_dict,
                                        obj.properties['item_name'], self.character_classes_dict)
                     self.player = player
                 case "gold":
                     coin = Item(image_x, image_y, 0, item_images[0])
-                    self.item_list.append(coin)
-                case "gold1":
-                    coin = Item(image_x, image_y, 10, item_images[5])
-                    self.item_list.append(coin)
-                case "gold2":
-                    coin = Item(image_x, image_y, 11, item_images[5])
-                    self.item_list.append(coin)
-                case "gold3":
-                    coin = Item(image_x, image_y, 12, item_images[5])
-                    self.item_list.append(coin)
-                case "gold4":
-                    coin = Item(image_x, image_y, 13, item_images[5])
-                    self.item_list.append(coin)
-                case "gold5":
-                    coin = Item(image_x, image_y, 14, item_images[5])
-                    self.item_list.append(coin)
-                case "gold6":
-                    coin = Item(image_x, image_y, 15, item_images[5])
-                    self.item_list.append(coin)
-                case "gold7":
-                    coin = Item(image_x, image_y, 16, item_images[5])
-                    self.item_list.append(coin)
-                case "gold8":
-                    coin = Item(image_x, image_y, 17, item_images[5])
-                    self.item_list.append(coin)
-                case "gold9":
-                    coin = Item(image_x, image_y, 18, item_images[5])
-                    self.item_list.append(coin)
-                case "gold10":
-                    coin = Item(image_x, image_y, 19, item_images[5])
-                    self.item_list.append(coin)
-                case "gold11":
-                    coin = Item(image_x, image_y, 20, item_images[5])
-                    self.item_list.append(coin)
-                case "gold12":
-                    coin = Item(image_x, image_y, 21, item_images[5])
                     self.item_list.append(coin)
                 case "red potion":
                     potion = Item(image_x, image_y, 1, [item_images[1]])
@@ -135,14 +97,16 @@ class World():
                 case "green potion":
                     potion = Item(image_x, image_y, 3, [item_images[3]])
                     self.item_list.append(potion)
-                case "exit portal":  # item type = 100
+                case item_name if item_name in item_name_to_index:
+                    coin = Item(image_x, image_y, item_name_to_index[item_name], item_images[5])
+                    self.item_list.append(coin)
+                case "exit portal":
                     portal = Item(image_x, image_y, 100, [item_images[4]])
                     self.item_list.append(portal)
                     self.exit_tile = tile_data
                 case _:
                     if constants.DEBUG_LEVEL:
                         print("   in F:{}, ln:{}, name={}".format(fn, line_numb(), obj.properties['item_name']))
-
                     enemy = Character(image_x, image_y, mob_dict, obj.properties['item_name'],
                                       self.character_classes_dict)
                     self.character_list.append(enemy)
