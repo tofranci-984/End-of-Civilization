@@ -1831,7 +1831,10 @@ class Character(pygame.sprite.Sprite):
         self.action = 0  # 0:idle, 1:run, 2:attack, 3:die
         self.update_time = pygame.time.get_ticks()
         self.running = False
-        self.health = character_classes_dict[self.name]['hp']
+        if constants.DEBUG_ENEMY_HEALTH_DRAIN:
+            self.health = 10
+        else:
+            self.health = character_classes_dict[self.name]['hp']
         if "max_health" in character_classes_dict[self.name]:
             self.max_health = character_classes_dict[self.name]['max_health']
         else:
@@ -1885,8 +1888,10 @@ class Character(pygame.sprite.Sprite):
         #     if self.name != "player":
         #         print ("self.name={}, self.health={}, self.max_health={}".format(self.name, self.health, self.max_health))
         #         print("self.image.rect={}".format(self.image.get_rect()))
-        draw_health_bar(surf, health_rect,
-                        (0, 0, 0, 127), (255, 0, 0, 127), (0, 255, 0, 127), self.health / self.max_health)
+
+        if self.health:
+            draw_health_bar(surf, health_rect,
+                            (0, 0, 0, 127), (255, 0, 0, 127), (0, 255, 0, 127), self.health / self.max_health)
 
     def move(self, dx, dy, obstacle_tiles, time_delta, exit_tile=None):
         fn = ""
@@ -2027,6 +2032,8 @@ class Character(pygame.sprite.Sprite):
         # reposition the mobs based on screen scroll
         self.rect.x += screen_scroll[0]
         self.rect.y += screen_scroll[1]
+
+        # using time_delta causes characters to move on screen when off screen :(
         # self.rect.x += screen_scroll[0] + time_delta
         # self.rect.y += screen_scroll[1] + time_delta
 

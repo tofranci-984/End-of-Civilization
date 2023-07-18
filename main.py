@@ -1,4 +1,5 @@
 import inspect
+import random
 import sys
 from pathlib import Path
 
@@ -7,6 +8,7 @@ from pygame import mixer
 # import pytmx
 from pytmx.util_pygame import *
 
+import constants
 from button import Button
 from items import Item
 from support import *
@@ -26,6 +28,33 @@ class FPS:
 
         pygame.display.set_caption(self.text)
         display.blit(self.font.render(self.text, True, green), ((constants.SCREEN_WIDTH / 2) - 250, 12))
+
+
+def GetLoot(player, enemy, x, y):
+    # count =
+    loot_output = " *{} looted*, found ".format(enemy.name)
+    for i in range(random.randint(1, 5)):
+        random_loot = random.randint(0, 10)
+        if constants.DEBUG_LEVEL > 1:
+            print("x={}, y={}, count={}, random_loot={}".format(x, y, i, random_loot))
+        ox = x + random.randint(-15, 15)
+        oy = y + random.randint(-15, 15)
+        if random_loot == 1:
+            loot_name = "Red Healing Potion"
+            loot_images = [item_images[1]]
+        elif random_loot == 2:
+            loot_name = "Blue Healing Potion"
+            loot_images = [item_images[2]]
+        elif random_loot == 3:
+            loot_name = "Green Healing Potion"
+            loot_images = [item_images[3]]
+        else:
+            loot_name = "Coin"
+            loot_images = item_images[0]
+        loot = Item(ox, oy, 1 if "Potion" in loot_name else 0, loot_images)
+        loot_output += loot_name + ", "
+        item_group.add(loot)
+    print(loot_output)
 
 
 def line_numb():
@@ -450,6 +479,8 @@ while run:
                             new_enemy_health = str("dead")
                             damage_text = DamageText(damage_pos.centerx, damage_pos.y + 18, str(new_enemy_health),
                                                      constants.BLUE)
+
+                            GetLoot(player, enemy, damage_pos.centerx, damage_pos.centery)
                         else:
                             damage_text = DamageText(damage_pos.centerx, damage_pos.y + 18, str(new_enemy_health),
                                                      constants.GREEN)

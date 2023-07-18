@@ -10,7 +10,7 @@ class Item(pygame.sprite.Sprite):
         self.item_type = item_type  # 0: coin, 1: health potion, 2 blue potion, 10 gold piles begin
         self.animation_list = animation_list
         self.exit_portal = False
-        if constants.DEBUG_LEVEL:  # get the function name for debugging
+        if constants.DEBUG_LEVEL> 1:  # get the function name for debugging
             fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
             ln = inspect.getframeinfo(inspect.currentframe())[1]
             if constants.DEBUG_LEVEL > 0:
