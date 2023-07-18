@@ -90,27 +90,31 @@ def draw_statusbar_text(text, font, text_col, x, y):
 def draw_statusbar_info():
     pygame.draw.rect(screen, constants.PANEL, (0, 0, constants.SCREEN_WIDTH, 50))
     pygame.draw.line(screen, constants.WHITE, (0, 50), (constants.SCREEN_WIDTH, 50))
-    # draw lives
-    half_heart_drawn = False
-    health_percentage = player.health / player.max_health * 100
-    for i in range(5):
-        if health_percentage >= ((i + 1) * 20):
-            screen.blit(heart_full, (10 + i * 50, 0))
-        elif (health_percentage % 20 > 0) and not half_heart_drawn:
-            screen.blit(heart_half, (10 + i * 50, 0))
-            half_heart_drawn = True
-        else:
-            screen.blit(heart_empty, (10 + i * 50, 0))
 
-    text_pos_percentage = { "hp" : 18, "level": 32, "exp": 45, "health": 67, "poison": 74, "mana": 81, "score": 92}
-    # text_pos_percentage = {"hp": 0, "level": 25, "exp": 40, "health": 65, "poison": 72, "mana": 79, "score": 91}
-    # text_pos_percentage = { "hp" : 10, "level": 30, "exp": 40, "health": 50, "poison": 60, "mana": 70, "score": 90}
+    # # draw lives
+    # half_heart_drawn = False
+    # health_percentage = player.health / player.max_health * 100
+    # for i in range(5):
+    #     if health_percentage >= ((i + 1) * 20):
+    #         screen.blit(heart_full, (10 + i * 50, 0))
+    #     elif (health_percentage % 20 > 0) and not half_heart_drawn:
+    #         screen.blit(heart_half, (10 + i * 50, 0))
+    #         half_heart_drawn = True
+    #     else:
+    #         screen.blit(heart_empty, (10 + i * 50, 0))
+
+    text_pos_percentage = { "hp" : 1, "mana": 19, "level": 32, "exp": 45, "health_potion": 67, "poison_potion": 74,
+                            "mana_potion": 81, "score": 92}
 
     for item in text_pos_percentage:
         text_pos_percentage[item] = int(constants.SCREEN_WIDTH * text_pos_percentage[item] / 100)
 
     # HP
-    draw_statusbar_text("HP: " + str(player.health), font, constants.WHITE, text_pos_percentage['hp'], 15)
+    draw_statusbar_text("HP: " + str(player.health) + "/" + str(character_classes_dict['player']['max_health']),
+                        font, constants.WHITE, text_pos_percentage['hp'], 15)
+    # MANA
+    draw_statusbar_text("MANA: " + str(player.mana), font, constants.WHITE, text_pos_percentage['mana'], 15)
+
     # level
     draw_statusbar_text("LEVEL: " + str(level), font, constants.WHITE, text_pos_percentage['level'], 15)
     # exp
@@ -119,11 +123,11 @@ def draw_statusbar_info():
     draw_statusbar_text(f"X{player.score}", font, constants.WHITE, text_pos_percentage['score'], 15)
 
     # show mana potions
-    draw_statusbar_text(f"X{player.mana_potions}", font, constants.WHITE, text_pos_percentage['mana'], 15)
+    draw_statusbar_text(f"X{player.mana_potions}", font, constants.WHITE, text_pos_percentage['mana_potion'], 15)
     # show health potions
-    draw_statusbar_text(f"X{player.health_potions}", font, constants.WHITE, text_pos_percentage['health'], 15)
+    draw_statusbar_text(f"X{player.health_potions}", font, constants.WHITE, text_pos_percentage['health_potion'], 15)
     # show poison potions
-    draw_statusbar_text(f"X{player.poison_potions}", font, constants.WHITE, text_pos_percentage['poison'], 15)
+    draw_statusbar_text(f"X{player.poison_potions}", font, constants.WHITE, text_pos_percentage['poison_potion'], 15)
 
 
 
@@ -485,6 +489,19 @@ while run:
                         player.health_potions -= 1
                         player.health += 10
                         heal_fx.play()
+                        use_health_potion = False
+                if use_mana_potion:
+                    if player.mana_potions:
+                        player.mana_potions -= 1
+                        player.mana += 10
+                        heal_fx.play()
+                        use_mana_potion = False
+                if use_poison_potion:
+                    if player.poison_potions:
+                        player.poison_potions -= 1
+                        player.poison -= 10
+                        heal_fx.play()
+                        use_poison_potion = False
 
                 # move player
                 screen_scroll, level_complete = player.move(dx, dy, world.obstacle_tiles, time_delta, world.exit_tile)
@@ -685,6 +702,10 @@ while run:
                     moving_down = True
                 case pygame.K_SPACE:
                     use_health_potion = True
+                case pygame.K_m:
+                    use_mana_potion = True
+                case pygame.K_p:
+                    use_poison_potion = True
                 case pygame.K_ESCAPE:
                     pause_game = True
 
@@ -700,6 +721,11 @@ while run:
                     moving_up = False
                 case pygame.K_SPACE:
                     use_health_potion = False
+                case pygame.K_m:
+                    use_mana_potion = False
+                case pygame.K_p:
+                    use_poison_potion = False
+
                 case pygame.K_s:
                     # item_group.update(screen_scroll, player, coin_fx, heal_fx, time_delta)
                     moving_down = False

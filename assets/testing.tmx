@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="256" tileheight="256" infinite="0" nextlayerid="6" nextobjectid="353">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="256" tileheight="256" infinite="0" nextlayerid="6" nextobjectid="354">
  <tileset firstgid="1" source="objects.tsx"/>
  <tileset firstgid="178" source="tiles.tsx"/>
  <tileset firstgid="418" source="../../Final_game/assets/levels/characters.tsx"/>
@@ -70,5 +70,6 @@
   <object id="350" gid="579" x="1092" y="422" width="100" height="100"/>
   <object id="351" gid="581" x="796" y="738" width="200" height="200"/>
   <object id="352" gid="582" x="1060" y="738" width="200" height="200"/>
+  <object id="353" gid="591" x="631" y="1119" width="247" height="202"/>
  </objectgroup>
 </map>

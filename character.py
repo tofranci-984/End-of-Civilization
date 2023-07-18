@@ -711,7 +711,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         case _:
                             file_prefix = ""
 
-                    path = "assets/images/characters/{}/Animations_Frames_512x512/{}/{}_{}.png".\
+                    path = "assets/images/characters/{}/Animations_Frames_512x512/{}/{}_{}.png". \
                         format(character['name'], at, file_prefix, file_index)
 
                     img = pygame.image.load(path).convert_alpha()
@@ -1100,7 +1100,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         case _:
                             file_prefix = ""
 
-                    path = "assets/images/characters/{0}/{1}/Body/{2}/{3}_{2}_{4}.png".\
+                    path = "assets/images/characters/{0}/{1}/Body/{2}/{3}_{2}_{4}.png". \
                         format(character['name'], at, angle, file_prefix, file_index)
 
                     img = pygame.image.load(path).convert_alpha()
@@ -1728,7 +1728,6 @@ def line_numb():
 
 
 def draw_health_bar(surf, rect, border_color, back_color, health_color, progress):
-
     size = rect.size
     pos = rect.topleft
 
@@ -1790,10 +1789,15 @@ class Character(pygame.sprite.Sprite):
         self.flip = False
         self.level_complete = False
         self.ghost = False
-        self.health_potions = 0
-        self.mana_potions = 0
-        self.poison_potions = 0
+        self.health_potions = 3 if self.name == "player" else 0
+        self.mana_potions = 3 if self.name == "player" else 0
+        self.poison_potions = 3 if self.name == "player" else 0
+        self.use_health_potion = False
+        self.use_mana_potion = False
+        self.use_poison_potion = False
         self.fading_counter = 0
+        self.mana = 100
+        self.poison = 0
 
         # assign initial hitbox info
         self.hitbox = (0, 0, 0, 0)
@@ -1852,9 +1856,6 @@ class Character(pygame.sprite.Sprite):
         self.stunned = False
         self.size = 1
         self.exp = 0  # experience points
-        self.use_health_potion = False
-        self.use_mana_potion = False
-        self.use_poison_potion = False
 
         if self.name == "Exit Portal" and self.action == 0:
             self.image = self.animation_list[self.frame_index]

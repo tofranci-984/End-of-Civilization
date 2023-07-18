@@ -1,6 +1,7 @@
 {
   "Bear": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": 28,
     "death": 21,
@@ -29,6 +30,7 @@
   },
   "Crab Monster": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 150,
     "attack": -1,
     "death": -1,
@@ -69,6 +71,7 @@
   },
   "Crocodile Warrior": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 150,
     "attack": -1,
     "death": -1,
@@ -96,6 +99,7 @@
   },
   "Cyclops1": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 100,
     "attack": 10,
     "death": 10,
@@ -124,6 +128,7 @@
   },
   "Cyclops2": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 100,
     "attack": 10,
     "death": 10,
@@ -152,6 +157,7 @@
   },
   "Cyclops3": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 100,
     "attack": 10,
     "death": 10,
@@ -180,6 +186,7 @@
   },
   "Deer": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": 17,
     "death": 17,
@@ -207,6 +214,7 @@
   },
   "Dragon1": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 100,
     "attack": 33,
     "death": 13,
@@ -235,6 +243,7 @@
   },
   "Dragon2": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 100,
     "attack": 33,
     "death": 13,
@@ -263,6 +272,7 @@
   },
   "Dragon3": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 100,
     "attack": 33,
     "death": 13,
@@ -291,6 +301,7 @@
   },
   "Eagle": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": 14,
     "death": 17,
@@ -318,6 +329,7 @@
   },
   "Elemental1": {
     "Special_Attack": "None",
+    "rank": 3,
     "animation_cooldown": 100,
     "attack": 5,
     "death": 5,
@@ -345,6 +357,7 @@
   },
   "Elemental2": {
     "Special_Attack": "None",
+    "rank": 3,
     "animation_cooldown": 100,
     "attack": 5,
     "death": 5,
@@ -372,6 +385,7 @@
   },
   "Elemental3": {
     "Special_Attack": "None",
+    "rank": 3,
     "animation_cooldown": 100,
     "attack": 5,
     "death": 5,
@@ -399,6 +413,7 @@
   },
   "Fox": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": 17,
     "death": 15,
@@ -426,6 +441,7 @@
   },
   "GHOST1": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 50,
     "attack": 7,
     "death": 6,
@@ -453,6 +469,7 @@
   },
   "GHOST2": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 50,
     "attack": 7,
     "death": 6,
@@ -480,6 +497,7 @@
   },
   "GHOST3": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 50,
     "attack": 7,
     "death": 6,
@@ -507,6 +525,7 @@
   },
   "Gaerron": {
     "Special_Attack": "None",
+    "rank": 3,
     "animation_cooldown": 150,
     "attack": 14,
     "death": 20,
@@ -534,6 +553,7 @@
   },
   "Goat": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": 14,
     "death": 16,
@@ -561,6 +581,7 @@
   },
   "Goblin1": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 50,
     "attack": 9,
     "death": 19,
@@ -588,6 +609,7 @@
   },
   "Goblin2": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 50,
     "attack": 9,
     "death": 19,
@@ -615,6 +637,7 @@
   },
   "Goblin3": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 50,
     "attack": 9,
     "death": 19,
@@ -642,6 +665,7 @@
   },
   "Golem1": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 100,
     "attack": 10,
     "death": 10,
@@ -669,6 +693,7 @@
   },
   "Golem2": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 100,
     "attack": 10,
     "death": 10,
@@ -696,6 +721,7 @@
   },
   "Golem3": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 100,
     "attack": 10,
     "death": 10,
@@ -723,6 +749,7 @@
   },
   "Insect": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 75,
     "attack": 24,
     "death": 35,
@@ -750,6 +777,7 @@
   },
   "Jinn": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 150,
     "attack": 4,
     "death": 6,
@@ -777,12 +805,13 @@
   },
   "Knight Man": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 25,
     "attack": 45,
     "death": 69,
     "exp": 20,
     "flip_image": true,
-    "hp": 100,
+    "hp": 150,
     "idle": 76,
     "is_Hitbox_Symmetrical": true,
     "name": "Knight Man",
@@ -805,6 +834,7 @@
   },
   "Little Demon": {
     "Special_Attack": "Fireball",
+    "rank": 2,
     "animation_cooldown": 150,
     "attack": 4,
     "death": 6,
@@ -832,6 +862,7 @@
   },
   "Lord Esther": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 150,
     "attack": 14,
     "death": 20,
@@ -859,6 +890,7 @@
   },
   "Magic Fox": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 150,
     "attack": 16,
     "death": 20,
@@ -886,6 +918,7 @@
   },
   "Meerkat": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": 11,
     "death": 17,
@@ -913,6 +946,7 @@
   },
   "Minotaur1": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 75,
     "attack": 10,
     "death": 13,
@@ -940,6 +974,7 @@
   },
   "Minotaur2": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 75,
     "attack": 10,
     "death": 13,
@@ -967,6 +1002,7 @@
   },
   "Minotaur3": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 75,
     "attack": 10,
     "death": 13,
@@ -994,6 +1030,7 @@
   },
   "Orc1": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 100,
     "attack": 15,
     "death": 10,
@@ -1022,6 +1059,7 @@
   },
   "Orc2": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 100,
     "attack": 15,
     "death": 10,
@@ -1050,6 +1088,7 @@
   },
   "Orc3": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 100,
     "attack": 15,
     "death": 10,
@@ -1078,6 +1117,7 @@
   },
   "Panther": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": 14,
     "death": 20,
@@ -1105,6 +1145,7 @@
   },
   "PrinceTaerron": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 250,
     "attack": -1,
     "death": -1,
@@ -1132,6 +1173,7 @@
   },
   "Raven": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 50,
     "attack": 12,
     "death": 24,
@@ -1159,6 +1201,7 @@
   },
   "Red Demon": {
     "Special_Attack": "Fireball",
+    "rank": 3,
     "animation_cooldown": 150,
     "attack": 14,
     "death": 20,
@@ -1186,6 +1229,7 @@
   },
   "Reptile Warrior": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 50,
     "attack": 24,
     "death": 16,
@@ -1213,6 +1257,7 @@
   },
   "Saurial": {
     "Special_Attack": "Lightning",
+    "rank": 3,
     "animation_cooldown": 150,
     "attack": 14,
     "death": 20,
@@ -1240,6 +1285,7 @@
   },
   "Skeleton": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 50,
     "attack": -1,
     "death": -1,
@@ -1267,6 +1313,7 @@
   },
   "Skeleton2": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 100,
     "attack": 10,
     "death": 10,
@@ -1294,6 +1341,7 @@
   },
   "Skeleton3": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 100,
     "attack": 10,
     "death": 10,
@@ -1321,6 +1369,7 @@
   },
   "Skeleton4": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 100,
     "attack": 10,
     "death": 10,
@@ -1348,6 +1397,7 @@
   },
   "Snake": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": 13,
     "death": 14,
@@ -1375,6 +1425,7 @@
   },
   "SunkenGod": {
     "Special_Attack": "None",
+    "rank": 2,
     "animation_cooldown": 150,
     "attack": -1,
     "death": -1,
@@ -1401,7 +1452,8 @@
     ]
   },
   "TheOldKing": {
-    "Special_Attack": "None",
+    "Special_Attack": "Fireball",
+    "rank": 3,
     "animation_cooldown": 150,
     "attack": -1,
     "death": -1,
@@ -1429,6 +1481,7 @@
   },
   "TheTriplets": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": -1,
     "death": -1,
@@ -1456,6 +1509,7 @@
   },
   "Thief": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": 24,
     "death": 24,
@@ -1483,6 +1537,7 @@
   },
   "Troll1": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": 10,
     "death": 10,
@@ -1510,6 +1565,7 @@
   },
   "Troll2": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": 10,
     "death": 10,
@@ -1537,6 +1593,7 @@
   },
   "Troll3": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": 10,
     "death": 10,
@@ -1564,6 +1621,7 @@
   },
   "Undead1": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 75,
     "attack": 20,
     "death": 13,
@@ -1591,6 +1649,7 @@
   },
   "Undead2": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 75,
     "attack": 20,
     "death": 13,
@@ -1618,6 +1677,7 @@
   },
   "Undead3": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 75,
     "attack": 20,
     "death": 13,
@@ -1645,6 +1705,7 @@
   },
   "Witch": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": -1,
     "death": -1,
@@ -1672,6 +1733,7 @@
   },
   "Wolf": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": 14,
     "death": 18,
@@ -1699,6 +1761,7 @@
   },
   "Zombie1": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": 6,
     "death": 8,
@@ -1726,6 +1789,7 @@
   },
   "Zombie2": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": 6,
     "death": 8,
@@ -1753,6 +1817,7 @@
   },
   "Zombie3": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": 6,
     "death": 8,
@@ -1780,6 +1845,7 @@
   },
   "player": {
     "Special_Attack": "None",
+    "rank": 1,
     "animation_cooldown": 150,
     "attack": 12,
     "death": 12,
