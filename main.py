@@ -22,7 +22,7 @@ class FPS:
         self.text = "level: {} - FPS:{:.0f}".format(level, self.clock.get_fps())
 
         pygame.display.set_caption(self.text)
-        display.blit(self.font.render(self.text, True, green), ((constants.SCREEN_WIDTH / 2) - 250, 12))
+        # display.blit(self.font.render(self.text, True, green), ((constants.SCREEN_WIDTH / 2) - 250, 12))
 
 
 def line_numb():
@@ -38,7 +38,7 @@ def get_loot(player, enemy, x, y):
     loot_output = " *{} looted*, found ".format(enemy.name)
 
     for i in range(random.randint(1, constants.LOOT_MAXIMUM)):
-        random_loot = random.randint(1, 20)
+        random_loot = random.randint(1, 15)
 
         if constants.DEBUG_LEVEL > 1:
             print("x={}, y={}, count={}, random_loot={}".format(x, y, i, random_loot))
@@ -102,14 +102,29 @@ def draw_statusbar_info():
         else:
             screen.blit(heart_empty, (10 + i * 50, 0))
 
+    text_pos_percentage = { "hp" : 18, "level": 32, "exp": 45, "health": 67, "poison": 74, "mana": 81, "score": 92}
+    # text_pos_percentage = {"hp": 0, "level": 25, "exp": 40, "health": 65, "poison": 72, "mana": 79, "score": 91}
+    # text_pos_percentage = { "hp" : 10, "level": 30, "exp": 40, "health": 50, "poison": 60, "mana": 70, "score": 90}
+
+    for item in text_pos_percentage:
+        text_pos_percentage[item] = int(constants.SCREEN_WIDTH * text_pos_percentage[item] / 100)
+
     # HP
-    draw_statusbar_text("HP: " + str(player.health), font, constants.WHITE, 260, 15)
+    draw_statusbar_text("HP: " + str(player.health), font, constants.WHITE, text_pos_percentage['hp'], 15)
     # level
-    draw_statusbar_text("LEVEL: " + str(level), font, constants.WHITE, constants.SCREEN_WIDTH / 2, 15)
+    draw_statusbar_text("LEVEL: " + str(level), font, constants.WHITE, text_pos_percentage['level'], 15)
     # exp
-    draw_statusbar_text("EXP: " + str(player.exp), font, constants.WHITE, constants.SCREEN_WIDTH / 2 + 185, 15)
+    draw_statusbar_text("EXP: " + str(player.exp), font, constants.WHITE, text_pos_percentage['exp'], 15)
     # show score
-    draw_statusbar_text(f"X{player.score}", font, constants.WHITE, constants.SCREEN_WIDTH - 100, 15)
+    draw_statusbar_text(f"X{player.score}", font, constants.WHITE, text_pos_percentage['score'], 15)
+
+    # show mana potions
+    draw_statusbar_text(f"X{player.mana_potions}", font, constants.WHITE, text_pos_percentage['mana'], 15)
+    # show health potions
+    draw_statusbar_text(f"X{player.health_potions}", font, constants.WHITE, text_pos_percentage['health'], 15)
+    # show poison potions
+    draw_statusbar_text(f"X{player.poison_potions}", font, constants.WHITE, text_pos_percentage['poison'], 15)
+
 
 
 # function to reset level
@@ -211,8 +226,8 @@ if constants.DEBUG_LEVEL:
     print("[pygame.mixer.music] loaded, volume is {}".format(volume))
 
 # minimum game screen width / height
-if constants.SCREEN_WIDTH <= 680:
-    constants.SCREEN_WIDTH = 680
+if constants.SCREEN_WIDTH <= 1200:
+    constants.SCREEN_WIDTH = 1200
 if constants.SCREEN_HEIGHT <= 480:
     constants.SCREEN_HEIGHT = 480
 
@@ -236,6 +251,9 @@ moving_left = False
 moving_right = False
 moving_up = False
 moving_down = False
+use_health_potion = False
+use_poison_potion = False
+use_mana_potion = False
 
 # define font
 font = pygame.font.Font("assets/fonts/AtariClassic.ttf", 20)
@@ -372,13 +390,21 @@ item_group = pygame.sprite.LayeredUpdates()
 fireball_group = pygame.sprite.LayeredUpdates()
 lightning_group = pygame.sprite.LayeredUpdates()
 
-score_status = Item(constants.SCREEN_WIDTH - 115, 23, 0, coin_images, True)
-item_group.add(score_status)
+# text_pos_percentage = {"hp": 18, "level": 32, "exp": 50, "health": 73, "poison": 80, "mana": 86, "score": 94}
+text_pos_percentage = {"hp": 0, "level": 25, "exp": 40, "health": 65, "poison": 72, "mana": 79, "score": 91}
 
-blue_potion_status = Item(constants.SCREEN_WIDTH - 225, 23, 2, blue_potion, True)
-green_potion_status = Item(constants.SCREEN_WIDTH - 300, 23, 3, green_potion, True)
-item_group.add(blue_potion_status)
-item_group.add(green_potion_status)
+for item in text_pos_percentage:
+    text_pos_percentage[item] = int(constants.SCREEN_WIDTH * text_pos_percentage[item] / 100)
+
+health_potion_status = Item(text_pos_percentage['health'], 23, 3, red_potion, True)
+poison_potion_status = Item(text_pos_percentage['poison'], 23, 3, green_potion, True)
+mana_potion_status = Item(text_pos_percentage['mana'], 23, 2, blue_potion, True)
+score_status = Item(text_pos_percentage['score'], 23, 0, coin_images, True)
+
+item_group.add(health_potion_status)
+item_group.add(poison_potion_status)
+item_group.add(mana_potion_status)
+item_group.add(score_status)
 
 # add the items from the level data
 for item in world.item_list:
@@ -454,6 +480,11 @@ while run:
                     dy = -speed
                 if moving_down:
                     dy = speed
+                if use_health_potion:
+                    if player.health_potions:
+                        player.health_potions -= 1
+                        player.health += 10
+                        heal_fx.play()
 
                 # move player
                 screen_scroll, level_complete = player.move(dx, dy, world.obstacle_tiles, time_delta, world.exit_tile)
@@ -542,10 +573,9 @@ while run:
             damage_text_group.draw(screen)
             draw_statusbar_info()
             score_status.draw(screen)
-            blue_potion_status.draw(screen)
-            green_potion_status.draw(screen)
-
-            # draw_rect_alpha(screen, (0, 0, 255, 127), (55, 90, 140, 140))
+            mana_potion_status.draw(screen)
+            poison_potion_status.draw(screen)
+            health_potion_status.draw(screen)
 
         # check level complete
         if level_complete:
@@ -653,6 +683,8 @@ while run:
                     moving_up = True
                 case pygame.K_s:
                     moving_down = True
+                case pygame.K_SPACE:
+                    use_health_potion = True
                 case pygame.K_ESCAPE:
                     pause_game = True
 
@@ -666,10 +698,11 @@ while run:
                     moving_right = False
                 case pygame.K_w:
                     moving_up = False
+                case pygame.K_SPACE:
+                    use_health_potion = False
                 case pygame.K_s:
-                    item_group.update(screen_scroll, player, coin_fx, heal_fx, time_delta)
-
-            moving_down = False
+                    # item_group.update(screen_scroll, player, coin_fx, heal_fx, time_delta)
+                    moving_down = False
 
     if constants.GOD_MODE:
         if player and player.health < 50:

@@ -82,13 +82,15 @@ class Item(pygame.sprite.Sprite):
                     player.score += 1
                     coin_fx.play()
                 case 1:  # red potion / health
-                    player.health += 10
+                    player.health_potions += 1
+                    # player.health += 10
                     heal_fx.play()
                 case 2:  # blue potion for spell(s)
-                    player.health += 10
+                    player.mana_potions += 1
+                    # player.health += 10
                     heal_fx.play()
                 case 3:  # green potion / future ...
-                    player.health += 10
+                    player.poison_potions += 1
                     heal_fx.play()
                 case 100:  # exit portal
                     pass

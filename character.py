@@ -1790,7 +1790,9 @@ class Character(pygame.sprite.Sprite):
         self.flip = False
         self.level_complete = False
         self.ghost = False
-
+        self.health_potions = 0
+        self.mana_potions = 0
+        self.poison_potions = 0
         self.fading_counter = 0
 
         # assign initial hitbox info
@@ -1850,6 +1852,9 @@ class Character(pygame.sprite.Sprite):
         self.stunned = False
         self.size = 1
         self.exp = 0  # experience points
+        self.use_health_potion = False
+        self.use_mana_potion = False
+        self.use_poison_potion = False
 
         if self.name == "Exit Portal" and self.action == 0:
             self.image = self.animation_list[self.frame_index]
