@@ -363,6 +363,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
             for animation in animation_types:
                 temp_list = []
                 scale = character['scale']
+
                 num_images = character[animation]
                 for image_num in range(1, num_images):
 
