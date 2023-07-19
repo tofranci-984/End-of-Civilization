@@ -26,48 +26,40 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
     match character['name']:
         case "Bear":
-            # animation_list.append(char_name)
             for animation in animation_types:
                 temp_list = []
-
                 num_images = character[animation] + 1
+                match animation:
+                    case "run":
+                        file_prefix = "bear_run"
+                    case "idle":
+                        file_prefix = "bear_idle"
+                    case "attack":
+                        file_prefix = "bear_attack"
+                    case "death":
+                        file_prefix = "bear_die"
+                    case _:
+                        file_prefix = ""
 
                 for image_num in range(0, num_images):
                     file_index = "{:04}".format(image_num)
-                    match animation:
-                        case "run":
-                            file_prefix = "bear_run"
-                        case "idle":
-                            file_prefix = "bear_idle"
-                        case "attack":
-                            file_prefix = "bear_attack"
-                        case "death":
-                            file_prefix = "bear_die"
-                        case _:
-                            file_prefix = ""
-
-                    path = "assets/images/characters/{}/Sprites/{}/{}_{}.png".format(character['name'],
-                                                                                     animation, file_prefix, file_index)
+                    path = f"assets/images/characters/{character['name']}/{animation}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
-
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
                     height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
 
-                    # crops off wasted space around images, new_x, new_y, new width, new height
+                     # crops off wasted space around images, new_x, new_y, new width, new height
                     new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
                     cropped_img = img.subsurface(new_region)
                     if character['scale'] != 1:
                         cropped_img = scale_img(cropped_img, character['scale'])
                     temp_list.append(cropped_img)
                     number_of_images_loaded += 1
-
                 animation_list.append(temp_list)
         case "Crocodile Warrior":  # tilesheet, done
-            # animation_list.append(char_name)
             path = "assets/images/characters/Crocodile Warrior/x320_Spritesheets"
             for animation in animation_types:
                 temp_list = []
-
                 match animation:
                     case "idle":
                         # (filename, width, height, rows, cols, start_row_index= 0)
@@ -80,26 +72,21 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         images = Tilesheet(f"{path}/Walk_Forward_L.png", 600, 320, 5, 4)
                     case _:
                         images = ""
-
                 trim_rect = character['trim_rect']
-
                 for y in range(images.rows):
                     for x in range(images.cols):
                         img = images.get_tile(x, y)
-
                         width = img.get_width() - (trim_rect[0] + trim_rect[1])
                         height = img.get_height() - (trim_rect[2] + trim_rect[3])
                         new_region = (trim_rect[0], trim_rect[2], width, height)
                         cropped_img = img.subsurface(new_region)
-
                         cropped_img = pygame.transform.flip(cropped_img, character['flip_image'], False)
-
                         if character['scale'] != 1:
                             cropped_img = scale_img(cropped_img, character['scale'])
                         temp_list.append(cropped_img)
                     number_of_images_loaded += 1
-
                 animation_list.append(temp_list)
+
         case "Crab Monster":  # Tilesheet, done
             path = "assets/images/characters/Crab Monster/x320p_Spritesheets"
             for animation in animation_types:
@@ -141,6 +128,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     number_of_images_loaded += 1
 
                 animation_list.append(temp_list)
+
         case "Cyclops1" | "Cyclops2" | "Cyclops3":
             for animation in animation_types:
                 temp_list = []
@@ -367,6 +355,42 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     if character['scale'] != 1:
                         cropped_img = scale_img(cropped_img, character['scale'])
 
+                    temp_list.append(cropped_img)
+                    number_of_images_loaded += 1
+
+                animation_list.append(temp_list)
+        case "Wraith1" | "Wraith2" | "Wraith3":
+            for animation in animation_types:
+                temp_list = []
+                scale = character['scale']
+                num_images = character[animation]
+                for image_num in range(1, num_images):
+
+                    file_index = "{:01}".format(image_num)
+
+                    match animation:
+                        case "run":
+                            file_prefix = "Run"
+                        case "idle":
+                            file_prefix = "Idle"
+                        case "attack":
+                            file_prefix = "Attack"
+                        case "death":
+                            file_prefix = "Dead"
+                        case _:
+                            file_prefix = ""
+
+                    path = f"assets/images/characters/{character['name']}/{file_prefix}/{file_index}.png"
+                    img = pygame.image.load(path).convert_alpha()
+
+                    if scale != 1:
+                        img = scale_img(img, scale)
+
+                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
+                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
+
+                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
+                    cropped_img = img.subsurface(new_region)
                     temp_list.append(cropped_img)
                     number_of_images_loaded += 1
 
