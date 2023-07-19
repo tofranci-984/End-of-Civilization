@@ -353,7 +353,8 @@ try:
     tmx_map = load_pygame(path)
 
 except:
-    print("MAIN.PY line:{}\n Unable to load TMX file: {}".format(line_numb(), path))
+    print("MAIN.PY line:{}\n *ERROR*: Unable to load TMX file: {}".format(line_numb(), path))
+    print("-Check path\n-Make sure you can open the file in Tiled\n-Check Tiled icons / locate correct folders")
     pygame.quit()
     exit()
 
