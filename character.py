@@ -57,7 +57,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     number_of_images_loaded += 1
                 animation_list.append(temp_list)
         case "Crocodile Warrior":  # tilesheet, done
-            path = "assets/images/characters/Crocodile Warrior/x320_Spritesheets"
+            path = "assets/images/characters/Crocodile Warrior"
             for animation in animation_types:
                 temp_list = []
                 match animation:
@@ -88,7 +88,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 animation_list.append(temp_list)
 
         case "Crab Monster":  # Tilesheet, done
-            path = "assets/images/characters/Crab Monster/x320p_Spritesheets"
+            path = "assets/images/characters/Crab Monster"
             for animation in animation_types:
                 temp_list = []
                 scale = character['scale']
@@ -176,6 +176,20 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 animation_list.append(temp_list)
         case "Deer":  # Done
             for animation in animation_types:
+
+                match animation:
+                    case "run":
+                        file_prefix = "deer_run"
+                    case "idle":
+                        file_prefix = "deer_idle"
+                    case "attack":
+                        file_prefix = "deer_attack"
+                    case "death":
+                        at = "Die"
+                        file_prefix = "deer_die"
+                    case _:
+                        file_prefix = ""
+
                 num_images = character[animation] + 1
                 temp_list = []
 
@@ -183,18 +197,6 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     file_index = "{:04}".format(image_num)
                     at = animation.capitalize()
 
-                    match animation:
-                        case "run":
-                            file_prefix = "deer_run"
-                        case "idle":
-                            file_prefix = "deer_idle"
-                        case "attack":
-                            file_prefix = "deer_attack"
-                        case "death":
-                            at = "Die"
-                            file_prefix = "deer_die"
-                        case _:
-                            file_prefix = ""
 
                     # path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
                     path = "assets/images/characters/{}/Sprites/{}/{}_{}.png".format(character['name'], at,
