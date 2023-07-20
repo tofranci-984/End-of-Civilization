@@ -588,23 +588,23 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 num_images = character[animation]
                 temp_list = []
 
+                match animation:
+                    case "run":
+                        file_prefix = "Run"
+                    case "idle":
+                        file_prefix = "Idle"
+                        # file_prefix = "Attack1"
+                    case "attack":
+                        file_prefix = "Attack"
+                    case "death":
+                        file_prefix = "Dead"
+                    case _:
+                        file_prefix = ""
+
                 for image_num in range(0, num_images):
                     # num_images = character[animation]
 
                     file_index = "{:03}".format(image_num)
-
-                    match animation:
-                        case "run":
-                            file_prefix = "Run"
-                        case "idle":
-                            file_prefix = "Idle"
-                            # file_prefix = "Attack1"
-                        case "attack":
-                            file_prefix = "Attack"
-                        case "death":
-                            file_prefix = "Dead"
-                        case _:
-                            file_prefix = ""
 
                     path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
