@@ -336,7 +336,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     file_index = "{:04}".format(image_num)
                     at = animation
 
-                    path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
+                    path = f"assets/images/characters/{character['name']}/{at}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
 
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
@@ -355,21 +355,21 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 num_images = character[animation]
                 temp_list = []
 
+                match animation:
+                    case "run":
+                        file_prefix = "3_FLY"
+                    case "idle":
+                        file_prefix = "1_IDLE"
+                    case "attack":
+                        file_prefix = "5_ATTACK"
+                    case "death":
+                        file_prefix = "7_DIE"
+                    case _:
+                        file_prefix = ""
+
                 for image_num in range(0, num_images):
 
                     file_index = "{:03}".format(image_num)
-
-                    match animation:
-                        case "run":
-                            file_prefix = "3_FLY"
-                        case "idle":
-                            file_prefix = "1_IDLE"
-                        case "attack":
-                            file_prefix = "5_ATTACK"
-                        case "death":
-                            file_prefix = "7_DIE"
-                        case _:
-                            file_prefix = ""
 
                     path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -433,8 +433,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     case "idle":
                         # (filename, width, height, rows, cols, start_row_index= 0)
                         images = Tilesheet("assets/images/characters/MasterGaerron/MasterGaerron_idle1.png", 128,
-                                           128,
-                                           4, 3, 0)  # 3 images, row 4
+                                           128, 4, 3, 0)  # 3 images, row 4
                         flip = character['flip_image']
                     case "attack":
                         images = Tilesheet(
@@ -443,12 +442,10 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         flip = True
                     case "death":
                         images = Tilesheet("assets/images/characters/MasterGaerron/MasterGaerron_dead.png", 128,
-                                           128, 4,
-                                           3, 3)  # 3 images, row 4
+                                           128, 4, 3, 3)  # 3 images, row 4
                     case "run":
                         images = Tilesheet("assets/images/characters/MasterGaerron/MasterGaerron_walking.png", 128,
-                                           128,
-                                           4, 8, 2)  # 8 images, row 3
+                                           128, 4, 8, 2)  # 8 images, row 3
                     case _:
                         images = ""
 
