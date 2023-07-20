@@ -111,7 +111,7 @@
     "is_Hitbox_Symmetrical": false,
     "name": "Cyclops1",
     "run": 10,
-    "scale": 0.25,
+    "scale": 0.5,
     "speed": 4,
     "trim_hitbox": [
       100,
@@ -140,7 +140,7 @@
     "is_Hitbox_Symmetrical": false,
     "name": "Cyclops2",
     "run": 10,
-    "scale": 0.25,
+    "scale": 0.5,
     "speed": 4,
     "trim_hitbox": [
       100,
@@ -169,7 +169,7 @@
     "is_Hitbox_Symmetrical": false,
     "name": "Cyclops3",
     "run": 10,
-    "scale": 0.25,
+    "scale": 0.5,
     "speed": 4,
     "trim_hitbox": [
       100,
@@ -303,17 +303,16 @@
     "Special_Attack": "None",
     "rank": 2,
     "animation_cooldown": 100,
-    "attack": 33,
-    "death": 13,
+    "attack": 4,
+    "death": 5,
     "exp": 25,
     "flip_image": true,
-    "fly": 13,
     "hp": 200,
-    "idle": 26,
+    "idle": 3,
     "is_Hitbox_Symmetrical": false,
     "name": "Little Dragon",
-    "run": 16,
-    "scale": 0.25,
+    "run": 5,
+    "scale": 1,
     "speed": 4,
     "trim_hitbox": [
       1,
@@ -328,6 +327,35 @@
       0
     ]
   },
+  "Small dragon": {
+    "Special_Attack": "None",
+    "rank": 2,
+    "animation_cooldown": 100,
+    "attack": 3,
+    "death": 4,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 3,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Little Dragon",
+    "run": 4,
+    "scale": 1,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+
   "Eagle": {
     "Special_Attack": "None",
     "rank": 1,

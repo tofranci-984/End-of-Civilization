@@ -163,17 +163,17 @@
   </properties>
   <image width="146" height="131" source="images/characters/icons/Red Demon icon.png"/>
  </tile>
+ <tile id="308">
+  <properties>
+   <property name="item_name" value="Little Dragon"/>
+  </properties>
+  <image width="256" height="256" source="images/characters/icons/Little Dragon icon.png"/>
+ </tile>
  <tile id="286">
   <properties>
-   <property name="item_name" value=""/>
+   <property name="item_name" value="Small dragon"/>
   </properties>
   <image width="128" height="128" source="images/characters/icons/Small Dragon icon.png"/>
- </tile>
- <tile id="240" x="60" y="100" width="156" height="125">
-  <properties>
-   <property name="item_name" value=""/>
-  </properties>
-  <image width="256" height="256" source="images/characters/icons/dragon_Idle1.png"/>
  </tile>
  <tile id="241">
   <properties>
