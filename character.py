@@ -250,20 +250,20 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 num_images = character[animation] + 1
                 temp_list = []
 
+                match animation:
+                    case "run":
+                        file_prefix = "Walk"
+                    case "idle":
+                        file_prefix = "Idle"
+                    case "attack":
+                        file_prefix = "Attack"
+                    case "death":
+                        file_prefix = "Death"
+                    case _:
+                        file_prefix = ""
+
                 for image_num in range(1, num_images):
                     file_index = "{}".format(image_num)
-
-                    match animation:
-                        case "run":
-                            file_prefix = "Walk"
-                        case "idle":
-                            file_prefix = "Idle"
-                        case "attack":
-                            file_prefix = "Attack"
-                        case "death":
-                            file_prefix = "Death"
-                        case _:
-                            file_prefix = ""
 
                     path = f"assets/images/characters/Little Demon/{file_prefix}{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -318,22 +318,23 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 num_images = character[animation] + 1
                 temp_list = []
 
+                match animation:
+                    case "run":
+                        at = "Fly"
+                        file_prefix = "eagle_fly"
+                    case "idle":
+                        file_prefix = "eagle_idle"
+                    case "attack":
+                        file_prefix = "eagle_attack"
+                    case "death":
+                        at = "die"
+                        file_prefix = "eagle_die"
+                    case _:
+                        file_prefix = ""
+
                 for image_num in range(0, num_images):
                     file_index = "{:04}".format(image_num)
                     at = animation
-                    match animation:
-                        case "run":
-                            at = "Fly"
-                            file_prefix = "eagle_fly"
-                        case "idle":
-                            file_prefix = "eagle_idle"
-                        case "attack":
-                            file_prefix = "eagle_attack"
-                        case "death":
-                            at = "die"
-                            file_prefix = "eagle_die"
-                        case _:
-                            file_prefix = ""
 
                     path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
