@@ -299,6 +299,35 @@
       0
     ]
   },
+  "Little Dragon": {
+    "Special_Attack": "None",
+    "rank": 2,
+    "animation_cooldown": 100,
+    "attack": 33,
+    "death": 13,
+    "exp": 25,
+    "flip_image": true,
+    "fly": 13,
+    "hp": 200,
+    "idle": 26,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Little Dragon",
+    "run": 16,
+    "scale": 0.25,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
   "Eagle": {
     "Special_Attack": "None",
     "rank": 1,
