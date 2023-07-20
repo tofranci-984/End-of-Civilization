@@ -423,8 +423,8 @@
     "idle": 9,
     "is_Hitbox_Symmetrical": false,
     "name": "Wraith1",
-    "run": 10,
-    "scale": 0.25,
+    "run": 7,
+    "scale": 0.75,
     "speed": 4,
     "trim_hitbox": [
       100,

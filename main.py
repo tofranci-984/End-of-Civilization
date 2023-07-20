@@ -19,7 +19,8 @@ class FPS:
         self.text = "0"
 
     def render(self, display, level: str):
-        self.text = "level: {} - FPS:{:.0f}".format(level, self.clock.get_fps())
+        # self.text = "level: {} - FPS:{:.0f}".format(level, self.clock.get_fps())
+        self.text = f"level: {level} - FPS:{self.clock.get_fps():.0f}"
 
         pygame.display.set_caption(self.text)
         # display.blit(self.font.render(self.text, True, green), ((constants.SCREEN_WIDTH / 2) - 250, 12))

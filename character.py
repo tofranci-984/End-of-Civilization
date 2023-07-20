@@ -48,7 +48,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
                     height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
 
-                     # crops off wasted space around images, new_x, new_y, new width, new height
+                    # crops off wasted space around images, new_x, new_y, new width, new height
                     new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
                     cropped_img = img.subsurface(new_region)
                     if character['scale'] != 1:
@@ -361,25 +361,28 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 animation_list.append(temp_list)
         case "Wraith1" | "Wraith2" | "Wraith3":
             for animation in animation_types:
+                print("")
+                print(f"we are testing {animation}")
+                print(f"we are testing {animation!r}")
                 temp_list = []
                 scale = character['scale']
 
-                num_images = character[animation]
+                match animation:
+                    case "run":
+                        file_prefix = "move"
+                    case "idle":
+                        file_prefix = "Idle"
+                    case "attack":
+                        file_prefix = "Attack"
+                    case "death":
+                        file_prefix = "Dead"
+                    case _:
+                        file_prefix = ""
+
+                num_images = character[animation] +1
                 for image_num in range(1, num_images):
 
                     file_index = "{:01}".format(image_num)
-
-                    match animation:
-                        case "run":
-                            file_prefix = "Run"
-                        case "idle":
-                            file_prefix = "Idle"
-                        case "attack":
-                            file_prefix = "Attack"
-                        case "death":
-                            file_prefix = "Dead"
-                        case _:
-                            file_prefix = ""
 
                     path = f"assets/images/characters/{character['name']}/{file_prefix}/{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
