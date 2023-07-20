@@ -132,28 +132,29 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
         case "Cyclops1" | "Cyclops2" | "Cyclops3":
             for animation in animation_types:
                 temp_list = []
-                num_images = character[animation] - 1
 
-                for image_num in range(1, num_images):
+                match animation:
+                    case "run":
+                        file_prefix = "Run"
+                        scale = .3
+                    case "idle":
+                        file_prefix = "Idle"
+                        scale = .3
+                    case "attack":
+                        file_prefix = "Attack"
+                        scale = .3
+                    case "death":
+                        file_prefix = "Dead"
+                        scale = .3
+                    case _:
+                        file_prefix = ""
+
+                num_images = character[animation]
+
+                for image_num in range(0, num_images):
 
                     file_index = "{:03}".format(image_num)
                     scale = character['scale']
-
-                    match animation:
-                        case "run":
-                            file_prefix = "Run"
-                            scale = .3
-                        case "idle":
-                            file_prefix = "Idle"
-                            scale = .3
-                        case "attack":
-                            file_prefix = "Attack"
-                            scale = .3
-                        case "death":
-                            file_prefix = "Dead"
-                            scale = .3
-                        case _:
-                            file_prefix = ""
 
                     path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -361,9 +362,6 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 animation_list.append(temp_list)
         case "Wraith1" | "Wraith2" | "Wraith3":
             for animation in animation_types:
-                print("")
-                print(f"we are testing {animation}")
-                print(f"we are testing {animation!r}")
                 temp_list = []
                 scale = character['scale']
 
