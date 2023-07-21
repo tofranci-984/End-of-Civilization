@@ -352,9 +352,8 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     number_of_images_loaded += 1
 
                 animation_list.append(temp_list)
-        case "Elemental1" | "Elemental2" | "Elemental3":
+        case "Elemental1" | "Elemental2" | "Elemental3":  # edited
             for animation in animation_types:
-                num_images = character[animation]
                 temp_list = []
 
                 match animation:
@@ -369,6 +368,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     case _:
                         file_prefix = ""
 
+                num_images = character[animation]
                 for image_num in range(0, num_images):
 
                     file_index = "{:03}".format(image_num)
@@ -390,28 +390,27 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 animation_list.append(temp_list)
         case "Fox":  # done
             for animation in animation_types:
-                num_images = character[animation] + 1
                 temp_list = []
+                at = animation
 
+                match animation:
+                    case "run":
+                        at = "Run"
+                        file_prefix = "fox_run"
+                    case "idle":
+                        file_prefix = "fox_idle"
+                    case "attack":
+                        file_prefix = "fox_attack"
+                    case "death":
+                        at = "die"
+                        file_prefix = "fox_die"
+                    case _:
+                        file_prefix = ""
+
+                num_images = character[animation] + 1
                 for image_num in range(0, num_images):
 
                     file_index = "{:04}".format(image_num)
-                    at = animation
-
-                    match animation:
-                        case "run":
-                            at = "Run"
-                            file_prefix = "fox_run"
-                        case "idle":
-                            file_prefix = "fox_idle"
-                        case "attack":
-                            file_prefix = "fox_attack"
-                        case "death":
-                            at = "die"
-                            file_prefix = "fox_die"
-                        case _:
-                            file_prefix = ""
-
                     path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
 
@@ -1271,7 +1270,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 for image_num in range(1, num_images):
                     file_index = "{}".format(image_num)
 
-                    path = f"assets/images/characters/Small Dragon/{file_prefix}{file_index}.png"
+                    path = f"assets/images/characters/Baby Dragon/{file_prefix}{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
 
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
@@ -1285,7 +1284,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     number_of_images_loaded += 1
 
                 animation_list.append(temp_list)
-        case "Snake":  # done
+        case "Snake":  # done, edited
             for animation in animation_types:
                 temp_list = []
 
@@ -1309,7 +1308,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 for image_num in range(0, num_images):
                     file_index = "{:04}".format(image_num)
 
-                    path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
+                    path = f"assets/images/characters/{character['name']}/{at}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
 
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
@@ -1445,7 +1444,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     number_of_images_loaded += 1
 
                 animation_list.append(temp_list)
-        case "Thief":
+        case "Thief": # edited
             for animation in animation_types:
                 temp_list = []
 

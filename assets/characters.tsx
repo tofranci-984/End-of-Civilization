@@ -171,9 +171,9 @@
  </tile>
  <tile id="286">
   <properties>
-   <property name="item_name" value="Small Dragon"/>
+   <property name="item_name" value="Baby Dragon"/>
   </properties>
-  <image width="128" height="128" source="images/characters/icons/Small Dragon icon.png"/>
+  <image width="128" height="128" source="images/characters/icons/Baby Dragon icon.png"/>
  </tile>
  <tile id="241">
   <properties>
