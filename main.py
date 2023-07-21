@@ -19,11 +19,13 @@ class FPS:
         self.text = "0"
 
     def render(self, display, level: str):
-        self.text = "level: {} - FPS:{:.0f}".format(level, self.clock.get_fps())
+        # self.text = "level: {} - FPS:{:.0f}".format(level, self.clock.get_fps())
+        self.text = f"level: {level} - FPS:{self.clock.get_fps():.0f}"
 
         pygame.display.set_caption(self.text)
         # display.blit(self.font.render(self.text, True, green), ((constants.SCREEN_WIDTH / 2) - 250, 12))
 
+# todo: need to replace format with f-strings
 
 def line_numb():
     """ Returns the current line number in our program
@@ -35,13 +37,13 @@ def get_loot(player, enemy, x, y):
     if constants.DEBUG_LEVEL:  # get the function name for debugging
         fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
 
-    loot_output = " *{} looted*, found ".format(enemy.name)
+    loot_output = f" *{enemy.name} looted*, found "
 
     for i in range(random.randint(1, constants.LOOT_MAXIMUM)):
         random_loot = random.randint(1, 15)
 
         if constants.DEBUG_LEVEL > 1:
-            print("x={}, y={}, count={}, random_loot={}".format(x, y, i, random_loot))
+            print(f"x={x}, y={y}, count={i}, random_loot={random_loot}")
         ox = x + random.randint(-15, 15)
         oy = y + random.randint(-15, 15)
         if random_loot == 1:
@@ -72,9 +74,8 @@ def get_loot(player, enemy, x, y):
             loot = Item(ox, oy, item_type, loot_images)
 
         if constants.DEBUG_LEVEL > 1:
-            print("F:{}, L:{}, item_type={}, loot_images={}".format(fn, line_numb(), item_type, loot_images))
+            print(f"F:{fn}, L:{line_numb()}, item_type={item_type}, loot_images={loot_images}")
 
-        # loot = Item(ox, oy, item_type, loot_images)
         loot_output += loot_name + ", "
         item_group.add(loot)
     print(loot_output)
@@ -207,7 +208,7 @@ class ScreenFade():
 game_title = "The End of Civilization"
 
 if constants.DEBUG_LEVEL:
-    print("\n\n{} starting\nPath {}\n".format(game_title, Path(__file__)))
+    print(f"\n\n{game_title} starting\nPath {Path(__file__)}\n")
 
 # load music (has to be done before pygame.init for perf reasons)
 mixer.init()
@@ -227,7 +228,7 @@ pygame.init()
 
 if constants.DEBUG_LEVEL:
     print("[pygame.mixer] init")
-    print("[pygame.mixer.music] loaded, volume is {}".format(volume))
+    print(f"[pygame.mixer.music] loaded, volume is {volume}")
 
 # minimum game screen width / height
 if constants.SCREEN_WIDTH <= 1200:
@@ -328,7 +329,7 @@ red_potion, blue_potion, green_potion = load_potions()
 item_images = [coin_images, red_potion, blue_potion, green_potion, exit_portal, gold_images]
 
 if constants.DEBUG_LEVEL:
-    print(" line: {}. weapon images loaded".format(line_numb()))
+    print(f" line: {line_numb()}. weapon images loaded")
 
 # dictionary for character images
 mob_dict = dict()
@@ -345,7 +346,7 @@ character_classes_dict = read_code_from_json('character classes.json')
 path = "assets/testing.tmx" if constants.DEBUG_LEVEL else "assets/level1.tmx"
 
 if constants.DEBUG_LEVEL:
-    print("MAIN.PY, line:{}, Loading TMX_MAP file: {}".format(line_numb(), path))
+    print(f"MAIN.PY, line:{line_numb()}, Loading TMX_MAP file: {path}")
 
 # tmx file should be at root of images directory.  Otherwise images path can get messed up and have to be re-located
 # for each file / image in tiled maps :(
@@ -353,7 +354,8 @@ try:
     tmx_map = load_pygame(path)
 
 except:
-    print("MAIN.PY line:{}\n Unable to load TMX file: {}".format(line_numb(), path))
+    print(f"MAIN.PY line:{line_numb()}\n Unable to load TMX file: {path}")
+    print("-Check path\n-Make sure you can open the file in Tiled\n-Check Tiled icons / locate correct folders")
     pygame.quit()
     exit()
 
@@ -361,7 +363,7 @@ except:
 if constants.DEBUG_LEVEL:
     if constants.FPS_MONITOR:
         fps = FPS()
-    print(" MAIN.PY, line={}\n   Creating World\n".format(line_numb()))
+    print(f" MAIN.PY, line={line_numb()}\n   Creating World\n")
 
 # Create World
 world = World(character_classes_dict)

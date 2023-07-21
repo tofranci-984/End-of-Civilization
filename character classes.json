@@ -299,6 +299,63 @@
       0
     ]
   },
+  "Little Dragon": {
+    "Special_Attack": "None",
+    "rank": 2,
+    "animation_cooldown": 100,
+    "attack": 4,
+    "death": 5,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 3,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Little Dragon",
+    "run": 5,
+    "scale": 1,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Small dragon": {
+    "Special_Attack": "None",
+    "rank": 2,
+    "animation_cooldown": 100,
+    "attack": 3,
+    "death": 4,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 3,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Little Dragon",
+    "run": 4,
+    "scale": 1,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+
   "Eagle": {
     "Special_Attack": "None",
     "rank": 1,
@@ -400,6 +457,90 @@
     "speed": 4,
     "trim_hitbox": [
       1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Wraith1": {
+    "Special_Attack": "None",
+    "rank": 2,
+    "animation_cooldown": 100,
+    "attack": 16,
+    "death": 9,
+    "exp": 50,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 9,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Wraith1",
+    "run": 7,
+    "scale": 0.75,
+    "speed": 4,
+    "trim_hitbox": [
+      100,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Wraith2": {
+    "Special_Attack": "None",
+    "rank": 2,
+    "animation_cooldown": 100,
+    "attack": 16,
+    "death": 9,
+    "exp": 50,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 9,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Wraith2",
+    "run": 10,
+    "scale": 0.25,
+    "speed": 4,
+    "trim_hitbox": [
+      100,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "Wraith3": {
+    "Special_Attack": "None",
+    "rank": 2,
+    "animation_cooldown": 100,
+    "attack": 16,
+    "death": 9,
+    "exp": 50,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 9,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Wraith3",
+    "run": 10,
+    "scale": 0.25,
+    "speed": 4,
+    "trim_hitbox": [
+      100,
       1,
       1,
       1
