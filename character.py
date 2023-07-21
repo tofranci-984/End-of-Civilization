@@ -25,29 +25,30 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
     animation_list = []
 
     match character['name']:
-        case "Bear":
+        case "Bear": # edited
             # animation_list.append(char_name)
             for animation in animation_types:
                 temp_list = []
+
+                match animation:
+                    case "run":
+                        file_prefix = "bear_run"
+                    case "idle":
+                        file_prefix = "bear_idle"
+                    case "attack":
+                        file_prefix = "bear_attack"
+                    case "death":
+                        file_prefix = "bear_die"
+                    case _:
+                        file_prefix = ""
 
                 num_images = character[animation] + 1
 
                 for image_num in range(0, num_images):
                     file_index = "{:04}".format(image_num)
-                    match animation:
-                        case "run":
-                            file_prefix = "bear_run"
-                        case "idle":
-                            file_prefix = "bear_idle"
-                        case "attack":
-                            file_prefix = "bear_attack"
-                        case "death":
-                            file_prefix = "bear_die"
-                        case _:
-                            file_prefix = ""
-
-                    path = "assets/images/characters/{}/Sprites/{}/{}_{}.png".format(character['name'],
-                                                                                     animation, file_prefix, file_index)
+                    path = f"assets/images/characters/{character['name']}/Sprites/{animation}/{file_prefix}_{file_index}.png"
+                    # path = "assets/images/characters/{}/Sprites/{}/{}_{}.png".format(character['name'],
+                    #                                                                  animation, file_prefix, file_index)
                     img = pygame.image.load(path).convert_alpha()
 
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
@@ -62,9 +63,9 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     number_of_images_loaded += 1
 
                 animation_list.append(temp_list)
-        case "Crocodile Warrior":  # tilesheet, done
+        case "Crocodile Warrior":  # tilesheet, done, edited
             # animation_list.append(char_name)
-            path = "assets/images/characters/Crocodile Warrior/x320_Spritesheets"
+            path = "assets/images/characters/Crocodile Warrior"
             for animation in animation_types:
                 temp_list = []
 
@@ -100,8 +101,8 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     number_of_images_loaded += 1
 
                 animation_list.append(temp_list)
-        case "Crab Monster":  # Tilesheet, done
-            path = "assets/images/characters/Crab Monster/x320p_Spritesheets"
+        case "Crab Monster":  # Tilesheet, done, edited
+            path = "assets/images/characters/Crab Monster"
             for animation in animation_types:
                 temp_list = []
                 scale = character['scale']
@@ -146,26 +147,22 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 temp_list = []
                 num_images = character[animation] - 1
 
+                match animation:
+                    case "run":
+                        file_prefix = "Run"
+                    case "idle":
+                        file_prefix = "Idle"
+                    case "attack":
+                        file_prefix = "Attack"
+                    case "death":
+                        file_prefix = "Dead"
+                    case _:
+                        file_prefix = ""
+
                 for image_num in range(1, num_images):
 
                     file_index = "{:03}".format(image_num)
                     scale = character['scale']
-
-                    match animation:
-                        case "run":
-                            file_prefix = "Run"
-                            scale = .3
-                        case "idle":
-                            file_prefix = "Idle"
-                            scale = .3
-                        case "attack":
-                            file_prefix = "Attack"
-                            scale = .3
-                        case "death":
-                            file_prefix = "Dead"
-                            scale = .3
-                        case _:
-                            file_prefix = ""
 
                     path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()

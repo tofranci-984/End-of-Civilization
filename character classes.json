@@ -2,7 +2,7 @@
   "Bear": {
     "Special_Attack": "None",
     "rank": 1,
-    "animation_cooldown": 150,
+    "animation_cooldown": 75,
     "attack": 28,
     "death": 21,
     "exp": 20,
@@ -1174,7 +1174,7 @@
   "Raven": {
     "Special_Attack": "None",
     "rank": 1,
-    "animation_cooldown": 50,
+    "animation_cooldown": 150,
     "attack": 12,
     "death": 24,
     "exp": 10,
