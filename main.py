@@ -15,7 +15,6 @@ class FPS:
     def __init__(self):
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont("arial", 24)
-        #        print(pygame.font.get_fonts())
         self.text = "0"
 
     def render(self, display, level: str):

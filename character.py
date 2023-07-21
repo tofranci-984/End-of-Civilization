@@ -149,8 +149,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 num_images = character[animation]
 
                 for image_num in range(0, num_images):
-
-                    file_index = "{:03}".format(image_num)
+                    file_index = f"{image_num:03}"
 
                     path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -191,7 +190,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 temp_list = []
 
                 for image_num in range(0, num_images):
-                    file_index = "{:04}".format(image_num)
+                    file_index = f"{image_num:04}"
 
                     path = f"assets/images/characters/{character['name']}/{at}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -209,7 +208,6 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 animation_list.append(temp_list)
         case "Dragon1" | "Dragon2" | "Dragon3":
             for animation in animation_types:
-
                 match animation:
                     case "run":
                         file_prefix = "Flight"
@@ -226,10 +224,8 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 scale = character['scale']
 
                 num_images = character['fly'] if animation == "run" else character[animation] - 1
-
                 for image_num in range(0, num_images):
-
-                    file_index = "{:03}".format(image_num)
+                    file_index = f"{image_num:03}"
 
                     path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -244,7 +240,6 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     cropped_img = img.subsurface(new_region)
                     temp_list.append(cropped_img)
                     number_of_images_loaded += 1
-
                 animation_list.append(temp_list)
         case "Little Demon":  # Done
             for animation in animation_types:
@@ -264,7 +259,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         file_prefix = ""
 
                 for image_num in range(1, num_images):
-                    file_index = "{}".format(image_num)
+                    file_index = f"{image_num}"
 
                     path = f"assets/images/characters/Little Demon/{file_prefix}{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -298,7 +293,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         file_prefix = ""
 
                 for image_num in range(1, num_images):
-                    file_index = "{}".format(image_num)
+                    file_index = f"{image_num}"
 
                     path = f"assets/images/characters/Little Dragon/{file_prefix}{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -335,7 +330,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
                 num_images = character[animation] + 1
                 for image_num in range(0, num_images):
-                    file_index = "{:04}".format(image_num)
+                    file_index = f"{image_num:04}"
 
                     path = f"assets/images/characters/{character['name']}/{at}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -369,8 +364,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
                 num_images = character[animation]
                 for image_num in range(0, num_images):
-
-                    file_index = "{:03}".format(image_num)
+                    file_index = f"{image_num:03}"
 
                     path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -408,8 +402,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
                 num_images = character[animation] + 1
                 for image_num in range(0, num_images):
-
-                    file_index = "{:04}".format(image_num)
+                    file_index = f"{image_num:04}"
                     path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
 
@@ -489,8 +482,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
                 num_images = character[animation] + 1
                 for image_num in range(0, num_images):
-
-                    file_index = "{:04}".format(image_num)
+                    file_index = f"{image_num:04}"
 
                     path = f"assets/images/characters/{character['name']}/{at}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -526,7 +518,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
                 for image_num in range(0, num_images):
 
-                    file_index = "{:03}".format(image_num)
+                    file_index = f"{image_num:03}"
 
                     path = f"assets/images/characters/Goblin/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -566,8 +558,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         file_prefix = ""
 
                 for image_num in range(0, num_images):
-
-                    file_index = "{:03}".format(image_num)
+                    file_index = f"{image_num:03}"
 
                     path = f"assets/images/characters/{character['name']}/{at}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -603,9 +594,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         file_prefix = ""
 
                 for image_num in range(0, num_images):
-                    # num_images = character[animation]
-
-                    file_index = "{:03}".format(image_num)
+                    file_index = f"{image_num:03}"
 
                     path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -646,7 +635,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
                 num_images = character[animation] + 1
                 for image_num in range(0, num_images - 1):
-                    file_index = "{:04}".format(image_num)
+                    file_index = f"{image_num:04}"
 
                     path = f"assets/images/characters/{character['name']}/512x512/{at}/{file_prefix}_{file_index}.png"
 
@@ -680,8 +669,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
                 num_images = character[animation]
                 for image_num in range(1, num_images):
-
-                    file_index = "{:01}".format(image_num)
+                    file_index = f"{image_num:01}"
 
                     path = f"assets/images/characters/{character['name']}/{file_prefix}{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -723,7 +711,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
                 num_images = character[animation] + 1
                 for image_num in range(0, num_images - 1):
-                    file_index = "{:04}".format(image_num + 1)
+                    file_index = f"{image_num:04}"
 
                     path = f"assets/images/characters/{character['name']}/{at}/{file_prefix}_{file_index}.png"
 
@@ -842,7 +830,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
                 num_images = character[animation] + 1
                 for image_num in range(0, num_images):
-                    file_index = "{:04}".format(image_num)
+                    file_index = f"{image_num:04}"
 
                     path = f"assets/images/characters/{character['name']}/{at}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -876,8 +864,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
                 num_images = character[animation]
                 for image_num in range(0, num_images):
-
-                    file_index = "{:03}".format(image_num)
+                    file_index = f"{image_num:03}"
 
                     path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -917,8 +904,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
                 num_images = character[animation]
                 for image_num in range(0, num_images):
-
-                    file_index = "{:03}".format(image_num)
+                    file_index = f"{image_num:03}"
 
                     path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
@@ -1039,7 +1025,6 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         file_prefix = ""
 
                 num_images = character[animation] + 1
-
                 for image_num in range(0, num_images):
                     file_index = "{:04}".format(image_num)
                     path = f"assets/images/characters/{character['name']}/{at}/{file_prefix}_{file_index}.png"
@@ -1251,7 +1236,6 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
                     temp_list.append(cropped_img)
                     number_of_images_loaded += 1
-
                 animation_list.append(temp_list)
         case "Baby Dragon":  # Done, edited
             for animation in animation_types:
@@ -1451,7 +1435,6 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 temp_list = []
 
                 at = animation
-
                 match animation:
                     case "run":
                         at = "Run"
@@ -1488,7 +1471,6 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
                 animation_list.append(temp_list)
         case "Troll1" | "Troll2" | "Troll3":
-            # animation_list.append(char_name)
             for animation in animation_types:
                 num_images = character[animation]
                 temp_list = []
