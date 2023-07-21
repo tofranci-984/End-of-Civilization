@@ -1321,7 +1321,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     number_of_images_loaded += 1
 
                 animation_list.append(temp_list)
-        case "SunkenGod":  # tilesheet, done
+        case "SunkenGod":  # tilesheet, done, edited
             for animation in animation_types:
                 temp_list = []
                 flip = character['flip_image']
@@ -1332,13 +1332,11 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                                            512, 512, 4, 3, 0)  # 3 images, row 1
                     case "attack":
                         images = Tilesheet("assets/images/characters/SunkenGod/Medieval_Bosses_SunkenGod_MVsv.png",
-                                           512,
-                                           512, 6, 9, 1)  # 3 images, row 1
+                                           512, 512, 6, 9, 1)  # 3 images, row 1
                         flip = True
                     case "death":
                         images = Tilesheet("assets/images/characters/SunkenGod/Medieval_Bosses_SunkenGod_ko.png",
-                                           512,
-                                           512, 4, 3, 1)  # 3 images, row 1
+                                           512, 512, 4, 3, 1)  # 3 images, row 1
                     case "run":
                         images = Tilesheet(
                             "assets/images/characters/SunkenGod/Medieval_Bosses_SunkenGod_running.png",
