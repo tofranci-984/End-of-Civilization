@@ -72,7 +72,6 @@
   <object id="371" gid="656" x="58" y="3306" width="120" height="155"/>
   <object id="372" gid="705" x="842" y="2005" width="125" height="125"/>
   <object id="373" gid="668" x="840" y="2236" width="100" height="100"/>
-  <object id="375" gid="688" x="862" y="2754" width="100" height="100"/>
   <object id="376" gid="707" x="37" y="3561" width="247" height="202"/>
   <object id="377" gid="679" x="40" y="3918" width="300" height="300"/>
   <object id="380" gid="688" x="850" y="2474" width="100" height="100"/>
@@ -86,6 +85,6 @@
   <object id="388" gid="709" x="1426" y="2700" width="200" height="300"/>
   <object id="389" gid="706" x="1455" y="3337" width="171" height="237"/>
   <object id="390" gid="708" x="1433" y="3665" width="219" height="274"/>
-  <object id="391" gid="680" x="897" y="705" width="59" height="102"/>
+  <object id="391" gid="680" x="867" y="2761" width="59" height="102"/>
  </objectgroup>
 </map>

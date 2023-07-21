@@ -780,7 +780,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     number_of_images_loaded += 1
 
                 animation_list.append(temp_list)
-        case "Magic Fox":
+        case "Magic Fox":  # edited
             for animation in animation_types:
                 temp_list = []
                 at = animation
@@ -805,7 +805,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 for image_num in range(1, num_images):
                     file_index = "{:04}".format(image_num)
 
-                    path = f"assets/images/characters/{character['name']}/512x512/{at}/{file_prefix}_{file_index}.png"
+                    path = f"assets/images/characters/{character['name']}/{at}/{file_prefix}_{file_index}.png"
 
                     img = pygame.image.load(path).convert_alpha()
 
@@ -844,7 +844,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 for image_num in range(0, num_images):
                     file_index = "{:04}".format(image_num)
 
-                    path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
+                    path = f"assets/images/characters/{character['name']}/{at}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
 
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
