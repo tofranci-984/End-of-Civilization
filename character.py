@@ -1251,9 +1251,8 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     number_of_images_loaded += 1
 
                 animation_list.append(temp_list)
-        case "Small Dragon":  # Done, edited
+        case "Baby Dragon":  # Done, edited
             for animation in animation_types:
-                num_images = character[animation]
                 temp_list = []
 
                 match animation:
@@ -1268,6 +1267,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     case _:
                         file_prefix = ""
 
+                num_images = character[animation]
                 for image_num in range(1, num_images):
                     file_index = "{}".format(image_num)
 
@@ -1457,7 +1457,6 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         file_prefix = "Run"
                     case "idle":
                         at = "Idle"
-                        # angle = "180"
                         file_prefix = "Idle"
                     case "attack":
                         at = "Attack1"

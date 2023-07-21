@@ -300,7 +300,7 @@
     ]
   },
 
-  "Small Dragon": {
+  "Baby Dragon": {
     "Special_Attack": "None",
     "rank": 2,
     "animation_cooldown": 250,
@@ -316,16 +316,16 @@
     "scale": 1.5,
     "speed": 4,
     "trim_hitbox": [
-      1,
-      1,
-      1,
-      1
+      25,
+      25,
+      10,
+      10
     ],
     "trim_rect": [
-      0,
-      0,
-      0,
-      0
+      10,
+      10,
+      25,
+      25
     ]
   },
 
@@ -999,7 +999,7 @@
       25,
       25,
       50,
-      50
+      30
     ]
   },
   "Lord Esther": {
