@@ -1797,6 +1797,9 @@ def draw_health_bar(surf, rect, border_color, back_color, health_color, progress
     size = rect.size
     pos = rect.topleft
 
+    if size[0] > constants.MAX_HEALTHBAR_WIDTH:
+        size = (constants.MAX_HEALTHBAR_WIDTH, size[1])
+
     # shape_surf = surf.copy()
 
     # TODO to make status bar opaque, need to use SRCALPHA on surface.

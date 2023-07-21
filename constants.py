@@ -25,6 +25,7 @@ MUSIC = False
 # PLAYER_SCALE = .75  # .75 places player in mid of rect and hitbox.
 PLAYER_HITBOX = .05  # .05 is normal
 ENEMY_HITBOX = .05  # .05 is normal
+MAX_HEALTHBAR_WIDTH = 100
 
 BUTTON_SCALE = 1
 WEAPON_SCALE = 1.5
