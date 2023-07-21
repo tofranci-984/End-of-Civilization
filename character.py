@@ -420,14 +420,13 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
         case "Gaerron":  # Tilesheet, done
             for animation in animation_types:
                 temp_list = []
-                flip = character['flip']
+                flip = character['flip_image']
 
                 match animation:
                     case "idle":
                         # (filename, width, height, rows, cols, start_row_index= 0)
                         images = Tilesheet("assets/images/characters/MasterGaerron/MasterGaerron_idle1.png", 128,
                                            128, 4, 3, 0)  # 3 images, row 4
-                        flip = character['flip_image']
                     case "attack":
                         images = Tilesheet(
                             "assets/images/characters/MasterGaerron/MasterGaerron_MVsv_alt_attack2.png",
