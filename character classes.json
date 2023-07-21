@@ -1652,7 +1652,7 @@
   "Thief": {
     "Special_Attack": "None",
     "rank": 1,
-    "animation_cooldown": 150,
+    "animation_cooldown": 100,
     "attack": 24,
     "death": 24,
     "exp": 10,
