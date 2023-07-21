@@ -142,7 +142,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     number_of_images_loaded += 1
 
                 animation_list.append(temp_list)
-        case "Cyclops1" | "Cyclops2" | "Cyclops3":
+        case "Cyclops1" | "Cyclops2" | "Cyclops3": # edited
             for animation in animation_types:
                 temp_list = []
                 num_images = character[animation] - 1
@@ -184,29 +184,28 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 animation_list.append(temp_list)
         case "Deer":  # Done
             for animation in animation_types:
-                num_images = character[animation] + 1
                 temp_list = []
+
+                match animation:
+                    case "run":
+                        file_prefix = "deer_run"
+                    case "idle":
+                        file_prefix = "deer_idle"
+                    case "attack":
+                        file_prefix = "deer_attack"
+                    case "death":
+                        at = "Die"
+                        file_prefix = "deer_die"
+                    case _:
+                        file_prefix = ""
+
+                num_images = character[animation] + 1
 
                 for image_num in range(0, num_images):
                     file_index = "{:04}".format(image_num)
                     at = animation.capitalize()
 
-                    match animation:
-                        case "run":
-                            file_prefix = "deer_run"
-                        case "idle":
-                            file_prefix = "deer_idle"
-                        case "attack":
-                            file_prefix = "deer_attack"
-                        case "death":
-                            at = "Die"
-                            file_prefix = "deer_die"
-                        case _:
-                            file_prefix = ""
-
-                    # path = f"assets/images/characters/{character['name']}/Sprites/{at}/{file_prefix}_{file_index}.png"
-                    path = "assets/images/characters/{}/Sprites/{}/{}_{}.png".format(character['name'], at,
-                                                                                     file_prefix, file_index)
+                    path = f"assets/images/characters/{character['name']}/{at}/{file_prefix}_{file_index}.png"
                     img = pygame.image.load(path).convert_alpha()
 
                     width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
