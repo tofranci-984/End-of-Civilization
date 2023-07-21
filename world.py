@@ -106,7 +106,11 @@ class World():
                     self.exit_tile = tile_data
                 case _:
                     if constants.DEBUG_LEVEL:
-                        print("   in F:{}, ln:{}, name={}".format(fn, line_numb(), obj.properties['item_name']))
+                        print(f"  WORLD.PY, F:{fn}, ln:{line_numb()}, name={obj.properties['item_name']}")
+                    if not obj.properties['item_name']:
+                        print(f"  *ERROR*: self.name undefined.  Check that  item_names are defined in TSX files")
+                        pygame.quit()
+                        sys.exit()
                     enemy = Character(image_x, image_y, mob_dict, obj.properties['item_name'],
                                       self.character_classes_dict)
                     self.character_list.append(enemy)

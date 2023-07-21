@@ -299,38 +299,11 @@
       0
     ]
   },
-  "Little Dragon": {
+
+  "Small Dragon": {
     "Special_Attack": "None",
     "rank": 2,
-    "animation_cooldown": 100,
-    "attack": 4,
-    "death": 5,
-    "exp": 25,
-    "flip_image": true,
-    "hp": 200,
-    "idle": 3,
-    "is_Hitbox_Symmetrical": false,
-    "name": "Little Dragon",
-    "run": 5,
-    "scale": 1,
-    "speed": 4,
-    "trim_hitbox": [
-      1,
-      1,
-      1,
-      1
-    ],
-    "trim_rect": [
-      0,
-      0,
-      0,
-      0
-    ]
-  },
-  "Small dragon": {
-    "Special_Attack": "None",
-    "rank": 2,
-    "animation_cooldown": 100,
+    "animation_cooldown": 250,
     "attack": 3,
     "death": 4,
     "exp": 25,
@@ -338,9 +311,9 @@
     "hp": 200,
     "idle": 3,
     "is_Hitbox_Symmetrical": false,
-    "name": "Little Dragon",
+    "name": "Small Dragon",
     "run": 4,
-    "scale": 1,
+    "scale": 1.5,
     "speed": 4,
     "trim_hitbox": [
       1,
@@ -891,7 +864,7 @@
   "Insect": {
     "Special_Attack": "None",
     "rank": 1,
-    "animation_cooldown": 75,
+    "animation_cooldown": 50,
     "attack": 24,
     "death": 35,
     "exp": 20,
@@ -999,6 +972,34 @@
       80,
       60,
       50
+    ]
+  },
+  "Little Dragon": {
+    "Special_Attack": "None",
+    "rank": 2,
+    "animation_cooldown": 250,
+    "attack": 4,
+    "death": 5,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 3,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Little Dragon",
+    "run": 5,
+    "scale": 1.5,
+    "speed": 4,
+    "trim_hitbox": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
     ]
   },
   "Lord Esther": {
@@ -1595,7 +1596,7 @@
   "TheOldKing": {
     "Special_Attack": "Fireball",
     "rank": 3,
-    "animation_cooldown": 150,
+    "animation_cooldown": 350,
     "attack": -1,
     "death": -1,
     "exp": 100,

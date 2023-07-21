@@ -9,7 +9,7 @@
  </tile>
  <tile id="287" x="150" y="150" width="125" height="125">
   <properties>
-   <property name="item_name" value=""/>
+   <property name="item_name" value="Snake"/>
   </properties>
   <image width="400" height="400" source="images/characters/icons/snake icon.png"/>
  </tile>
@@ -25,7 +25,7 @@
   </properties>
   <image width="400" height="400" source="images/characters/icons/deer icon.png"/>
  </tile>
- <tile id="261">
+ <tile id="261" x="100" y="100" width="300" height="300">
   <properties>
    <property name="item_name" value="Insect"/>
   </properties>
@@ -81,7 +81,7 @@
  </tile>
  <tile id="291" x="110" y="75" width="200" height="300">
   <properties>
-   <property name="item_name" value=""/>
+   <property name="item_name" value="Thief"/>
   </properties>
   <image width="512" height="512" source="images/characters/icons/Thief icon.png"/>
  </tile>
@@ -171,7 +171,7 @@
  </tile>
  <tile id="286">
   <properties>
-   <property name="item_name" value="Small dragon"/>
+   <property name="item_name" value="Small Dragon"/>
   </properties>
   <image width="128" height="128" source="images/characters/icons/Small Dragon icon.png"/>
  </tile>
@@ -195,7 +195,7 @@
  </tile>
  <tile id="289">
   <properties>
-   <property name="item_name" value=""/>
+   <property name="item_name" value="TheOldKing"/>
   </properties>
   <image width="247" height="202" source="images/characters/icons/TheOldKing icon.png"/>
  </tile>
@@ -273,13 +273,13 @@
  </tile>
  <tile id="288">
   <properties>
-   <property name="item_name" value=""/>
+   <property name="item_name" value="SunkenGod"/>
   </properties>
   <image width="171" height="237" source="images/characters/icons/SunkenGod icon.png"/>
  </tile>
  <tile id="290">
   <properties>
-   <property name="item_name" value=""/>
+   <property name="item_name" value="TheTriplets"/>
   </properties>
   <image width="219" height="274" source="images/characters/icons/TheTriplets icon.png"/>
  </tile>
@@ -291,13 +291,13 @@
  </tile>
  <tile id="265" x="75" y="75" width="100" height="100">
   <properties>
-   <property name="item_name" value=""/>
+   <property name="item_name" value="Lizard"/>
   </properties>
   <image width="256" height="256" source="images/characters/icons/lizard icon.png"/>
  </tile>
  <tile id="269">
   <properties>
-   <property name="item_name" value=""/>
+   <property name="item_name" value="Medusa"/>
   </properties>
   <image width="128" height="128" source="images/characters/icons/medusa icon.png"/>
  </tile>
