@@ -213,7 +213,7 @@
     ]
   },
   "Dragon1": {
-    "Special_Attack": "None",
+    "Special_Attack": "Fireball",
     "rank": 2,
     "animation_cooldown": 100,
     "attack": 33,
@@ -242,7 +242,7 @@
     ]
   },
   "Dragon2": {
-    "Special_Attack": "None",
+    "Special_Attack": "Fireball",
     "rank": 2,
     "animation_cooldown": 100,
     "attack": 33,
@@ -271,7 +271,7 @@
     ]
   },
   "Dragon3": {
-    "Special_Attack": "None",
+    "Special_Attack": "Fireball",
     "rank": 2,
     "animation_cooldown": 100,
     "attack": 33,
@@ -301,7 +301,7 @@
   },
 
   "Baby Dragon": {
-    "Special_Attack": "None",
+    "Special_Attack": "Fireball",
     "rank": 2,
     "animation_cooldown": 250,
     "attack": 3,
@@ -975,7 +975,7 @@
     ]
   },
   "Little Dragon": {
-    "Special_Attack": "None",
+    "Special_Attack": "Fireball",
     "rank": 2,
     "animation_cooldown": 250,
     "attack": 4,
