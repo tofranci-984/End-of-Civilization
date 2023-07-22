@@ -1792,12 +1792,12 @@ def line_numb():
     return inspect.currentframe().f_back.f_lineno
 
 
-def draw_health_bar(surf, rect, border_color, back_color, health_color, progress):
+def draw_health_bar(surf, rect, border_color, back_color, health_color, progress, width=constants.MAX_HEALTHBAR_WIDTH):
     size = rect.size
     pos = rect.topleft
 
-    if size[0] > constants.MAX_HEALTHBAR_WIDTH:
-        size = (constants.MAX_HEALTHBAR_WIDTH, size[1])
+    if size[0] > width:
+        size = (width, size[1])
 
     # shape_surf = surf.copy()
 

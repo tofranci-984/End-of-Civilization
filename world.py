@@ -58,7 +58,7 @@ class World():
             image_x = int(obj.x)
             image_y = int(obj.y)
 
-            if constants.DEBUG_LEVEL:
+            if constants.DEBUG_LEVEL> 1:
                 print("WORLD.PY, F:{}, LN:{}".format(fn, line_numb()))
                 print("\nPROCESSING {}, i={}".format(obj.properties['item_name'], i))
 

@@ -19,14 +19,12 @@ class FPS:
         self.text = "0"
 
     def render(self, level: str):
-        # self.text = "level: {} - FPS:{:.0f}".format(level, self.clock.get_fps())
-        self.text = f"level: {level} - FPS:{self.clock.get_fps():.0f}"
+        self.text = f"level: {level} - FPS:{self.clock.get_fps():.0f} W:{constants.SCREEN_WIDTH!r} H:{constants.SCREEN_HEIGHT!r}"
+        # self.text = f"level: {level} - FPS:{self.clock.get_fps():.0f}"
 
         pygame.display.set_caption(self.text)
         # display.blit(self.font.render(self.text, True, green), ((constants.SCREEN_WIDTH / 2) - 250, 12))
 
-
-# todo: need to replace format with f-strings
 
 def line_numb():
     """ Returns the current line number in our program
@@ -93,44 +91,33 @@ def draw_statusbar_info():
     pygame.draw.rect(screen, constants.PANEL, (0, 0, constants.SCREEN_WIDTH, 50))
     pygame.draw.line(screen, constants.WHITE, (0, 50), (constants.SCREEN_WIDTH, 50))
 
-    # # draw lives
-    # half_heart_drawn = False
-    # health_percentage = player.health / player.max_health * 100
-    # for i in range(5):
-    #     if health_percentage >= ((i + 1) * 20):
-    #         screen.blit(heart_full, (10 + i * 50, 0))
-    #     elif (health_percentage % 20 > 0) and not half_heart_drawn:
-    #         screen.blit(heart_half, (10 + i * 50, 0))
-    #         half_heart_drawn = True
-    #     else:
-    #         screen.blit(heart_empty, (10 + i * 50, 0))
-
     text_pos_percentage = {"hp": 1, "mana": 19, "map": 33, "exp": 45, "health_potion": 67, "poison_potion": 74,
                            "mana_potion": 81, "score": 92}
+    statbar_pos_offset = {}
 
     for item in text_pos_percentage:
-        text_pos_percentage[item] = int(constants.SCREEN_WIDTH * text_pos_percentage[item] / 100)
+        statbar_pos_offset[item] = int(constants.SCREEN_WIDTH * text_pos_percentage[item] / 100)
 
     # HP
     draw_statusbar_text("HP: " + str(player.health) + "/" + str(character_classes_dict['player']['max_health']),
-                        font, constants.WHITE, text_pos_percentage['hp'], 15)
+                        font, constants.WHITE, statbar_pos_offset['hp'], 15)
     # MANA
-    draw_statusbar_text("MANA: " + str(player.mana), font, constants.WHITE, text_pos_percentage['mana'], 15)
+    draw_statusbar_text("MANA: " + str(player.mana), font, constants.WHITE, statbar_pos_offset['mana'], 15)
 
     # level
-    draw_statusbar_text("MAP: " + str(level), font, constants.WHITE, text_pos_percentage['map'], 15)
+    draw_statusbar_text("MAP: " + str(level), font, constants.WHITE, statbar_pos_offset['map'], 15)
     # exp
     draw_statusbar_text("EXP: " + str(player.exp) + "/" + str(player.rank), font, constants.WHITE,
-                        text_pos_percentage['exp'], 15)
+                        statbar_pos_offset['exp'], 15)
     # show score
-    draw_statusbar_text(f"X{player.score}", font, constants.WHITE, text_pos_percentage['score'], 15)
+    draw_statusbar_text(f"X{player.score}", font, constants.WHITE, statbar_pos_offset['score'], 15)
 
     # show mana potions
-    draw_statusbar_text(f"X{player.mana_potions}", font, constants.WHITE, text_pos_percentage['mana_potion'], 15)
+    draw_statusbar_text(f"X{player.mana_potions}", font, constants.WHITE, statbar_pos_offset['mana_potion'], 15)
     # show health potions
-    draw_statusbar_text(f"X{player.health_potions}", font, constants.WHITE, text_pos_percentage['health_potion'], 15)
+    draw_statusbar_text(f"X{player.health_potions}", font, constants.WHITE, statbar_pos_offset['health_potion'], 15)
     # show poison potions
-    draw_statusbar_text(f"X{player.poison_potions}", font, constants.WHITE, text_pos_percentage['poison_potion'], 15)
+    draw_statusbar_text(f"X{player.poison_potions}", font, constants.WHITE, statbar_pos_offset['poison_potion'], 15)
 
 
 # function to reset level
@@ -293,16 +280,16 @@ resume_img = scale_img(pygame.image.load("assets/images/buttons/button_resume.pn
                        constants.BUTTON_SCALE, use_global_scale=False)
 
 # load heart images
-heart_empty = scale_img(pygame.image.load("assets/images/items/heart_empty.png").convert_alpha(),
-                        constants.HEALTHBAR_SCALE,
-                        use_global_scale=False)
-heart_half = scale_img(pygame.image.load("assets/images/items/heart_half.png").convert_alpha(),
-                       constants.HEALTHBAR_SCALE,
-                       use_global_scale=False)
-heart_full = scale_img(pygame.image.load("assets/images/items/heart_full.png").convert_alpha(),
-                       constants.HEALTHBAR_SCALE,
-                       use_global_scale=False)
-
+# heart_empty = scale_img(pygame.image.load("assets/images/items/heart_empty.png").convert_alpha(),
+#                         constants.HEALTHBAR_SCALE,
+#                         use_global_scale=False)
+# heart_half = scale_img(pygame.image.load("assets/images/items/heart_half.png").convert_alpha(),
+#                        constants.HEALTHBAR_SCALE,
+#                        use_global_scale=False)
+# heart_full = scale_img(pygame.image.load("assets/images/items/heart_full.png").convert_alpha(),
+#                        constants.HEALTHBAR_SCALE,
+#                        use_global_scale=False)
+#
 # load weapon images
 bow_image = scale_img(pygame.image.load("assets/images/weapons/bow-new.png").convert_alpha(), constants.WEAPON_SCALE,
                       use_global_scale=False)
@@ -374,12 +361,12 @@ enemy_stats_sprite_group = pygame.sprite.LayeredUpdates()
 
 success = world.process_data(tmx_map, item_images, mob_dict, enemy_stats_sprite_group)
 if not success:
-    print(" MAIN.PY, line:{}, world.process_data failed".format(line_numb()))
+    print(f" MAIN.PY, line:{line_numb()}, world.process_data failed")
     pygame.quit()
     sys.exit()
 
 if constants.DEBUG_LEVEL:
-    print(" MAIN.PY, line={}\n   World Created".format(line_numb()))
+    print(f" MAIN.PY, line={line_numb()}\n   World Created")
 
 # create player
 player = world.player
@@ -399,15 +386,20 @@ lightning_group = pygame.sprite.LayeredUpdates()
 
 # text_pos_percentage = {"hp": 1, "mana": 19, "map": 33, "exp": 45, "health_potion": 67, "poison_potion": 74,
 #                        "mana_potion": 81, "score": 92}
-text_pos_percentage = {"hp": 0, "level": 25, "exp": 40, "health": 65, "poison": 72, "mana": 79, "score": 91}
+text_pos_percentage = {"hp": 0, "level": 25, "exp": 40, "health": 65, "poison": 72, "mana": 79, "score": 90.5}
+statbar_pos_offset = {}
 
 for item in text_pos_percentage:
-    text_pos_percentage[item] = int(constants.SCREEN_WIDTH * text_pos_percentage[item] / 100)
+    statbar_pos_offset[item] = int(constants.SCREEN_WIDTH * text_pos_percentage[item] / 100)
 
-health_potion_status = Item(text_pos_percentage['health'], 23, 3, red_potion, True)
-poison_potion_status = Item(text_pos_percentage['poison'], 23, 3, green_potion, True)
-mana_potion_status = Item(text_pos_percentage['mana'], 23, 2, blue_potion, True)
-score_status = Item(text_pos_percentage['score'], 23, 0, coin_images, True)
+if constants.DEBUG_LEVEL:
+    # print(f"   MAIN.PY, L:{line_numb()}")
+    print(f"statbar_pos_offset={statbar_pos_offset}")
+
+health_potion_status = Item(statbar_pos_offset['health'], 23, 3, red_potion, True)
+poison_potion_status = Item(statbar_pos_offset['poison'], 23, 3, green_potion, True)
+mana_potion_status = Item(statbar_pos_offset['mana'], 23, 2, blue_potion, True)
+score_status = Item(statbar_pos_offset['score'], 23, 0, coin_images, True)
 
 item_group.add(health_potion_status)
 item_group.add(poison_potion_status)
@@ -429,11 +421,9 @@ restart_button = Button(constants.SCREEN_WIDTH // 2 - 175, constants.SCREEN_HEIG
 resume_button = Button(constants.SCREEN_WIDTH // 2 - 175, constants.SCREEN_HEIGHT // 2 - 150, resume_img)
 
 if constants.DEBUG_LEVEL:
-    print("MAIN.PY, line: {}\n\nStats:\n {} tiles\n {} objects\n {} enemies".format(line_numb(), len(world.map_tiles),
-                                                                                    len(item_group), len(enemy_list)))
-    print(
-        "    c.rows= {}, map width= {}, c.cols={}, map height= {}".format(constants.ROWS, tmx_map.width, constants.COLS,
-                                                                          tmx_map.height))
+    print(f"MAIN.PY, line: {line_numb()}\n\nStats:\n {len(world.map_tiles)} tiles\n")
+    print(f"    {len(item_group)} objects\n {len(enemy_list)} enemies")
+    print(f"    c.rows= {constants.ROWS}, map width= {tmx_map.width}, c.cols={constants.COLS}, map height= {tmx_map.height}")
     print("\n\nSTARTING MAIN LOOP\n")
 
 # main game loop
@@ -449,10 +439,8 @@ while run:
     loop_number += 1
 
     if constants.DEBUG_LEVEL > 1:
-        print("  line: {}, loop_number={}, level_complete={}, run={}, start_game={}\n"
-              "     moving_up={}, moving_down={}, moving_left={}, moving_right={}".
-              format(line_numb(), loop_number, level_complete, run, start_game,
-                     moving_up, moving_down, moving_left, moving_right))
+        print(f"  line: {line_numb()}, loop_number={loop_number}, level_complete={level_complete}, run={run}, start_game={start_game}\n")
+        print(f"     moving_up={moving_up}, moving_down={moving_down}, moving_left={moving_left}, moving_right={moving_right}")
 
     if not start_game and constants.DEBUG_LEVEL == 0:
         screen.fill(constants.MENU_BG)
@@ -551,7 +539,7 @@ while run:
                                                      constants.GREEN)
                         damage_text_group.add(damage_text)
                         if constants.DEBUG_SHOW_HIT_DAMAGE:
-                            print("  {} damage to {}.  HP: {}".format(new_damage, enemy_name, new_enemy_health))
+                            print(f"  {new_damage} damage to {enemy_name}.  HP: {new_enemy_health}")
                         hit_fx.play()
 
                 damage_text_group.update(time_delta)
@@ -565,7 +553,7 @@ while run:
                 if player.level_complete:
                     level_complete = True
                     if constants.DEBUG_LEVEL:
-                        print("MAIN.PY, line:{}, Level {} Completed".format(line_numb(), world.map_level))
+                        print(f"MAIN.PY, line:{line_numb()}, Level {world.map_level} Completed")
 
             world.draw(screen)
             item_group.draw(screen)
@@ -578,8 +566,8 @@ while run:
             # draw enemies
             for enemy in enemy_list:
                 if constants.DEBUG_LEVEL > 1:
-                    print(" MAIN.PY, F:main loop, line={}, enemy.name={}".format(line_numb(), enemy.name))
-                    print("   enemy.image={}".format(enemy.image))
+                    print(f" MAIN.PY, F:main loop, line={line_numb()}, enemy.name={enemy_name}")
+                    print(f"   enemy.image={enemy.image}")
                 enemy.draw(screen)
                 enemy.draw_health(screen)
 
@@ -601,8 +589,6 @@ while run:
 
         # check level complete
         if level_complete:
-            # print("MAIN.PY, line:{}\n Next level functionality has not been refactored".format(line_numb()))
-
             start_intro = True
             level += 1
 
@@ -612,13 +598,15 @@ while run:
             if constants.DEBUG_LEVEL:
                 path = "assets/levels/testing2.tmx"
             else:
-                path = "assets/levels/level{}.tmx".format(level)
+                path = f"assets/levels/level{level}.tmx"
 
             try:
                 tmx_map = load_pygame(path)
 
             except:
-                print("MAIN.PY line:{} Unable to load TMX file: {}".format(line_numb(), path))
+                print(f"MAIN.PY line:{line_numb()} Unable to load TMX file: {path}")
+                print("-Check path\n-Make sure you can open the file in Tiled\n")
+                print("-Check Tiled icons / locate correct folders")
                 pygame.quit()
                 exit()
 
@@ -656,21 +644,20 @@ while run:
                     start_game = True
                     world_data = reset_level()
 
-                    path = "assets/levels/level{}.tmx".format(level)
-                    #            path = "assets/levels/testing.tmx"
+                    path = f"assets/levels/level{level}.tmx"
 
                     try:
                         tmx_map = load_pygame(path)
 
                     except:
-                        print("MAIN.PY line:{} Unable to load TMX file: {}".format(line_numb(), path))
+                        print(f"MAIN.PY line:{line_numb()} Unable to load TMX file: {path}")
                         pygame.quit()
                         exit()
 
                     world = World(character_classes_dict)
                     success = world.process_data(tmx_map, item_images, mob_dict, enemy_stats_sprite_group)
                     if not success:
-                        print("  world.process_data failed in MAIN.PY, line:{}".format(line_numb()))
+                        print(f"  world.process_data failed in MAIN.PY, line:{line_numb()}")
                         pygame.quit()
                         sys.exit()
 
@@ -724,14 +711,13 @@ while run:
             constants.SCREEN_HEIGHT = event.h
 
             for item in text_pos_percentage:
-                text_pos_percentage[item] = int(constants.SCREEN_WIDTH * text_pos_percentage[item] / 100)
+                statbar_pos_offset[item] = int(constants.SCREEN_WIDTH * text_pos_percentage[item] / 100)
 
-            # TODO:  change item.rect.x as below
-
-            # health_potion_status = Item(text_pos_percentage['health'], 23, 3, red_potion, True)
-            # poison_potion_status = Item(text_pos_percentage['poison'], 23, 3, green_potion, True)
-            # mana_potion_status = Item(text_pos_percentage['mana'], 23, 2, blue_potion, True)
-            # score_status = Item(text_pos_percentage['score'], 23, 0, coin_images, True)
+            _, y= health_potion_status.rect.center
+            health_potion_status.rect.center = (statbar_pos_offset['health'], y)
+            poison_potion_status.rect.center = (statbar_pos_offset['poison'], y)
+            mana_potion_status.rect.center = (statbar_pos_offset['mana'], y)
+            score_status.rect.center = (statbar_pos_offset['score'], y)
 
             screen = pygame.display.set_mode((width, height),
                                              pygame.RESIZABLE | pygame.HWSURFACE | pygame.DOUBLEBUF, vsync=1)
@@ -759,7 +745,7 @@ while run:
     if constants.GOD_MODE:
         if player and player.health < 50:
             player.health = player.character_classes_dict['player']['hp']
-            print("  *GOD_MODE* has restored your health to {}".format(player.character_classes_dict['player']['hp']))
+            print(f"  *GOD_MODE* has restored your health to {player.character_classes_dict['player']['hp']}")
 
     # show fps
     if constants.FPS_MONITOR:

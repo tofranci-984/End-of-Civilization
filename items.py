@@ -9,12 +9,12 @@ def line_numb():
 
 
 class Item(pygame.sprite.Sprite):
-    def __init__(self, x, y, item_type, animation_list, dummy_coin=False):
+    def __init__(self, x, y, item_type, animation_list, dummy_item=False):
         pygame.sprite.Sprite.__init__(self)
         self.item_type = item_type  # 0: coin, 1: health potion, 2 blue potion, 10 gold piles begin
         self.animation_list = animation_list
         self.exit_portal = False
-        self.dummy_coin = dummy_coin
+        self.dummy_coin = dummy_item
 
         if constants.DEBUG_LEVEL> 1:  # get the function name for debugging
             fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
