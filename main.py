@@ -397,7 +397,8 @@ item_group = pygame.sprite.LayeredUpdates()
 fireball_group = pygame.sprite.LayeredUpdates()
 lightning_group = pygame.sprite.LayeredUpdates()
 
-# text_pos_percentage = {"hp": 18, "level": 32, "exp": 50, "health": 73, "poison": 80, "mana": 86, "score": 94}
+# text_pos_percentage = {"hp": 1, "mana": 19, "map": 33, "exp": 45, "health_potion": 67, "poison_potion": 74,
+#                        "mana_potion": 81, "score": 92}
 text_pos_percentage = {"hp": 0, "level": 25, "exp": 40, "health": 65, "poison": 72, "mana": 79, "score": 91}
 
 for item in text_pos_percentage:
@@ -719,8 +720,18 @@ while run:
             # scrsize = event.size
             width = event.w
             height = event.h
-            # constants.SCREEN_WIDTH = 2000
-            # constants.SCREEN_HEIGHT = 1500
+            constants.SCREEN_WIDTH = event.w
+            constants.SCREEN_HEIGHT = event.h
+
+            for item in text_pos_percentage:
+                text_pos_percentage[item] = int(constants.SCREEN_WIDTH * text_pos_percentage[item] / 100)
+
+            # TODO:  change item.rect.x as below
+
+            # health_potion_status = Item(text_pos_percentage['health'], 23, 3, red_potion, True)
+            # poison_potion_status = Item(text_pos_percentage['poison'], 23, 3, green_potion, True)
+            # mana_potion_status = Item(text_pos_percentage['mana'], 23, 2, blue_potion, True)
+            # score_status = Item(text_pos_percentage['score'], 23, 0, coin_images, True)
 
             screen = pygame.display.set_mode((width, height),
                                              pygame.RESIZABLE | pygame.HWSURFACE | pygame.DOUBLEBUF, vsync=1)
