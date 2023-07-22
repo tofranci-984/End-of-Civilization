@@ -496,13 +496,13 @@ while run:
                         use_poison_potion = False
 
                 # move player
-                screen_scroll, level_complete = player.move(dx, dy, world.obstacle_tiles, time_delta, world.exit_tile)
+                screen_scroll, level_complete = player.move(dx, dy, world.obstacle_tiles, enemy_list, time_delta, world.exit_tile)
 
                 # update all objects
                 world.update(screen_scroll)
                 for enemy in enemy_list:
                     # TODO : why is fireball = enemy.ai run for every enemy?  How about lightning?
-                    fireball, lightning = enemy.ai(player, world.obstacle_tiles, screen_scroll, fireball_image,
+                    fireball, lightning = enemy.ai(player, world.obstacle_tiles, enemy_list, screen_scroll, fireball_image,
                                                    lightning_image, character_classes_dict, time_delta)
                     if fireball:
                         fireball_group.add(fireball)

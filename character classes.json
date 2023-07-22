@@ -1988,6 +1988,7 @@
   "player": {
     "Special_Attack": "None",
     "rank": 1,
+    "attack_cooldown": 100,
     "animation_cooldown": 150,
     "attack": 12,
     "death": 12,

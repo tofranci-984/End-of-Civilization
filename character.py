@@ -1429,7 +1429,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     number_of_images_loaded += 1
 
                 animation_list.append(temp_list)
-        case "Thief": # edited
+        case "Thief":  # edited
             for animation in animation_types:
                 temp_list = []
 
@@ -1963,7 +1963,7 @@ class Character(pygame.sprite.Sprite):
             draw_health_bar(surf, health_rect,
                             (0, 0, 0, 127), (255, 0, 0, 127), (0, 255, 0, 127), self.health / self.max_health)
 
-    def move(self, dx, dy, obstacle_tiles, time_delta, exit_tile=None):
+    def move(self, dx, dy, obstacle_tiles, enemy_list, time_delta, exit_tile=None):
         fn = ""
         if constants.DEBUG_LEVEL:
             fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
@@ -2013,11 +2013,37 @@ class Character(pygame.sprite.Sprite):
                 if dy < 0:
                     self.rect.top = obstacle[1].bottom
 
+
+        # check for collision with enemies in x direction
+
+        hitbox = Rect(self.hitbox)
+        for enemy in enemy_list:
+            # check for collision
+            if hitbox.colliderect(enemy.hitbox):
+                if constants.DEBUG_LEVEL > 1:
+                    print("  F: {}, line: {}, player.rect={}, self.rect={}".format(fn, line_numb(), player.rect,
+                                                                                   self.rect))
+                if not enemy.hit:
+                    enemy.hit = True
+                    # insert timer clock cooldown here
+                    self.attack_cooldown= pygame.time.get_ticks()
+                elif pygame.time.get_ticks() - self.attack_cooldown > self.character_classes_dict[self.name]['attack_cooldown']:
+                    print(f"cooldown expired")
+                    continue
+                else:
+                    enemy.hit= False
+
+                new_damage = random.randrange(5, 15)  # random hit of between 5 and 15 damage.
+                enemy.health -= new_damage
+                if constants.DEBUG_SHOW_HIT_DAMAGE:
+                    print(f"  {self.name!r} inflicts {new_damage} damage to {enemy.name!r}.  Enemy Health reduced to {enemy.health}")
+                self.attacking = True
+                self.running = False
+
         if constants.DEBUG_LEVEL > 1:
-            print(" CHAR.PY, F: {}, line:{}\n  rect: {}\n  self.name={}".
-                  format(fn, line_numb(), self.rect, self.name))
-            print("   self.image={}".format(self.image))
-            print("   self.rect={}".format(self.rect))
+            print(f" CHAR.PY, F: {fn}, line:{line_numb()}\n  rect: {self.rect}\n  self.name={self.name}")
+            print(f"   self.image={self.image}")
+            print(f"   self.rect={self.rect}")
             print("")
 
         # EXIT LADDER logic only applicable to player, NOT enemies
@@ -2086,7 +2112,8 @@ class Character(pygame.sprite.Sprite):
 
         return screen_scroll, level_complete
 
-    def ai(self, player, obstacle_tiles, screen_scroll, fireball_image, lightning_image, character_classes_dict,
+    def ai(self, player, obstacle_tiles, enemies, screen_scroll, fireball_image, lightning_image,
+           character_classes_dict,
            time_delta):
         fn = ""
         if constants.DEBUG_LEVEL > 0:  # get the function name for debugging
@@ -2108,10 +2135,7 @@ class Character(pygame.sprite.Sprite):
         # self.rect.y += screen_scroll[1] + time_delta
 
         character = character_classes_dict[self.name]
-        if constants.ENEMY_SPEED_1:
-            speed = 2
-        else:
-            speed = character['speed']
+        speed = 2 if constants.ENEMY_SPEED_1 else character['speed']
 
         if self.name == "Crab Monster" and self.action == 1:  # use the trim 320 settings
             subtract_width = character['trim_hitbox_320'][0] + character['trim_hitbox_320'][1]
@@ -2229,7 +2253,7 @@ class Character(pygame.sprite.Sprite):
             if not self.stunned:
                 # move towards player
                 if ai_dx != 0 or ai_dy != 0:
-                    self.move(ai_dx, ai_dy, obstacle_tiles, time_delta)
+                    self.move(ai_dx, ai_dy, obstacle_tiles, enemies, time_delta)
 
                 hitbox = Rect(self.hitbox)
 

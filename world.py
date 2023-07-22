@@ -166,30 +166,52 @@ class World():
                     print("   tile_type= {}, tile_group={}, tile_name={}".format(tile_type, tile_group, tile_name))
                     print("   source= {}".format(tile_source))
 
-                match tile_group:
-                    case "wall":
-                        wall_count += 1
-                        self.obstacle_tiles.append(tile_data)
-                        self.map_tiles.append(tile_data)
-                        Tile(pos=pos, surf=surf, groups=sprite_group)
-                    case "floor" | "green" | "secret" | "holes":
-                        if tile_group == "floor":
-                            open_count += 1
-                        elif tile_group == "secret":
-                            secret_count += 1
-                        elif tile_group == "holes":
-                            floor_count += 1
-                        else:  # green tiles
-                            green_count += 1
-
-                        self.map_tiles.append(tile_data)
-                        Tile(pos=pos, surf=surf, groups=sprite_group)
-                    case _:
-                        print("   Unknown tile group={}, item_name={}".format(tile_group, tile_name))
-                        unknown_tiles.append(tile_type)
-                        if constants.DEBUG_LEVEL:
-                            print(" WORLD.PY, F: {}, LN:{}, ** UNKNOWN TILE TYPE **, x={}, y={}, tile_type={}".
-                                  format(fn, line_numb(), x, y, tile_type))
+                if tile_group == "wall":
+                    wall_count += 1
+                    self.obstacle_tiles.append(tile_data)
+                    self.map_tiles.append(tile_data)
+                    Tile(pos=pos, surf=surf, groups=sprite_group)
+                elif tile_group in ["floor", "green", "secret", "holes"]:
+                    if tile_group == "floor":
+                        open_count += 1
+                    elif tile_group == "secret":
+                        secret_count += 1
+                    elif tile_group == "holes":
+                        floor_count += 1
+                    else:  # green tiles
+                        green_count += 1
+                    self.map_tiles.append(tile_data)
+                    Tile(pos=pos, surf=surf, groups=sprite_group)
+                else:
+                    print("Unknown tile group={}, item_name={}".format(tile_group, tile_name))
+                    unknown_tiles.append(tile_type)
+                    if constants.DEBUG_LEVEL:
+                        print("WORLD.PY, F: {}, LN:{}, ** UNKNOWN TILE TYPE **, x={}, y={}, tile_type={}".
+                              format(fn, line_numb(), x, y, tile_type))
+                # match tile_group:
+                #     case "wall":
+                #         wall_count += 1
+                #         self.obstacle_tiles.append(tile_data)
+                #         self.map_tiles.append(tile_data)
+                #         Tile(pos=pos, surf=surf, groups=sprite_group)
+                #     case "floor" | "green" | "secret" | "holes":
+                #         if tile_group == "floor":
+                #             open_count += 1
+                #         elif tile_group == "secret":
+                #             secret_count += 1
+                #         elif tile_group == "holes":
+                #             floor_count += 1
+                #         else:  # green tiles
+                #             green_count += 1
+                #
+                #         self.map_tiles.append(tile_data)
+                #         Tile(pos=pos, surf=surf, groups=sprite_group)
+                #     case _:
+                #         print("   Unknown tile group={}, item_name={}".format(tile_group, tile_name))
+                #         unknown_tiles.append(tile_type)
+                #         if constants.DEBUG_LEVEL:
+                #             print(" WORLD.PY, F: {}, LN:{}, ** UNKNOWN TILE TYPE **, x={}, y={}, tile_type={}".
+                #                   format(fn, line_numb(), x, y, tile_type))
 
         if constants.DEBUG_LEVEL:
             print(" WORLD.PY, F:{}: LN:{}, count tiles processed={}".format(fn, line_numb(), count))
