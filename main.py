@@ -11,18 +11,20 @@ from support import *
 from weapon import Weapon
 from world import World
 
+
 class FPS:
     def __init__(self):
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont("arial", 24)
         self.text = "0"
 
-    def render(self, display, level: str):
+    def render(self, level: str):
         # self.text = "level: {} - FPS:{:.0f}".format(level, self.clock.get_fps())
         self.text = f"level: {level} - FPS:{self.clock.get_fps():.0f}"
 
         pygame.display.set_caption(self.text)
         # display.blit(self.font.render(self.text, True, green), ((constants.SCREEN_WIDTH / 2) - 250, 12))
+
 
 # todo: need to replace format with f-strings
 
@@ -103,8 +105,8 @@ def draw_statusbar_info():
     #     else:
     #         screen.blit(heart_empty, (10 + i * 50, 0))
 
-    text_pos_percentage = { "hp" : 1, "mana": 19, "map": 33, "exp": 45, "health_potion": 67, "poison_potion": 74,
-                            "mana_potion": 81, "score": 92}
+    text_pos_percentage = {"hp": 1, "mana": 19, "map": 33, "exp": 45, "health_potion": 67, "poison_potion": 74,
+                           "mana_potion": 81, "score": 92}
 
     for item in text_pos_percentage:
         text_pos_percentage[item] = int(constants.SCREEN_WIDTH * text_pos_percentage[item] / 100)
@@ -118,7 +120,8 @@ def draw_statusbar_info():
     # level
     draw_statusbar_text("MAP: " + str(level), font, constants.WHITE, text_pos_percentage['map'], 15)
     # exp
-    draw_statusbar_text("EXP: " + str(player.exp) + "/" + str(player.rank), font, constants.WHITE, text_pos_percentage['exp'], 15)
+    draw_statusbar_text("EXP: " + str(player.exp) + "/" + str(player.rank), font, constants.WHITE,
+                        text_pos_percentage['exp'], 15)
     # show score
     draw_statusbar_text(f"X{player.score}", font, constants.WHITE, text_pos_percentage['score'], 15)
 
@@ -128,7 +131,6 @@ def draw_statusbar_info():
     draw_statusbar_text(f"X{player.health_potions}", font, constants.WHITE, text_pos_percentage['health_potion'], 15)
     # show poison potions
     draw_statusbar_text(f"X{player.poison_potions}", font, constants.WHITE, text_pos_percentage['poison_potion'], 15)
-
 
 
 # function to reset level
@@ -237,7 +239,7 @@ if constants.SCREEN_HEIGHT <= 480:
 
 # vsync setting removes tearing issue when running
 screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT),
-                                 pygame.HWSURFACE | pygame.DOUBLEBUF, vsync=1)
+                                 pygame.RESIZABLE | pygame.HWSURFACE | pygame.DOUBLEBUF, vsync=1)
 
 # create clock for maintaining frame rate
 clock = pygame.time.Clock()
@@ -463,6 +465,13 @@ while run:
             if constants.DEBUG_LEVEL:
                 screen.fill(constants.MENU_BG)
             if resume_button.draw(screen):
+                constants.SCREEN_WIDTH = 2000
+                constants.SCREEN_HEIGHT = 1500
+                resized_screen = pygame.transform.scale(screen, (constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT))
+                resized_screen.fill(constants.BG)
+                resized_screen.blit(resized_screen, (0, 0))
+                pygame.display.update()
+
                 pause_game = False
             if exit_button.draw(screen):
                 run = False
@@ -526,7 +535,8 @@ while run:
                     arrow_group.add(arrow)
                     shot_fx.play()
                 for arrow in arrow_group:
-                    damage, damage_pos, enemy_name = arrow.update(screen_scroll, world.obstacle_tiles, enemy_list, player)
+                    damage, damage_pos, enemy_name = arrow.update(screen_scroll, world.obstacle_tiles, enemy_list,
+                                                                  player)
 
                     if damage:
                         new_damage, new_enemy_health = damage.split(" : ")
@@ -712,8 +722,17 @@ while run:
                 case pygame.K_ESCAPE:
                     pause_game = True
 
-        # keyboard button released
+        if event.type == pygame.VIDEORESIZE:
+            scrsize = event.size
+            width = event.w
+            height = event.h
+            constants.SCREEN_WIDTH = 2000
+            constants.SCREEN_HEIGHT = 1500
 
+            screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT),
+                                             pygame.RESIZABLE | pygame.HWSURFACE | pygame.DOUBLEBUF, vsync=1)
+
+        # keyboard button released
         if event.type == pygame.KEYUP:
             match event.key:
                 case pygame.K_a:
@@ -740,7 +759,7 @@ while run:
 
     # show fps
     if constants.FPS_MONITOR:
-        fps.render(screen, str(level))
+        fps.render(str(level))
         fps.clock.tick(constants.FPS)
 
     pygame.display.update()

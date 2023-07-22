@@ -31,7 +31,7 @@
   "Crab Monster": {
     "Special_Attack": "None",
     "rank": 2,
-    "animation_cooldown": 150,
+    "animation_cooldown": 100,
     "attack": -1,
     "death": -1,
     "exp": 100,
@@ -1033,7 +1033,7 @@
   "Magic Fox": {
     "Special_Attack": "None",
     "rank": 2,
-    "animation_cooldown": 150,
+    "animation_cooldown": 75,
     "attack": 16,
     "death": 20,
     "exp": 50,
@@ -1344,7 +1344,7 @@
   "Red Demon": {
     "Special_Attack": "Fireball",
     "rank": 3,
-    "animation_cooldown": 150,
+    "animation_cooldown": 100,
     "attack": 14,
     "death": 20,
     "exp": 100,
@@ -1354,7 +1354,7 @@
     "is_Hitbox_Symmetrical": true,
     "name": "Red Demon",
     "run": -1,
-    "scale": 1.4,
+    "scale": 1.5,
     "speed": 3,
     "trim_hitbox": [
       10,
