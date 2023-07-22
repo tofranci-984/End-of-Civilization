@@ -465,13 +465,6 @@ while run:
             if constants.DEBUG_LEVEL:
                 screen.fill(constants.MENU_BG)
             if resume_button.draw(screen):
-                constants.SCREEN_WIDTH = 2000
-                constants.SCREEN_HEIGHT = 1500
-                resized_screen = pygame.transform.scale(screen, (constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT))
-                resized_screen.fill(constants.BG)
-                resized_screen.blit(resized_screen, (0, 0))
-                pygame.display.update()
-
                 pause_game = False
             if exit_button.draw(screen):
                 run = False
@@ -723,13 +716,13 @@ while run:
                     pause_game = True
 
         if event.type == pygame.VIDEORESIZE:
-            scrsize = event.size
+            # scrsize = event.size
             width = event.w
             height = event.h
-            constants.SCREEN_WIDTH = 2000
-            constants.SCREEN_HEIGHT = 1500
+            # constants.SCREEN_WIDTH = 2000
+            # constants.SCREEN_HEIGHT = 1500
 
-            screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT),
+            screen = pygame.display.set_mode((width, height),
                                              pygame.RESIZABLE | pygame.HWSURFACE | pygame.DOUBLEBUF, vsync=1)
 
         # keyboard button released
