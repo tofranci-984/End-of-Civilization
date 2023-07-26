@@ -1916,6 +1916,7 @@ class Character(pygame.sprite.Sprite):
             self.max_health = self.health
         self.alive = True
         self.dying = False
+        self.attack_cooldown = 0
         self.death_cooldown = 0
         self.animation_cooldown = character_classes_dict[self.name]['animation_cooldown']
         self.hit = False
@@ -2019,26 +2020,30 @@ class Character(pygame.sprite.Sprite):
         hitbox = Rect(self.hitbox)
         for enemy in enemy_list:
             # check for collision
-            if hitbox.colliderect(enemy.hitbox):
+            if hitbox.colliderect(enemy.hitbox) and not enemy.hit:
                 if constants.DEBUG_LEVEL > 1:
                     print("  F: {}, line: {}, player.rect={}, self.rect={}".format(fn, line_numb(), player.rect,
                                                                                    self.rect))
-                if not enemy.hit:
-                    enemy.hit = True
-                    # insert timer clock cooldown here
-                    self.attack_cooldown= pygame.time.get_ticks()
-                elif pygame.time.get_ticks() - self.attack_cooldown > self.character_classes_dict[self.name]['attack_cooldown']:
-                    print(f"cooldown expired")
-                    continue
-                else:
-                    enemy.hit= False
+                #     enemy.hit = True
+                #     # insert timer clock cooldown here
+                #     self.attack_cooldown= pygame.time.get_ticks()
+                # elif pygame.time.get_ticks() - self.attack_cooldown > self.character_classes_dict[self.name]['attack_cooldown']:
+                #     print(f"cooldown expired")
+                #     continue
+                # else:
+                #     enemy.hit= False
 
                 new_damage = random.randrange(5, 15)  # random hit of between 5 and 15 damage.
                 enemy.health -= new_damage
+                enemy.hit = True
+                enemy.running = False
+                self.attacking = True
+
                 if constants.DEBUG_SHOW_HIT_DAMAGE:
                     print(f"  {self.name!r} inflicts {new_damage} damage to {enemy.name!r}.  Enemy Health reduced to {enemy.health}")
-                self.attacking = True
-                self.running = False
+            else:
+                if not enemy.hit:
+                    self.attacking= False
 
         if constants.DEBUG_LEVEL > 1:
             print(f" CHAR.PY, F: {fn}, line:{line_numb()}\n  rect: {self.rect}\n  self.name={self.name}")

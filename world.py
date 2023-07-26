@@ -1,5 +1,6 @@
 # import pytmx
 # from pytmx.util_pygame import load_pygame
+from support import scale_img
 import inspect
 # from pathlib import Path
 import sys
@@ -135,11 +136,17 @@ class World():
                     print(" Processing layer: {}".format(layer.name))
 
             for x, y, surf in layer.tiles():
-                if constants.DEBUG_LEVEL > 1:
+                if constants.DEBUG_LEVEL:
                     print("  line:{}, x ={}, y ={}".format(line_numb(), x, y))
 
                 count += 1
                 image = tmx_data.get_tile_image(x, y, 0)
+                if constants.GROUND_TILE_SCALE != 1:
+                    image = scale_img(image, constants.GROUND_TILE_SCALE) if constants.GROUND_TILE_SCALE else None
+                    constants.TILE_SIZE *= constants.GROUND_TILE_SCALE
+
+#                def scale_img(image, scale, smooth=False, use_global_scale=True):
+
                 image_rect = image.get_rect()
                 image_x = x * constants.TILE_SIZE
                 image_y = y * constants.TILE_SIZE
