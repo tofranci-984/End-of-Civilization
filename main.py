@@ -566,7 +566,7 @@ while run:
             # draw enemies
             for enemy in enemy_list:
                 if constants.DEBUG_LEVEL > 1:
-                    print(f" MAIN.PY, F:main loop, line={line_numb()}, enemy.name={enemy_name}")
+                    print(f" MAIN.PY, F:main loop, line={line_numb()}, enemy.name={enemy.name!r}")
                     print(f"   enemy.image={enemy.image}")
                 enemy.draw(screen)
                 enemy.draw_health(screen)

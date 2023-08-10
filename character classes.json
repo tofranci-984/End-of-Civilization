@@ -1845,6 +1845,90 @@
       0
     ]
   },
+  "Black Werewolf": {
+    "Special_Attack": "None",
+    "rank": 1,
+    "animation_cooldown": 75,
+    "attack": 5,
+    "death": 2,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 8,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Black Werewolf",
+    "run": 9,
+    "scale": 0.4,
+    "speed": 4,
+    "trim_hitbox": [
+      50,
+      30,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+    "Red Werewolf": {
+    "Special_Attack": "None",
+    "rank": 1,
+    "animation_cooldown": 75,
+    "attack": 5,
+    "death": 2,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 8,
+    "is_Hitbox_Symmetrical": false,
+    "name": "Red Werewolf",
+    "run": 9,
+    "scale": 0.4,
+    "speed": 4,
+    "trim_hitbox": [
+      50,
+      30,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+    "White Werewolf": {
+    "Special_Attack": "None",
+    "rank": 1,
+    "animation_cooldown": 75,
+    "attack": 5,
+    "death": 2,
+    "exp": 25,
+    "flip_image": true,
+    "hp": 200,
+    "idle": 8,
+    "is_Hitbox_Symmetrical": false,
+    "name": "White Werewolf",
+    "run": 9,
+    "scale": 0.4,
+    "speed": 4,
+    "trim_hitbox": [
+      50,
+      30,
+      1,
+      1
+    ],
+    "trim_rect": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
   "Witch": {
     "Special_Attack": "None",
     "rank": 1,
@@ -1988,8 +2072,8 @@
   "player": {
     "Special_Attack": "None",
     "rank": 1,
-    "attack_cooldown": 100,
-    "animation_cooldown": 150,
+    "attack_cooldown": 150,
+    "animation_cooldown": 75,
     "attack": 12,
     "death": 12,
     "exp": 10,

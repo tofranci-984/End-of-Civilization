@@ -51,13 +51,18 @@ class World():
 
         # process enemies and objects (ground is after)
         if constants.DEBUG_LEVEL:
-            print(" WORLD.PY, F:{}, LN:{}\nPROCESSING {} objects (including enemies)".
+            print(" WORLD.PY, F:{}, LN:{}\nPROCESSING {!r} objects (including enemies)".
                   format(fn, line_numb(), len(tmx_data.objects_by_id)))
 
         for i, obj in enumerate(tmx_data.objects):
             pos = obj.x, obj.y
             image_x = int(obj.x)
             image_y = int(obj.y)
+
+            if hasattr(obj.properties, 'item_name'):
+                pass
+            else:
+                print(f"No item_name exists for obj_id:{obj.id!r}")
 
             if constants.DEBUG_LEVEL> 1:
                 print("WORLD.PY, F:{}, LN:{}".format(fn, line_numb()))
@@ -71,8 +76,8 @@ class World():
 
                 tile_data = [image, image_rect, image_x, image_y]
             else:  # object has no image
-                print("\n\nERROR **\n\nWORLD.PY, F:{}, LN:{}. object_index= {}. Object ID{}, image {}"
-                      .format(fn, line_numb(), i, obj.id, obj.image))
+                print(f"\n\nERROR **\n\nWORLD.PY, F:{fn!r}, LN:{line_numb()!r}")
+                print(f" object_index= {i!r}, Object ID{obj.id!r}, image {obj.image!r}")
                 pygame.quit()
                 sys.exit()
 
@@ -136,7 +141,7 @@ class World():
                     print(" Processing layer: {}".format(layer.name))
 
             for x, y, surf in layer.tiles():
-                if constants.DEBUG_LEVEL:
+                if constants.DEBUG_LEVEL > 1:
                     print("  line:{}, x ={}, y ={}".format(line_numb(), x, y))
 
                 count += 1

@@ -1621,6 +1621,46 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         temp_list.append(cropped_img)
                         number_of_images_loaded += 1
                 animation_list.append(temp_list)
+        case "Black Werewolf" | "Red Werewolf" | "White Werewolf":  # tilesheet
+            for animation in animation_types:
+                temp_list = []
+                flip = character['flip_image']
+
+                match animation:
+                    case "idle":
+                        # (filename, width, height, rows, cols, start_row_index= 0)
+                        images = Tilesheet(
+                            f"assets/images/characters/Werewolf/{character['name']}/Idle.png",
+                            128, 128, 1, 8)
+                    case "attack":
+                        images = Tilesheet(
+                            f"assets/images/characters/Werewolf/{character['name']}/Attack_3.png",
+                            128, 128, 1, 5)
+                        flip = True
+                    case "death":
+                        images = Tilesheet(
+                            f"assets/images/characters/Werewolf/{character['name']}/Dead.png",
+                            128, 128, 1, 2)
+                    case "run":
+                        images = Tilesheet(
+                            f"assets/images/characters/Werewolf/{character['name']}/Run.png",
+                            128, 128, 1, 9)
+                    case _:
+                        images = ""
+
+                for x in range(images.cols):
+                    img = images.get_tile(x, 0)
+                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
+                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
+                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
+                    cropped_img = img.subsurface(new_region)
+                    cropped_img = pygame.transform.flip(cropped_img, flip, False)
+                    if character['scale'] != 1:
+                        cropped_img = scale_img(cropped_img, character['scale'])
+                    temp_list.append(cropped_img)
+                    number_of_images_loaded += 1
+
+                animation_list.append(temp_list)
         case "Witch":
             for animation in animation_types:
                 temp_list = []
@@ -1966,6 +2006,7 @@ class Character(pygame.sprite.Sprite):
 
     def move(self, dx, dy, obstacle_tiles, enemy_list, time_delta, exit_tile=None):
         fn = ""
+
         if constants.DEBUG_LEVEL:
             fn = "[" + inspect.getframeinfo(inspect.currentframe())[2] + "]"
             ln = inspect.getframeinfo(inspect.currentframe())[1]
@@ -2015,44 +2056,41 @@ class Character(pygame.sprite.Sprite):
                     self.rect.top = obstacle[1].bottom
 
 
-        # check for collision with enemies in x direction
-
-        hitbox = Rect(self.hitbox)
-        for enemy in enemy_list:
-            # check for collision
-            if hitbox.colliderect(enemy.hitbox) and not enemy.hit:
-                if constants.DEBUG_LEVEL > 1:
-                    print("  F: {}, line: {}, player.rect={}, self.rect={}".format(fn, line_numb(), player.rect,
-                                                                                   self.rect))
-                #     enemy.hit = True
-                #     # insert timer clock cooldown here
-                #     self.attack_cooldown= pygame.time.get_ticks()
-                # elif pygame.time.get_ticks() - self.attack_cooldown > self.character_classes_dict[self.name]['attack_cooldown']:
-                #     print(f"cooldown expired")
-                #     continue
-                # else:
-                #     enemy.hit= False
-
-                new_damage = random.randrange(5, 15)  # random hit of between 5 and 15 damage.
-                enemy.health -= new_damage
-                enemy.hit = True
-                enemy.running = False
-                self.attacking = True
-
-                if constants.DEBUG_SHOW_HIT_DAMAGE:
-                    print(f"  {self.name!r} inflicts {new_damage} damage to {enemy.name!r}.  Enemy Health reduced to {enemy.health}")
-            else:
-                if not enemy.hit:
-                    self.attacking= False
-
-        if constants.DEBUG_LEVEL > 1:
-            print(f" CHAR.PY, F: {fn}, line:{line_numb()}\n  rect: {self.rect}\n  self.name={self.name}")
-            print(f"   self.image={self.image}")
-            print(f"   self.rect={self.rect}")
-            print("")
-
-        # EXIT LADDER logic only applicable to player, NOT enemies
+        # check for collision with enemies
+        enemies_being_attacked = 0
         if self.name == "player":
+            hitbox = Rect(self.hitbox)
+            cooldown = self.character_classes_dict[self.name]['attack_cooldown']
+            hit= False
+
+            # has cooldown been met?
+            curr_time= pygame.time.get_ticks()
+            if constants.DEBUG_LEVEL:
+                print(f"  cooldown={cooldown}, curr_time={curr_time}, attack_cooldown= {self.attack_cooldown}" )
+
+            if curr_time - self.attack_cooldown > cooldown:
+
+                for enemy in enemy_list:
+
+                    # check for collision
+                    if enemy.alive and hitbox.colliderect(enemy.hitbox):
+                        enemy.hit = True
+                        hit= True
+                        new_damage = random.randrange(5, 15)  # random hit of between 5 and 15 damage.
+                        enemy.health -= new_damage
+                        if enemy.health< 1:
+                            enemy.alive= False
+                        enemy.running = False
+                        self.attacking = True
+                        if constants.DEBUG_SHOW_HIT_DAMAGE:
+                            print(f"  {self.name!r} inflicts {new_damage} damage to {enemy.name!r}.  Enemy health reduced to {enemy.health}")
+
+            if hit:
+                # reset cooldown
+                self.attack_cooldown= pygame.time.get_ticks()
+            # else:
+            #     self.attacking= False
+
             # check collision with exit ladder
             if exit_tile[1].colliderect(self.rect):
                 # ensure player is close to the center of the exit ladder
@@ -2114,6 +2152,12 @@ class Character(pygame.sprite.Sprite):
                       format(fn, line_numb(), self.name, self.alive, self.dying, screen_scroll))
             self.rect.x += screen_scroll[0] + time_delta
             self.rect.y += screen_scroll[1] + time_delta
+
+        if constants.DEBUG_LEVEL > 1:
+            print(f" CHAR.PY, F: {fn}, line:{line_numb()}\n  rect: {self.rect}\n  self.name={self.name}")
+            print(f"   self.image={self.image}")
+            print(f"   self.rect={self.rect}")
+            print("")
 
         return screen_scroll, level_complete
 
