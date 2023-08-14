@@ -171,7 +171,7 @@ class World():
                     pygame.quit()
                     sys.exit()
 
-                tile_data = [image, image_rect, image_x, image_y]
+                tile_data = [image, image_rect, image_x, image_y, tile_group, tile_name]
 
                 if constants.DEBUG_LEVEL > 1:
                     print("  WORLD.PY, F: {}, Line:{}, x= {}, y= {}, count= {}".format(fn, line_numb(), x, y, count))
@@ -183,47 +183,26 @@ class World():
                     self.obstacle_tiles.append(tile_data)
                     self.map_tiles.append(tile_data)
                     Tile(pos=pos, surf=surf, groups=sprite_group)
-                elif tile_group in ["floor", "green", "secret", "holes"]:
+                elif tile_group in ["floor", "green floor", "secret", "holes", "blue floor"]:
                     if tile_group == "floor":
                         open_count += 1
                     elif tile_group == "secret":
                         secret_count += 1
                     elif tile_group == "holes":
                         floor_count += 1
-                    else:  # green tiles
+                    elif tile_group == "green floor":
                         green_count += 1
+                        self.obstacle_tiles.append(tile_data)
+                    elif tile_group == "blue floor":
+                        floor_count += 1
                     self.map_tiles.append(tile_data)
                     Tile(pos=pos, surf=surf, groups=sprite_group)
                 else:
-                    print("Unknown tile group={}, item_name={}".format(tile_group, tile_name))
+                    print("* ERROR *: Unknown tile\n  tile group={}\n  item_name={}".format(tile_group, tile_name))
                     unknown_tiles.append(tile_type)
                     if constants.DEBUG_LEVEL:
                         print("WORLD.PY, F: {}, LN:{}, ** UNKNOWN TILE TYPE **, x={}, y={}, tile_type={}".
                               format(fn, line_numb(), x, y, tile_type))
-                # match tile_group:
-                #     case "wall":
-                #         wall_count += 1
-                #         self.obstacle_tiles.append(tile_data)
-                #         self.map_tiles.append(tile_data)
-                #         Tile(pos=pos, surf=surf, groups=sprite_group)
-                #     case "floor" | "green" | "secret" | "holes":
-                #         if tile_group == "floor":
-                #             open_count += 1
-                #         elif tile_group == "secret":
-                #             secret_count += 1
-                #         elif tile_group == "holes":
-                #             floor_count += 1
-                #         else:  # green tiles
-                #             green_count += 1
-                #
-                #         self.map_tiles.append(tile_data)
-                #         Tile(pos=pos, surf=surf, groups=sprite_group)
-                #     case _:
-                #         print("   Unknown tile group={}, item_name={}".format(tile_group, tile_name))
-                #         unknown_tiles.append(tile_type)
-                #         if constants.DEBUG_LEVEL:
-                #             print(" WORLD.PY, F: {}, LN:{}, ** UNKNOWN TILE TYPE **, x={}, y={}, tile_type={}".
-                #                   format(fn, line_numb(), x, y, tile_type))
 
         if constants.DEBUG_LEVEL:
             print(" WORLD.PY, F:{}: LN:{}, count tiles processed={}".format(fn, line_numb(), count))

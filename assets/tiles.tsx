@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.1" name="tiles" tilewidth="258" tileheight="256" tilecount="93" columns="0">
+<tileset version="1.10" tiledversion="1.10.1" name="tiles" tilewidth="258" tileheight="257" tilecount="104" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <properties>
@@ -245,6 +245,83 @@
    <property name="item_name" value="green floor15"/>
   </properties>
   <image width="256" height="256" source="images/environment/Sprites/PNG/floor/floor 2/color 1/floor_water -12.png"/>
+ </tile>
+ <tile id="255">
+  <properties>
+   <property name="item_group" value="green floor"/>
+   <property name="item_name" value="green floor2_1_1"/>
+  </properties>
+  <image width="256" height="256" source="images/environment/Sprites/PNG/floor/water tiles/floor_water2_1_1.png"/>
+ </tile>
+ <tile id="256">
+  <properties>
+   <property name="item_group" value="green floor"/>
+   <property name="item_name" value="green floor2_1_2"/>
+  </properties>
+  <image width="256" height="256" source="images/environment/Sprites/PNG/floor/water tiles/floor_water2_1_2.png"/>
+ </tile>
+ <tile id="257">
+  <properties>
+   <property name="item_group" value="green floor"/>
+   <property name="item_name" value="green floor2_1_3"/>
+  </properties>
+  <image width="256" height="256" source="images/environment/Sprites/PNG/floor/water tiles/floor_water2_1_3.png"/>
+ </tile>
+ <tile id="258">
+  <properties>
+   <property name="item_group" value="green floor"/>
+   <property name="item_name" value="green floor2_1_4"/>
+  </properties>
+  <image width="256" height="256" source="images/environment/Sprites/PNG/floor/water tiles/floor_water2_1_4.png"/>
+ </tile>
+ <tile id="259">
+  <properties>
+   <property name="item_group" value="green floor"/>
+   <property name="item_name" value="green floor2_1_5"/>
+  </properties>
+  <image width="256" height="256" source="images/environment/Sprites/PNG/floor/water tiles/floor_water2_1_5.png"/>
+ </tile>
+ <tile id="260">
+  <properties>
+   <property name="item_group" value="green floor"/>
+   <property name="item_name" value="green floor2_1_6"/>
+  </properties>
+  <image width="256" height="256" source="images/environment/Sprites/PNG/floor/water tiles/floor_water2_1_6.png"/>
+ </tile>
+ <tile id="261">
+  <properties>
+   <property name="item_group" value="green floor"/>
+   <property name="item_name" value="green floor2_1_7"/>
+  </properties>
+  <image width="256" height="256" source="images/environment/Sprites/PNG/floor/water tiles/floor_water2_1_7.png"/>
+ </tile>
+ <tile id="262">
+  <properties>
+   <property name="item_group" value="green floor"/>
+   <property name="item_name" value="green floor2_1_8"/>
+  </properties>
+  <image width="256" height="256" source="images/environment/Sprites/PNG/floor/water tiles/floor_water2_1_8.png"/>
+ </tile>
+ <tile id="263">
+  <properties>
+   <property name="item_group" value="green floor"/>
+   <property name="item_name" value="green floor base1"/>
+  </properties>
+  <image width="256" height="257" source="images/environment/Sprites/PNG/floor/water tiles/floor_water_base_1_1.png"/>
+ </tile>
+ <tile id="264">
+  <properties>
+   <property name="item_group" value="green floor"/>
+   <property name="item_name" value="green floor base2"/>
+  </properties>
+  <image width="256" height="257" source="images/environment/Sprites/PNG/floor/water tiles/floor_water_base_1_2.png"/>
+ </tile>
+ <tile id="265">
+  <properties>
+   <property name="item_group" value="green floor"/>
+   <property name="item_name" value="green floor base3"/>
+  </properties>
+  <image width="256" height="257" source="images/environment/Sprites/PNG/floor/water tiles/floor_water_base_1_3.png"/>
  </tile>
  <tile id="39">
   <properties>

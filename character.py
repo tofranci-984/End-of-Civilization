@@ -2034,14 +2034,21 @@ class Character(pygame.sprite.Sprite):
         # check for collision with map in x direction
         self.rect.x += dx
 
+        poisoned = False
+
         for obstacle in obstacle_tiles:
             # check for collision
             if obstacle[1].colliderect(self.rect):
-                # check which side the collision is from
-                if dx > 0:
-                    self.rect.right = obstacle[1].left
-                if dx < 0:
-                    self.rect.left = obstacle[1].right
+                # check if poison tile (green)
+                if obstacle[4] == "green floor":
+                    poisoned= True
+                    print (f"self.name ={self.name}")
+                else:
+                    # check which side the collision is from
+                    if dx > 0:
+                        self.rect.right = obstacle[1].left
+                    if dx < 0:
+                        self.rect.left = obstacle[1].right
 
         self.rect.y += dy
 
@@ -2049,15 +2056,34 @@ class Character(pygame.sprite.Sprite):
         for obstacle in obstacle_tiles:
             # check for collision
             if obstacle[1].colliderect(self.rect):
-                # check which side the collision is from
-                if dy > 0:
-                    self.rect.bottom = obstacle[1].top
-                if dy < 0:
-                    self.rect.top = obstacle[1].bottom
+                # check if poison tile (green)
+                if obstacle[4] == "green floor":
+                    poisoned = True
+                    print (f"self.name ={self.name}")
+                else:
+                    # check which side the collision is from
+                    if dy > 0:
+                        self.rect.bottom = obstacle[1].top
+                    if dy < 0:
+                        self.rect.top = obstacle[1].bottom
 
+
+        if poisoned:
+            cooldown = self.character_classes_dict[self.name]['attack_cooldown'] if hasattr(self.character_classes_dict[self.name], 'attack_cooldown') else 100
+            curr_time = pygame.time.get_ticks()
+
+            if curr_time - self.attack_cooldown > cooldown:
+                new_damage = random.randrange(5, 15)  # random hit of between 5 and 15 damage.
+                self.health -= new_damage
+                self.hit = True
+                self.last_hit = pygame.time.get_ticks()
+                if constants.DEBUG_SHOW_HIT_DAMAGE:
+                    print("  Poison inflicts {} damage to you.  Health reduced to {}".format(self.name, new_damage,
+                                                                                         self.health))
+                self.running = False
+                self.attack_cooldown= pygame.time.get_ticks()
 
         # check for collision with enemies
-        enemies_being_attacked = 0
         if self.name == "player":
             hitbox = Rect(self.hitbox)
             cooldown = self.character_classes_dict[self.name]['attack_cooldown']
@@ -2065,8 +2091,8 @@ class Character(pygame.sprite.Sprite):
 
             # has cooldown been met?
             curr_time= pygame.time.get_ticks()
-            if constants.DEBUG_LEVEL:
-                print(f"  cooldown={cooldown}, curr_time={curr_time}, attack_cooldown= {self.attack_cooldown}" )
+            # if constants.DEBUG_LEVEL:
+            #     print(f"  cooldown={cooldown}, curr_time={curr_time}, attack_cooldown= {self.attack_cooldown}" )
 
             if curr_time - self.attack_cooldown > cooldown:
 
@@ -2074,21 +2100,23 @@ class Character(pygame.sprite.Sprite):
 
                     # check for collision
                     if enemy.alive and hitbox.colliderect(enemy.hitbox):
-                        enemy.hit = True
+                        # enemy.hit = True
                         hit= True
                         new_damage = random.randrange(5, 15)  # random hit of between 5 and 15 damage.
                         enemy.health -= new_damage
-                        if enemy.health< 1:
-                            enemy.alive= False
+                        # if enemy.health< 1:
+                        #     enemy.alive= False
                         enemy.running = False
                         self.attacking = True
                         if constants.DEBUG_SHOW_HIT_DAMAGE:
                             print(f"  {self.name!r} inflicts {new_damage} damage to {enemy.name!r}.  Enemy health reduced to {enemy.health}")
-
+                        # can only hit one enemy at a time so break
+                        break
             if hit:
                 # reset cooldown
                 self.attack_cooldown= pygame.time.get_ticks()
             # else:
+            #     self.action= 2 # attack
             #     self.attacking= False
 
             # check collision with exit ladder
