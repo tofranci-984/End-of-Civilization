@@ -2050,11 +2050,11 @@ class Character(pygame.sprite.Sprite):
             if self.poisoned:
                 draw_health_bar(surf, health_rect,
                                 constants.BLACK, constants.RED,
-                                (0, 128, 0, 127), self.health / self.max_health)
+                                constants.GREEN, self.health / self.max_health)
             else:
                 draw_health_bar(surf, health_rect,
                                 constants.BLACK, constants.RED,
-                                constants.GREEN, self.health / self.max_health)
+                                (0, 128, 0, 127), self.health / self.max_health)
 
     def move(self, dx, dy, obstacle_tiles, enemy_list, time_delta, exit_tile=None):
         fn = ""
@@ -2122,10 +2122,6 @@ class Character(pygame.sprite.Sprite):
                 cooldown = 100
 
             curr_time = pygame.time.get_ticks()
-            # if constants.DEBUG_LEVEL:
-            #     print(f"name={self.name!r}, ", end="")
-            #     print(
-            #         f"curr_time={curr_time!r} - self.attack_cooldown={self.attack_cooldown!r} = {curr_time - self.attack_cooldown} (cooldown={cooldown!r})")
 
             if curr_time - self.attack_cooldown > cooldown:
                 if constants.DEBUG_LEVEL:
@@ -2148,9 +2144,6 @@ class Character(pygame.sprite.Sprite):
 
             # has cooldown been met?
             curr_time = pygame.time.get_ticks()
-            # if constants.DEBUG_LEVEL:
-            #     print(f"  cooldown={cooldown}, curr_time={curr_time}, attack_cooldown= {self.attack_cooldown}" )
-
             if curr_time - self.attack_cooldown > cooldown:
 
                 for enemy in enemy_list:
@@ -2170,12 +2163,12 @@ class Character(pygame.sprite.Sprite):
                                 f"  {self.name!r} inflicts {new_damage} damage to {enemy.name!r}.  Enemy health reduced to {enemy.health}")
                         # can only hit one enemy at a time so break
                         break
-            if hit:
-                # reset cooldown
-                self.attack_cooldown = pygame.time.get_ticks()
-            # else:
-            #     self.action= 2 # attack
-            #     self.attacking= False
+                if hit:
+                    # reset cooldown
+                    self.attack_cooldown = pygame.time.get_ticks()
+                else:
+                    self.action= 2 # attack
+                    self.attacking= False
 
             # check collision with exit ladder
             if exit_tile[1].colliderect(self.rect):

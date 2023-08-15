@@ -16,7 +16,7 @@ DEBUG_SHOW_HIT_DAMAGE = True    # prints out damage info
 DEBUG_FAST_TRAVEL = True
 
 # CHEATS / CODES
-GOD_MODE = False
+GOD_MODE = True
 # PLAYER_START_HEALTH = 100
 PLAYER_MAX_HEALTH = 200
 
