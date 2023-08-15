@@ -2118,8 +2118,8 @@ class Character(pygame.sprite.Sprite):
         if self.poisoned:
             try:
                 cooldown = self.character_classes_dict[self.name]['poison_ramp_delay']
-            except AttributeError:
-                cooldown = 100
+            except KeyError:
+                cooldown = 1000
 
             curr_time = pygame.time.get_ticks()
 
@@ -2278,7 +2278,7 @@ class Character(pygame.sprite.Sprite):
         #  all have attacks that are different sized than Idle.   Need to accommodate that here
 
         if self.name not in character_classes_dict.keys():
-            print("\nERROR: CHAR.PY: FN:{}, LN:{}, self.name={} does not exist in dict".
+            print("\n* ERROR *\n  CHAR.PY: FN:{}, LN:{}, self.name={} does not exist in dict".
                   format(fn, line_numb(), self.name))
             pygame.quit()
             sys.exit()
@@ -2306,7 +2306,7 @@ class Character(pygame.sprite.Sprite):
 
         # check if line of sight passes through an obstacle tile
         for obstacle in obstacle_tiles:
-            if obstacle[1].clipline(line_of_sight):
+            if not obstacle[4] == "green floor" and obstacle[1].clipline(line_of_sight):
                 clipped_line = obstacle[1].clipline(line_of_sight)
 
         # check distance to player

@@ -84,7 +84,7 @@ class Arrow(pygame.sprite.Sprite):
 
         # check for collision between arrow and tile walls
         for obstacle in obstacle_tiles:
-            if obstacle[1].colliderect(self.rect):
+            if not obstacle[4] == "green floor" and obstacle[1].colliderect(self.rect):
                 self.kill()  # kill the arrow object
 
         # check if arrow has gone off-screen
