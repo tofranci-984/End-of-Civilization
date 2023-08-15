@@ -2,7 +2,7 @@
 <map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="256" tileheight="256" infinite="0" nextlayerid="6" nextobjectid="370">
  <tileset firstgid="1" source="objects.tsx"/>
  <tileset firstgid="178" source="tiles.tsx"/>
- <tileset firstgid="418" source="characters.tsx"/>
+ <tileset firstgid="444" source="characters.tsx"/>
  <layer id="1" name="ground" width="50" height="50">
   <data encoding="csv">
 237,215,216,215,215,215,215,215,215,215,215,215,215,215,227,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -62,40 +62,5 @@
   <object id="334" gid="143" x="306" y="1244" width="129" height="192"/>
   <object id="335" gid="13" x="585" y="946" width="107" height="136"/>
  </objectgroup>
- <objectgroup id="5" name="enemies">
-  <object id="336" gid="603" x="1058" y="703" width="125" height="125"/>
-  <object id="337" gid="647" x="529" y="1998" width="147" height="108"/>
-  <object id="338" gid="648" x="783" y="1998" width="134" height="99"/>
-  <object id="339" gid="649" x="1044" y="1995" width="140" height="110"/>
-  <object id="340" gid="643" x="1561" y="2018" width="151" height="160"/>
-  <object id="341" gid="642" x="1823" y="1999" width="147" height="145"/>
-  <object id="342" gid="641" x="2068" y="1996" width="160" height="163"/>
-  <object id="343" gid="637" x="2077" y="2775" width="115" height="178"/>
-  <object id="344" gid="636" x="1826" y="2808" width="104" height="179"/>
-  <object id="345" gid="635" x="1574" y="2757" width="120" height="157"/>
-  <object id="346" gid="633" x="1042" y="2791" width="133" height="177"/>
-  <object id="347" gid="632" x="785" y="2788" width="143" height="180"/>
-  <object id="348" gid="631" x="530" y="2782" width="149" height="168"/>
-  <object id="349" gid="625" x="2088" y="3515" width="129" height="137"/>
-  <object id="350" gid="629" x="1811" y="3518" width="147" height="135"/>
-  <object id="351" gid="630" x="1567" y="3500" width="131" height="115"/>
-  <object id="352" gid="628" x="1031" y="3529" width="154" height="161"/>
-  <object id="353" gid="627" x="791" y="3523" width="146" height="165"/>
-  <object id="354" gid="626" x="549" y="3534" width="119" height="164"/>
-  <object id="355" gid="624" x="3341" y="3498" width="120" height="155"/>
-  <object id="356" gid="623" x="3090" y="3496" width="102" height="136"/>
-  <object id="357" gid="622" x="2822" y="3501" width="110" height="138"/>
-  <object id="358" gid="618" x="3364" y="2792" width="89" height="160"/>
-  <object id="359" gid="617" x="3085" y="2800" width="95" height="160"/>
-  <object id="360" gid="616" x="2820" y="2774" width="89" height="147"/>
-  <object id="361" gid="615" x="3359" y="1985" width="182" height="118"/>
-  <object id="362" gid="614" x="3081" y="1991" width="202" height="129"/>
-  <object id="363" gid="613" x="2812" y="1993" width="197" height="125"/>
-  <object id="364" gid="612" x="3337" y="1255" width="142" height="181"/>
-  <object id="365" gid="611" x="3077" y="1254" width="143" height="180"/>
-  <object id="366" gid="610" x="2847" y="1262" width="138" height="180"/>
-  <object id="367" gid="606" x="3342" y="490" width="109" height="140"/>
-  <object id="368" gid="605" x="3085" y="463" width="103" height="133"/>
-  <object id="369" gid="604" x="2831" y="460" width="98" height="127"/>
- </objectgroup>
+ <objectgroup id="5" name="enemies"/>
 </map>

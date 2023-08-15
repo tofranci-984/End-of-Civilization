@@ -596,9 +596,9 @@ while run:
 
             # load in the level data
             if constants.DEBUG_LEVEL:
-                path = "assets/levels/testing2.tmx"
+                path = "assets/testing2.tmx"
             else:
-                path = f"assets/levels/level{level}.tmx"
+                path = f"assets/level{level}.tmx"
 
             try:
                 tmx_map = load_pygame(path)
@@ -644,7 +644,7 @@ while run:
                     start_game = True
                     world_data = reset_level()
 
-                    path = f"assets/levels/level{level}.tmx"
+                    path = f"assets/level{level}.tmx"
 
                     try:
                         tmx_map = load_pygame(path)
@@ -749,19 +749,20 @@ while run:
             player.health = player.character_classes_dict['player']['hp']
             print(f"*GOD_MODE* has restored your health to {player.character_classes_dict['player']['hp']}")
 
-    # restore health gradually (must be idle, not running and not attacking)
-    if not player.attacking and not player.poisoned and player.action == 0:
-        if player.health_restore_delay> 0:
+     # restore health gradually (must be idle, not running and not attacking)
+    if not (player.attacking or player.poisoned or player.action):
+        if player.health_restore_delay > 0:
             player.health_restore_delay -= 1
         else:
-            player.health+= 1 if player.health< player.character_classes_dict['player']['max_health'] else 0
-            player.health_restore_delay= character_classes_dict['player']['health_restore_time']
-            player.mana+= 1 if player.mana< player.character_classes_dict['player']['max_health'] else 0
-
-    # show fps
-    if constants.FPS_MONITOR:
-        fps.render(str(level))
-        fps.clock.tick(constants.FPS)
+            if player.health < player.character_classes_dict['player']['max_health']:
+                player.health += 1
+            if player.mana < player.character_classes_dict['player']['max_mana']:
+                player.mana += 1
+            player.health_restore_delay = player.character_classes_dict['player']['health_restore_time']
+        # show fps
+        if constants.FPS_MONITOR:
+            fps.render(str(level))
+            fps.clock.tick(constants.FPS)
 
     pygame.display.update()
 #     pygame.display.flip()

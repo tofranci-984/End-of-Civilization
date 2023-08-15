@@ -2165,6 +2165,7 @@
     "flip_image": true,
     "hp": 100,
     "max_health": 200,
+    "max_mana": 200,
     "health_restore_time": 100,
     "idle": 60,
     "is_Hitbox_Symmetrical": true,
