@@ -1,6 +1,7 @@
 import json
 import pygame
 import constants
+import os
 from tilesheet import Tilesheet
 
 
@@ -69,6 +70,35 @@ def load_gold_images(coin_images, gold_images):
         gold_images.append(img)
 
 
+def load_explosions(explosions):
+    # Load explosion images
+
+    path = "assets/images/explosions"
+    explosion_data = {}
+    explosion_files = []
+    explosion_data = {
+        'Explosion_1': [],
+        "Explosion_9": []
+    }
+
+    for item in ["Explosion_9", "Explosion_1"]:
+
+        count = load_files(f"{path}/{item}", "Explosion_", explosion_files)
+        if constants.DEBUG_LEVEL:
+            print(f"path={path!r}, explosion={item!r}, file_count={count}")
+
+        explosion_files.sort()
+
+        explosion = {}
+        for i, image_path in enumerate(explosion_files):
+            img = pygame.image.load(image_path).convert_alpha()
+            img = scale_img(img, 1, use_global_scale=False)
+            tmp_explosion = [image_path, img]
+            explosion[i] = tmp_explosion
+
+        explosions.append(explosion)
+
+
 def load_potions():
     # load potion images
     red_potion = scale_img(pygame.image.load(
@@ -83,22 +113,21 @@ def load_potions():
 
     return red_potion, blue_potion, green_potion
 
-# def load_files(directory, prefix, file_array):
-#     count = 0
-#     for filename in os.listdir(directory):
-#         if filename.startswith(prefix) and filename.endswith(".png"):
-#             try:
-#                 number = int(filename[4:8])
-#                 file_path = os.path.join(directory, filename)
-#                 file_array.append(file_path)
-#                 count += 1
-#             except ValueError:
-#                 if constants.DEBUG_LEVEL:
-#                     print(" MAIN.PY, F:load_files, line:{} Skipping {}".format(line_numb(), filename))
-#                 pass  # ignore files with invalid number format
-#     return count
-#
 
+def load_files(directory, prefix, file_array):
+    count = 0
+    for filename in os.listdir(directory):
+        if filename.startswith(prefix) and filename.endswith(".png"):
+            try:
+                # number = int(filename[4:8])
+                file_path = os.path.join(directory, filename)
+                file_array.append(file_path)
+                count += 1
+            except ValueError:
+                if constants.DEBUG_LEVEL:
+                    print(" MAIN.PY, F:load_files, line:{} Skipping {}".format(line_numb(), filename))
+                pass  # ignore files with invalid number format
+    return count
 
 # # importing the module
 # import tracemalloc

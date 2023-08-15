@@ -305,7 +305,10 @@ lightning_image = scale_img(pygame.image.load("assets/images/weapons/red-lightni
 # load coin images
 coin_images = []
 gold_images = []
+explosions = []
+
 load_gold_images(coin_images, gold_images)
+load_explosions(explosions)
 
 # load image for exit portal
 filename = 'assets/images/environment/Sprites/PNG/doors 2 type/portal-new.png'
