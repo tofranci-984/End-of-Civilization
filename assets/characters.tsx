@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.1" name="objects" tilewidth="773" tileheight="944" tilecount="73" columns="0">
+<tileset version="1.10" tiledversion="1.10.1" name="objects" tilewidth="773" tileheight="944" tilecount="76" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="298">
   <properties>
@@ -438,5 +438,23 @@
    <property name="item_name" value="Wraith3"/>
   </properties>
   <image width="248" height="324" source="images/characters/icons/Wraith3 icon.png"/>
+ </tile>
+ <tile id="312">
+  <properties>
+   <property name="item_name" value="Troll6"/>
+  </properties>
+  <image width="137" height="132" source="images/characters/icons/Troll6 icon.png"/>
+ </tile>
+ <tile id="313">
+  <properties>
+   <property name="item_name" value="Troll5"/>
+  </properties>
+  <image width="149" height="125" source="images/characters/icons/Troll5 icon.png"/>
+ </tile>
+ <tile id="314">
+  <properties>
+   <property name="item_name" value="Troll4"/>
+  </properties>
+  <image width="141" height="126" source="images/characters/icons/Troll4 icon.png"/>
  </tile>
 </tileset>

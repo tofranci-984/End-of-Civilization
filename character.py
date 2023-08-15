@@ -1506,6 +1506,49 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                     number_of_images_loaded += 1
 
                 animation_list.append(temp_list)
+        case "Troll4" | "Troll5" | "Troll6":
+            for animation in animation_types:
+                num_images = character[animation]
+                temp_list = []
+
+                if character['name']== "Troll4":
+                    at= "Troll_01"
+                elif character['name']== "Troll5":
+                    at= "Troll_02"
+                else:
+                    at= "Troll_03"
+
+                for image_num in range(0, num_images - 1):
+
+                    file_index = "{:03}".format(image_num)
+
+                    match animation:
+                        case "run":
+                            file_prefix = f"{at}_1_RUN"
+                        case "idle":
+                            file_prefix = f"{at}_1_IDLE"
+                        case "attack":
+                            file_prefix = f"{at}_1_ATTACK"
+                        case "death":
+                            file_prefix = f"{at}_1_DIE"
+                        case _:
+                            file_prefix = ""
+
+                    path = f"assets/images/characters/{character['name']}/{file_prefix}_{file_index}.png"
+                    img = pygame.image.load(path).convert_alpha()
+
+                    width = img.get_width() - (character['trim_rect'][0] + character['trim_rect'][1])
+                    height = img.get_height() - (character['trim_rect'][2] + character['trim_rect'][3])
+                    new_region = (character['trim_rect'][0], character['trim_rect'][2], width, height)
+                    cropped_img = img.subsurface(new_region)
+
+                    if character['scale'] != 1:
+                        cropped_img = scale_img(cropped_img, character['scale'])
+
+                    temp_list.append(cropped_img)
+                    number_of_images_loaded += 1
+
+                animation_list.append(temp_list)
         case "Undead1" | "Undead2" | "Undead3":
             if character['name'] == "Undead1":
                 prefix = "5_animation"
@@ -2041,8 +2084,8 @@ class Character(pygame.sprite.Sprite):
             if obstacle[1].colliderect(self.rect):
                 # check if poison tile (green)
                 if obstacle[4] == "green floor":
-                    poisoned= True
-                    print (f"self.name ={self.name}")
+                    poisoned = True
+                    print(f"self.name ={self.name}")
                 else:
                     # check which side the collision is from
                     if dx > 0:
@@ -2059,7 +2102,7 @@ class Character(pygame.sprite.Sprite):
                 # check if poison tile (green)
                 if obstacle[4] == "green floor":
                     poisoned = True
-                    print (f"self.name ={self.name}")
+                    print(f"self.name ={self.name}")
                 else:
                     # check which side the collision is from
                     if dy > 0:
@@ -2067,9 +2110,9 @@ class Character(pygame.sprite.Sprite):
                     if dy < 0:
                         self.rect.top = obstacle[1].bottom
 
-
         if poisoned:
-            cooldown = self.character_classes_dict[self.name]['attack_cooldown'] if hasattr(self.character_classes_dict[self.name], 'attack_cooldown') else 100
+            cooldown = self.character_classes_dict[self.name]['attack_cooldown'] if hasattr(
+                self.character_classes_dict[self.name], 'attack_cooldown') else 100
             curr_time = pygame.time.get_ticks()
 
             if curr_time - self.attack_cooldown > cooldown:
@@ -2079,18 +2122,18 @@ class Character(pygame.sprite.Sprite):
                 self.last_hit = pygame.time.get_ticks()
                 if constants.DEBUG_SHOW_HIT_DAMAGE:
                     print("  Poison inflicts {} damage to you.  Health reduced to {}".format(self.name, new_damage,
-                                                                                         self.health))
+                                                                                             self.health))
                 self.running = False
-                self.attack_cooldown= pygame.time.get_ticks()
+                self.attack_cooldown = pygame.time.get_ticks()
 
         # check for collision with enemies
         if self.name == "player":
             hitbox = Rect(self.hitbox)
             cooldown = self.character_classes_dict[self.name]['attack_cooldown']
-            hit= False
+            hit = False
 
             # has cooldown been met?
-            curr_time= pygame.time.get_ticks()
+            curr_time = pygame.time.get_ticks()
             # if constants.DEBUG_LEVEL:
             #     print(f"  cooldown={cooldown}, curr_time={curr_time}, attack_cooldown= {self.attack_cooldown}" )
 
@@ -2101,7 +2144,7 @@ class Character(pygame.sprite.Sprite):
                     # check for collision
                     if enemy.alive and hitbox.colliderect(enemy.hitbox):
                         # enemy.hit = True
-                        hit= True
+                        hit = True
                         new_damage = random.randrange(5, 15)  # random hit of between 5 and 15 damage.
                         enemy.health -= new_damage
                         # if enemy.health< 1:
@@ -2109,12 +2152,13 @@ class Character(pygame.sprite.Sprite):
                         enemy.running = False
                         self.attacking = True
                         if constants.DEBUG_SHOW_HIT_DAMAGE:
-                            print(f"  {self.name!r} inflicts {new_damage} damage to {enemy.name!r}.  Enemy health reduced to {enemy.health}")
+                            print(
+                                f"  {self.name!r} inflicts {new_damage} damage to {enemy.name!r}.  Enemy health reduced to {enemy.health}")
                         # can only hit one enemy at a time so break
                         break
             if hit:
                 # reset cooldown
-                self.attack_cooldown= pygame.time.get_ticks()
+                self.attack_cooldown = pygame.time.get_ticks()
             # else:
             #     self.action= 2 # attack
             #     self.attacking= False
