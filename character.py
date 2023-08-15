@@ -2122,19 +2122,21 @@ class Character(pygame.sprite.Sprite):
                 cooldown = 100
 
             curr_time = pygame.time.get_ticks()
-            if constants.DEBUG_LEVEL:
-                print(f"name={self.name!r}, ", end="")
-                print(
-                    f"curr_time={curr_time!r} - self.attack_cooldown={self.attack_cooldown!r} = {curr_time - self.attack_cooldown} (cooldown={cooldown!r})")
+            # if constants.DEBUG_LEVEL:
+            #     print(f"name={self.name!r}, ", end="")
+            #     print(
+            #         f"curr_time={curr_time!r} - self.attack_cooldown={self.attack_cooldown!r} = {curr_time - self.attack_cooldown} (cooldown={cooldown!r})")
 
             if curr_time - self.attack_cooldown > cooldown:
+                if constants.DEBUG_LEVEL:
+                    print(f"CHAR.PY, FN:{fn!r}, LN:{ln!r}, self.health= {self.health!r}")
+
                 new_damage = random.randrange(5, 15)  # random hit of between 5 and 15 damage.
                 self.health -= new_damage
                 self.hit = True
                 self.last_hit = pygame.time.get_ticks()
                 if constants.DEBUG_SHOW_HIT_DAMAGE:
-                    print("  Poison inflicts {} damage to you.  Health reduced to {}".format(self.name, new_damage,
-                                                                                             self.health))
+                    print(f"  Poison inflicts {self.name!r} with {new_damage!r} damage.  Health reduced to {self.health}")
                 self.running = False
                 self.attack_cooldown = pygame.time.get_ticks()
 
