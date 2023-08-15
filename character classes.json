@@ -1789,7 +1789,7 @@
       100
     ]
   },
-    "Troll5": {
+  "Troll5": {
     "Special_Attack": "None",
     "rank": 1,
     "animation_cooldown": 150,
@@ -1817,7 +1817,7 @@
       100
     ]
   },
-    "Troll6": {
+  "Troll6": {
     "Special_Attack": "None",
     "rank": 1,
     "animation_cooldown": 150,
