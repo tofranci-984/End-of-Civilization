@@ -1679,7 +1679,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                         images = Tilesheet(
                             f"assets/images/characters/Werewolf/{character['name']}/Attack_3.png",
                             128, 128, 1, 5)
-                        flip = True
+                        # flip = True
                     case "death":
                         images = Tilesheet(
                             f"assets/images/characters/Werewolf/{character['name']}/Dead.png",

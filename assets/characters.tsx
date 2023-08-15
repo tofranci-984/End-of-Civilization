@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.1" name="objects" tilewidth="773" tileheight="944" tilecount="76" columns="0">
+<tileset version="1.10" tiledversion="1.10.1" name="objects" tilewidth="773" tileheight="944" tilecount="79" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="298">
   <properties>
@@ -456,5 +456,23 @@
    <property name="item_name" value="Troll4"/>
   </properties>
   <image width="141" height="126" source="images/characters/icons/Troll4 icon.png"/>
+ </tile>
+ <tile id="315">
+  <properties>
+   <property name="item_name" value="White Werewolf"/>
+  </properties>
+  <image width="92" height="85" source="images/characters/icons/White Werewolf icon.png"/>
+ </tile>
+ <tile id="316">
+  <properties>
+   <property name="item_name" value="Red Werewolf"/>
+  </properties>
+  <image width="98" height="89" source="images/characters/icons/Red Werewolf icon.png"/>
+ </tile>
+ <tile id="317">
+  <properties>
+   <property name="item_name" value="Black Werewolf"/>
+  </properties>
+  <image width="102" height="88" source="images/characters/icons/Black Werewolf icon.png"/>
  </tile>
 </tileset>
