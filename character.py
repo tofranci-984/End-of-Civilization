@@ -1511,12 +1511,12 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
                 num_images = character[animation]
                 temp_list = []
 
-                if character['name']== "Troll4":
-                    at= "Troll_01"
-                elif character['name']== "Troll5":
-                    at= "Troll_02"
+                if character['name'] == "Troll4":
+                    at = "Troll_01"
+                elif character['name'] == "Troll5":
+                    at = "Troll_02"
                 else:
-                    at= "Troll_03"
+                    at = "Troll_03"
 
                 for image_num in range(0, num_images - 1):
 
@@ -1949,7 +1949,10 @@ class Character(pygame.sprite.Sprite):
         self.fading_counter = 0
         self.mana = 100
         self.poison = 0
+        self.poisoned = False
         self.rank = 1
+        if self.name == "player":
+            self.health_restore_delay = character_classes_dict['player']['health_restore_time']
 
         # assign initial hitbox info
         self.hitbox = (0, 0, 0, 0)
@@ -2044,8 +2047,14 @@ class Character(pygame.sprite.Sprite):
             self.fading_counter += 1
 
         if self.health:
-            draw_health_bar(surf, health_rect,
-                            (0, 0, 0, 127), (255, 0, 0, 127), (0, 255, 0, 127), self.health / self.max_health)
+            if self.poisoned:
+                draw_health_bar(surf, health_rect,
+                                constants.BLACK, constants.RED,
+                                (0, 128, 0, 127), self.health / self.max_health)
+            else:
+                draw_health_bar(surf, health_rect,
+                                constants.BLACK, constants.RED,
+                                constants.GREEN, self.health / self.max_health)
 
     def move(self, dx, dy, obstacle_tiles, enemy_list, time_delta, exit_tile=None):
         fn = ""
@@ -2077,15 +2086,12 @@ class Character(pygame.sprite.Sprite):
         # check for collision with map in x direction
         self.rect.x += dx
 
-        poisoned = False
-
         for obstacle in obstacle_tiles:
             # check for collision
             if obstacle[1].colliderect(self.rect):
                 # check if poison tile (green)
                 if obstacle[4] == "green floor":
-                    poisoned = True
-                    print(f"self.name ={self.name}")
+                    self.poisoned = True
                 else:
                     # check which side the collision is from
                     if dx > 0:
@@ -2101,19 +2107,25 @@ class Character(pygame.sprite.Sprite):
             if obstacle[1].colliderect(self.rect):
                 # check if poison tile (green)
                 if obstacle[4] == "green floor":
-                    poisoned = True
-                    print(f"self.name ={self.name}")
+                    self.poisoned = True
                 else:
-                    # check which side the collision is from
+                    # check which side the collision is froms
                     if dy > 0:
                         self.rect.bottom = obstacle[1].top
                     if dy < 0:
                         self.rect.top = obstacle[1].bottom
 
-        if poisoned:
-            cooldown = self.character_classes_dict[self.name]['attack_cooldown'] if hasattr(
-                self.character_classes_dict[self.name], 'attack_cooldown') else 100
+        if self.poisoned:
+            try:
+                cooldown = self.character_classes_dict[self.name]['poison_ramp_delay']
+            except AttributeError:
+                cooldown = 100
+
             curr_time = pygame.time.get_ticks()
+            if constants.DEBUG_LEVEL:
+                print(f"name={self.name!r}, ", end="")
+                print(
+                    f"curr_time={curr_time!r} - self.attack_cooldown={self.attack_cooldown!r} = {curr_time - self.attack_cooldown} (cooldown={cooldown!r})")
 
             if curr_time - self.attack_cooldown > cooldown:
                 new_damage = random.randrange(5, 15)  # random hit of between 5 and 15 damage.

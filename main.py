@@ -342,7 +342,7 @@ try:
     tmx_map = load_pygame(path)
 
 except:
-    print(f"MAIN.PY line:{line_numb()}\n Unable to load TMX file: {path}")
+    print(f"* ERROR *\n  sMAIN.PY line:{line_numb()}\n Unable to load TMX file: {path}")
     print("-Check path\n-Make sure you can open the file in Tiled\n-Check Tiled icons / locate correct folders")
     pygame.quit()
     exit()
@@ -604,7 +604,7 @@ while run:
                 tmx_map = load_pygame(path)
 
             except:
-                print(f"MAIN.PY line:{line_numb()} Unable to load TMX file: {path}")
+                print(f"MAIN.PY line:{line_numb()}\n\n* ERROR *\n Unable to load TMX file: {path!r}")
                 print("-Check path\n-Make sure you can open the file in Tiled\n")
                 print("-Check Tiled icons / locate correct folders")
                 pygame.quit()
@@ -678,10 +678,29 @@ while run:
 
     # event handler
     for event in pygame.event.get():
+        if event.type == pygame.VIDEORESIZE:
+            # scrsize = event.size
+            width = event.w
+            height = event.h
+            constants.SCREEN_WIDTH = event.w
+            constants.SCREEN_HEIGHT = event.h
+
+            for item in text_pos_percentage:
+                statbar_pos_offset[item] = int(constants.SCREEN_WIDTH * text_pos_percentage[item] / 100)
+
+            _, y= health_potion_status.rect.center
+            health_potion_status.rect.center = (statbar_pos_offset['health'], y)
+            poison_potion_status.rect.center = (statbar_pos_offset['poison'], y)
+            mana_potion_status.rect.center = (statbar_pos_offset['mana'], y)
+            score_status.rect.center = (statbar_pos_offset['score'], y)
+
+            screen = pygame.display.set_mode((width, height),
+                                             pygame.RESIZABLE | pygame.HWSURFACE | pygame.DOUBLEBUF, vsync=1)
+
         if event.type == pygame.QUIT:
             run = False
-        # take keyboard presses
 
+        # take keyboard presses
         if event.type == pygame.KEYDOWN:
             match event.key:
                 case pygame.K_a:
@@ -703,24 +722,6 @@ while run:
                 case pygame.K_ESCAPE:
                     pause_game = True
 
-        if event.type == pygame.VIDEORESIZE:
-            # scrsize = event.size
-            width = event.w
-            height = event.h
-            constants.SCREEN_WIDTH = event.w
-            constants.SCREEN_HEIGHT = event.h
-
-            for item in text_pos_percentage:
-                statbar_pos_offset[item] = int(constants.SCREEN_WIDTH * text_pos_percentage[item] / 100)
-
-            _, y= health_potion_status.rect.center
-            health_potion_status.rect.center = (statbar_pos_offset['health'], y)
-            poison_potion_status.rect.center = (statbar_pos_offset['poison'], y)
-            mana_potion_status.rect.center = (statbar_pos_offset['mana'], y)
-            score_status.rect.center = (statbar_pos_offset['score'], y)
-
-            screen = pygame.display.set_mode((width, height),
-                                             pygame.RESIZABLE | pygame.HWSURFACE | pygame.DOUBLEBUF, vsync=1)
 
         # keyboard button released
         if event.type == pygame.KEYUP:
@@ -737,6 +738,7 @@ while run:
                     use_mana_potion = False
                 case pygame.K_p:
                     use_poison_potion = False
+                    player.poisoned= False
 
                 case pygame.K_s:
                     # item_group.update(screen_scroll, player, coin_fx, heal_fx, time_delta)
@@ -746,6 +748,15 @@ while run:
         if player and player.health < 50:
             player.health = player.character_classes_dict['player']['hp']
             print(f"  *GOD_MODE* has restored your health to {player.character_classes_dict['player']['hp']}")
+
+    # restore health gradually
+    if not player.attacking:
+        if player.health_restore_delay> 0:
+            player.health_restore_delay -= 1
+        else:
+            player.health+= 1 if player.health< player.character_classes_dict['player']['max_health'] else 0
+            player.health_restore_delay= character_classes_dict['player']['health_restore_time']
+            player.mana+= 1 if player.mana< player.character_classes_dict['player']['max_health'] else 0
 
     # show fps
     if constants.FPS_MONITOR:
