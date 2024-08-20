@@ -1867,6 +1867,7 @@ def load_character_images(char_name, mob_dict, character_classes_dict):
 
     # final_list = char_name, animation_list
     mob_dict[char_name] = {"name": char_name, "images": animation_list}
+
     return number_of_images_loaded
 
 
